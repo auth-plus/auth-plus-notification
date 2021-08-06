@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dependency
+    ports:
+      - '5000:5000'
+    command: tail -f /dev/null
+    environment:
+      - APP_NAME=auth-plus-notification
+      - APP_PORT=5001
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+    restart: always
+    networks:
+      - host
+    depends_on:
+      - database
+      - cache
+
+networks:
+  host:
+    driver: bridge
+
+volumes:
+  v-database:
+  v-cache:
