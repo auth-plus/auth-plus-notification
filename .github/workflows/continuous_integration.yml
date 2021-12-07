@@ -37,6 +37,4 @@ jobs:
         with:
           node-version: "^1.17.4"
       - name: Install dependencies
-        run: go build -o /build
-      - name: Verify build
-        run: npm run build -- --noEmit
+        run: go build -o ./server
