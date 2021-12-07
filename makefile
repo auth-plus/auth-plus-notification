@@ -12,7 +12,7 @@ dev:
 test/ci:
 	make infra/up
 	docker-compose up -d api
-	docker-compose exec -T api npm test
+	docker-compose exec -T api go test
 	make clean/docker
 
 clean/node:

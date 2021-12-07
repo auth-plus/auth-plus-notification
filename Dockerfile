@@ -1,7 +1,12 @@
-FROM node:14.17.0-alpine3.13 AS dependency
+FROM golang:1.17-alpine
 WORKDIR /app
-COPY . .
-RUN npm ci
-RUN npm run build
-EXPOSE 5000
-CMD ["npm", "start"]
+
+COPY /src .
+
+RUN go mod download
+
+RUN go build -o /build
+
+EXPOSE 8080
+
+CMD [ "/build" ]
