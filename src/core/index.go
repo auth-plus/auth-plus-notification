@@ -15,8 +15,11 @@ type Core struct {
 }
 
 func NewCore() Core {
+	//Providers
 	sendgrid := p.NewSendgrid()
 	mailgun := p.NewMailgun()
+
+	//Managers
 	emailManager := m.NewEmailManager(sendgrid, mailgun)
 
 	//Usecases

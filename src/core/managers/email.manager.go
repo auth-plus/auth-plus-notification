@@ -24,7 +24,7 @@ func NewEmailManager(sendgrid se.SendingEmail, mailgun se.SendingEmail) *EmailMa
 }
 
 func (e *EmailManager) Send(email string, content string) {
-	choosedProvider := Choose(email, content)
+	choosedProvider := chooseEmailManager(email, content)
 	switch choosedProvider {
 	case "SendGrid":
 		e.sendgrid.Send(email, content)
@@ -34,7 +34,7 @@ func (e *EmailManager) Send(email string, content string) {
 }
 
 //Function for choosing a provider, it can be by IP warming, Limit, timeout
-func Choose(email string, content string) EnumEmailProvider {
+func chooseEmailManager(email string, content string) EnumEmailProvider {
 	if rand.Float64() > 0.5 {
 		return "SendGrid"
 	}
