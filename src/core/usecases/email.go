@@ -1,15 +1,19 @@
 package usecases
 
 import (
-	se "auth-plus-notification/core/usecases/driven"
+	d "auth-plus-notification/core/usecases/driven"
 )
 
 type EmailUsecase struct {
-	sendingEmail se.SendingEmail
+	sendingEmail d.SendingEmail
 }
 
-func NewEmailUsecase(sendingEmail se.SendingEmail) *EmailUsecase {
+func NewEmailUsecase(sendingEmail d.SendingEmail) *EmailUsecase {
 	instance := new(EmailUsecase)
 	instance.sendingEmail = sendingEmail
 	return instance
+}
+
+func (e *EmailUsecase) Send(email string, content string) {
+	e.sendingEmail.Send(email, content)
 }

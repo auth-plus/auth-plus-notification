@@ -7,14 +7,32 @@ import (
 )
 
 type Core struct {
-	emailUsecase *u.EmailUsecase
+	EmailUsecase            *u.EmailUsecase
+	PushNotificationUsecase *u.PushNotificationUsecase
+	SmsUsecase              *u.SmsUsecase
+	TelegramUsecase         *u.TelegramUsecase
+	WhatsappUsecase         *u.WhatsappUsecase
 }
 
-func NewCore() *Core {
+func NewCore() Core {
 	sendgrid := p.NewSendgrid()
-	emailManager := m.NewEmailManager(sendgrid)
+	mailgun := p.NewMailgun()
+	emailManager := m.NewEmailManager(sendgrid, mailgun)
+
+	//Usecases
 	emailUsecase := u.NewEmailUsecase(emailManager)
-	core := new(Core)
-	core.emailUsecase = emailUsecase
+	pushNotificationUsecase := u.NewPushNotificationUsecase()
+	smsUsecase := u.NewSmsUsecase()
+	telegramUsecase := u.NewTelegramUsecase()
+	whatsappUsecase := u.NewWhatsappUsecase()
+
+	//Constructing Core
+	core := Core{
+		EmailUsecase:            emailUsecase,
+		PushNotificationUsecase: pushNotificationUsecase,
+		SmsUsecase:              smsUsecase,
+		TelegramUsecase:         telegramUsecase,
+		WhatsappUsecase:         whatsappUsecase,
+	}
 	return core
 }
