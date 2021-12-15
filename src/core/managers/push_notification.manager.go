@@ -23,13 +23,13 @@ func NewPushNotificationManager(firebase d.SendingPushNotification, braze d.Send
 	return &PushNotificationManager{firebase: firebase, braze: braze}
 }
 
-func (e *PushNotificationManager) Send(deviceId string, title string, content string) {
+func (e *PushNotificationManager) SendPN(deviceId string, title string, content string) {
 	choosedProvider := choosePushNotificationProvider(deviceId, title, content)
 	switch choosedProvider {
 	case "Firebase":
-		e.firebase.Send(deviceId, title, content)
+		e.firebase.SendPN(deviceId, title, content)
 	case "Braze":
-		e.braze.Send(deviceId, title, content)
+		e.braze.SendPN(deviceId, title, content)
 	}
 }
 

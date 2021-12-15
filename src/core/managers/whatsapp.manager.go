@@ -20,11 +20,11 @@ func NewWhatsappManager(whatsapp d.SendingWhatsapp) *WhatsappManager {
 	return &WhatsappManager{whatsapp: whatsapp}
 }
 
-func (e *WhatsappManager) Send(phone string, content string) {
+func (e *WhatsappManager) SendWhats(phone string, content string) {
 	choosedProvider := chooseWhatsappProvider(phone, content)
 	switch choosedProvider {
 	case "SendGrid":
-		e.whatsapp.Send(phone, content)
+		e.whatsapp.SendWhats(phone, content)
 	}
 }
 

@@ -14,7 +14,7 @@ func NewSendgrid() *Sendgrid {
 	return instance
 }
 
-func (e *Sendgrid) Send(email string, content string) {
+func (e *Sendgrid) SendEmail(email string, content string) {
 	fmt.Println("email Id:\t", email)
 	fmt.Println("content Id:\t", content)
 }

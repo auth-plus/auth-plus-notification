@@ -8,11 +8,12 @@ type PushNotificationUsecase struct {
 	sendingPushNotification d.SendingPushNotification
 }
 
-func NewPushNotificationUsecase() *PushNotificationUsecase {
+func NewPushNotificationUsecase(sendingPushNotification d.SendingPushNotification) *PushNotificationUsecase {
 	instance := new(PushNotificationUsecase)
+	instance.sendingPushNotification = sendingPushNotification
 	return instance
 }
 
 func (e *PushNotificationUsecase) Send(deviceId string, title string, content string) {
-	e.sendingPushNotification.Send(deviceId, title, content)
+	e.sendingPushNotification.SendPN(deviceId, title, content)
 }

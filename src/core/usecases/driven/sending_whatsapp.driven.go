@@ -1,5 +1,5 @@
 package driven
 
 type SendingWhatsapp interface {
-	Send(phone string, content string)
+	SendWhats(phone string, content string)
 }

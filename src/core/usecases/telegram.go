@@ -8,11 +8,12 @@ type TelegramUsecase struct {
 	sendingTelegram d.SendingTelegram
 }
 
-func NewTelegramUsecase() *TelegramUsecase {
+func NewTelegramUsecase(sendingTelegram d.SendingTelegram) *TelegramUsecase {
 	instance := new(TelegramUsecase)
+	instance.sendingTelegram = sendingTelegram
 	return instance
 }
 
 func (e *TelegramUsecase) Send(phone string, content string) {
-	e.sendingTelegram.Send(phone, content)
+	e.sendingTelegram.SendTele(phone, content)
 }

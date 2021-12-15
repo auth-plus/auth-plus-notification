@@ -23,13 +23,13 @@ func NewEmailManager(sendgrid se.SendingEmail, mailgun se.SendingEmail) *EmailMa
 	return &EmailManager{sendgrid: sendgrid, mailgun: mailgun}
 }
 
-func (e *EmailManager) Send(email string, content string) {
+func (e *EmailManager) SendEmail(email string, content string) {
 	choosedProvider := chooseEmailManager(email, content)
 	switch choosedProvider {
 	case "SendGrid":
-		e.sendgrid.Send(email, content)
+		e.sendgrid.SendEmail(email, content)
 	case "Mailgun":
-		e.mailgun.Send(email, content)
+		e.mailgun.SendEmail(email, content)
 	}
 }
 

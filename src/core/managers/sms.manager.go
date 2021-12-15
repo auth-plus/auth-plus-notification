@@ -16,15 +16,15 @@ type SmsManager struct {
 	sns d.SendingSms
 }
 
-func NewSmsManager(sns d.SendingSms, mailgun d.SendingSms) *SmsManager {
+func NewSmsManager(sns d.SendingSms) *SmsManager {
 	return &SmsManager{sns: sns}
 }
 
-func (e *SmsManager) Send(phone string, content string) {
+func (e *SmsManager) SendSms(phone string, content string) {
 	choosedProvider := chooseSmsProvider(phone, content)
 	switch choosedProvider {
 	case "Sns":
-		e.sns.Send(phone, content)
+		e.sns.SendSms(phone, content)
 	}
 }
 

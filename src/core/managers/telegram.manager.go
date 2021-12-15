@@ -20,11 +20,11 @@ func NewTelegramManager(telegram d.SendingTelegram) *TelegramManager {
 	return &TelegramManager{telegram: telegram}
 }
 
-func (e *TelegramManager) Send(phone string, content string) {
+func (e *TelegramManager) SendTele(phone string, content string) {
 	choosedProvider := chooseTelegramProvider(phone, content)
 	switch choosedProvider {
 	case "SendGrid":
-		e.telegram.Send(phone, content)
+		e.telegram.SendTele(phone, content)
 	}
 }
 

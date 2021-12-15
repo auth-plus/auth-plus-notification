@@ -14,7 +14,7 @@ func NewMailgun() *Mailgun {
 	return instance
 }
 
-func (e *Mailgun) Send(email string, content string) {
+func (e *Mailgun) SendEmail(email string, content string) {
 	fmt.Println("email Id:\t", email)
 	fmt.Println("content Id:\t", content)
 }

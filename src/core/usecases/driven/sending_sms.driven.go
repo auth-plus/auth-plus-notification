@@ -1,5 +1,5 @@
 package driven
 
 type SendingSms interface {
-	Send(phone string, content string)
+	SendSms(phone string, content string)
 }
