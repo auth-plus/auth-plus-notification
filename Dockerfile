@@ -1,13 +1,11 @@
-FROM golang:1.17-alpine
-
+FROM golang:1.17-alpine as builder
 WORKDIR /app
-
 COPY /src .
-
 RUN go mod download
+RUN go build -o ./build
 
-RUN go build -o /build
-
+FROM alpine:3.14 as deploy
+WORKDIR /app
+COPY --from=builder /app/build /app/build
 EXPOSE 5000
-
 CMD [ "./build" ]
