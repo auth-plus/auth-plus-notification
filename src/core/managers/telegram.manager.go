@@ -4,13 +4,6 @@ import (
 	d "auth-plus-notification/core/usecases/driven"
 )
 
-//ENUM for Providers
-type EnumTelegramProvider string
-
-const (
-	Telegram EnumTelegramProvider = "Telegram"
-)
-
 //Class for TelegramManager
 type TelegramManager struct {
 	telegram d.SendingTelegram

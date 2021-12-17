@@ -18,6 +18,8 @@ func SmsHandler(c *gin.Context) {
 	if err := c.BindJSON(&reqBody); err != nil {
 		c.String(http.StatusBadRequest, err.Error())
 	}
-	go core.NewCore().SmsUsecase.Send(reqBody.phone, reqBody.content)
+	go core.NewCore().SmsUsecase.Send(
+		reqBody.phone,
+		reqBody.content)
 	c.String(http.StatusOK, "Ok")
 }

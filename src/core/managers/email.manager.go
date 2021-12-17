@@ -5,22 +5,15 @@ import (
 	"math/rand"
 )
 
-//ENUM for Providers
-type EnumEmailProvider string
-
-const (
-	SendGrid EnumEmailProvider = "SendGrid"
-	Mailgun  EnumEmailProvider = "Mailgun"
-)
-
 //Class for EmailManager
 type EmailManager struct {
 	sendgrid se.SendingEmail
 	mailgun  se.SendingEmail
+	braze    se.SendingEmail
 }
 
-func NewEmailManager(sendgrid se.SendingEmail, mailgun se.SendingEmail) *EmailManager {
-	return &EmailManager{sendgrid: sendgrid, mailgun: mailgun}
+func NewEmailManager(sendgrid se.SendingEmail, mailgun se.SendingEmail, braze se.SendingEmail) *EmailManager {
+	return &EmailManager{sendgrid: sendgrid, mailgun: mailgun, braze: braze}
 }
 
 func (e *EmailManager) SendEmail(email string, content string) {
@@ -30,13 +23,22 @@ func (e *EmailManager) SendEmail(email string, content string) {
 		e.sendgrid.SendEmail(email, content)
 	case "Mailgun":
 		e.mailgun.SendEmail(email, content)
+	case "Braze":
+		e.braze.SendEmail(email, content)
 	}
 }
 
 //Function for choosing a provider, it can be by IP warming, Limit, timeout
 func chooseEmailManager(email string, content string) EnumEmailProvider {
-	if rand.Float64() > 0.5 {
+	switch {
+	case rand.Float64() < 0.33:
 		return "SendGrid"
+
+	case rand.Float64() < 0.66:
+		return "Mailgun"
+
+	default:
+		return "Braze"
 	}
-	return "Mailgun"
+
 }

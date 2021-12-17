@@ -18,7 +18,8 @@ func EmailHandler(c *gin.Context) {
 	if err := c.BindJSON(&requestBody); err != nil {
 		c.String(http.StatusBadRequest, err.Error())
 	}
-	co := core.NewCore()
-	co.EmailUsecase.Send(requestBody.email, requestBody.content)
+	go core.NewCore().EmailUsecase.Send(
+		requestBody.email,
+		requestBody.content)
 	c.String(http.StatusOK, "Ok")
 }

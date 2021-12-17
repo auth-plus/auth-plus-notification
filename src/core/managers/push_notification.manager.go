@@ -5,14 +5,6 @@ import (
 	"math/rand"
 )
 
-//ENUM for Providers
-type EnumPushNotificationProvider string
-
-const (
-	Firebase EnumPushNotificationProvider = "Firebase"
-	Braze    EnumPushNotificationProvider = "Braze"
-)
-
 //Class for PushNotificationManager
 type PushNotificationManager struct {
 	firebase d.SendingPushNotification

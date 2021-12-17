@@ -4,13 +4,6 @@ import (
 	d "auth-plus-notification/core/usecases/driven"
 )
 
-//ENUM for Providers
-type EnumWhatsappProvider string
-
-const (
-	Whatsapp EnumWhatsappProvider = "Whatsapp"
-)
-
 //Class for WhatsappManager
 type WhatsappManager struct {
 	whatsapp d.SendingWhatsapp

@@ -4,13 +4,6 @@ import (
 	d "auth-plus-notification/core/usecases/driven"
 )
 
-//ENUM for Providers
-type EnumSmsProvider string
-
-const (
-	SNS EnumSmsProvider = "Sns"
-)
-
 //Class for SmsManager
 type SmsManager struct {
 	sns d.SendingSms

@@ -1,16 +1,11 @@
-infra/up:
-	docker-compose up -d database database-migration
-
 infra/down:
 	docker-compose down
 
 dev:
-	make infra/up
 	docker-compose up -d api
 	docker-compose exec api sh
 
 test/ci:
-	make infra/up
 	docker-compose up -d api
 	docker-compose exec -T api go test *_test.go
 	make clean/docker

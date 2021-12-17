@@ -25,7 +25,7 @@ func NewCore() Core {
 	whatsapp := p.NewWhatsapp()
 
 	//Managers
-	emailManager := m.NewEmailManager(sendgrid, mailgun)
+	emailManager := m.NewEmailManager(sendgrid, mailgun, braze)
 	pushNotificationManager := m.NewPushNotificationManager(firebase, braze)
 	smsManager := m.NewSmsManager(sns)
 	telegramManager := m.NewTelegramManager(telegram)

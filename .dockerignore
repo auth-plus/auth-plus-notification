@@ -1,13 +1,4 @@
 *
-!/db
 !/src
 !/test
-!.eslintignore
-!.eslintrc.js
-!.mocharc.json
-!.prettierrc
-!commitlint.config.json
-!nodemon.json
-!package-lock.json
-!package.json
-!tsconfig.json
+!/makefile

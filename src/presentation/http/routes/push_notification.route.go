@@ -19,6 +19,9 @@ func PushNotificationHandler(c *gin.Context) {
 	if err := c.BindJSON(&reqBody); err != nil {
 		c.String(http.StatusBadRequest, err.Error())
 	}
-	go core.NewCore().PushNotificationUsecase.Send(reqBody.deviceId, reqBody.title, reqBody.content)
+	go core.NewCore().PushNotificationUsecase.Send(
+		reqBody.deviceId,
+		reqBody.title,
+		reqBody.content)
 	c.String(http.StatusOK, "Ok")
 }
