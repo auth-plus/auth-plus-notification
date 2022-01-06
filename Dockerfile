@@ -1,6 +1,7 @@
 FROM golang:1.17-alpine as builder
 WORKDIR /app
 COPY /src .
+COPY /deploy .
 RUN go mod download
 RUN go build -o ./build
 

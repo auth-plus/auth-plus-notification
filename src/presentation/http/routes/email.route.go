@@ -8,8 +8,8 @@ import (
 )
 
 type EmailRequestBody struct {
-	email   string
-	content string
+	Email   string `json:"email"`
+	Content string `json:"content"`
 }
 
 func EmailHandler(c *gin.Context) {
@@ -19,7 +19,7 @@ func EmailHandler(c *gin.Context) {
 		c.String(http.StatusBadRequest, err.Error())
 	}
 	go core.NewCore().EmailUsecase.Send(
-		requestBody.email,
-		requestBody.content)
+		requestBody.Email,
+		requestBody.Content)
 	c.String(http.StatusOK, "Ok")
 }

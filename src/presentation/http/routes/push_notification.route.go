@@ -5,23 +5,25 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 )
 
 type PushNotificationRequestBody struct {
-	deviceId string
-	title    string
-	content  string
+	DeviceId string `json:"deviceId"`
+	Title    string `json:"title"`
+	Content  string `json:"content"`
 }
 
 func PushNotificationHandler(c *gin.Context) {
-	var reqBody PushNotificationRequestBody
+	reqBody := PushNotificationRequestBody{}
 
-	if err := c.BindJSON(&reqBody); err != nil {
-		c.String(http.StatusBadRequest, err.Error())
+	if err := c.ShouldBindBodyWith(&reqBody, binding.JSON); err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
 	}
 	go core.NewCore().PushNotificationUsecase.Send(
-		reqBody.deviceId,
-		reqBody.title,
-		reqBody.content)
+		reqBody.DeviceId,
+		reqBody.Title,
+		reqBody.Content)
 	c.String(http.StatusOK, "Ok")
 }

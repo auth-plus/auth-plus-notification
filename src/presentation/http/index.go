@@ -1,6 +1,7 @@
 package http
 
 import (
+	"auth-plus-notification/config"
 	routes "auth-plus-notification/presentation/http/routes"
 	"net/http"
 
@@ -8,6 +9,7 @@ import (
 )
 
 func Server() {
+	env := config.GetEnv()
 	router := gin.New()
 
 	// This handler will match /user/john but will not match /user/ or /user
@@ -19,5 +21,5 @@ func Server() {
 	router.POST("/push_notification", routes.PushNotificationHandler)
 	router.POST("/sms", routes.SmsHandler)
 
-	router.Run(":5000")
+	router.Run(":" + env.App.Port)
 }

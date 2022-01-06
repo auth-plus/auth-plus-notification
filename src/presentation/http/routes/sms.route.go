@@ -8,8 +8,8 @@ import (
 )
 
 type SmsRequestBody struct {
-	phone   string
-	content string
+	Phone   string `json:"phone"`
+	Content string `json:"content"`
 }
 
 func SmsHandler(c *gin.Context) {
@@ -19,7 +19,7 @@ func SmsHandler(c *gin.Context) {
 		c.String(http.StatusBadRequest, err.Error())
 	}
 	go core.NewCore().SmsUsecase.Send(
-		reqBody.phone,
-		reqBody.content)
+		reqBody.Phone,
+		reqBody.Content)
 	c.String(http.StatusOK, "Ok")
 }

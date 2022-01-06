@@ -1,30 +1,25 @@
-version: '3.8'
+version: "3.8"
 services:
   api:
     build:
       context: .
       dockerfile: Dockerfile
-      target: dependency
+      target: builder
     ports:
-      - '5000:5000'
+      - "5001:5001"
     command: tail -f /dev/null
     environment:
       - APP_NAME=auth-plus-notification
       - APP_PORT=5001
-      - NODE_ENV=development
+      - GO_ENV=development
+      - GOOGLE_APPLICATION_CREDENTIALS=./service-account-file.json
+      - GOOGLE_APPLICATION_NAME=ifood2-63802
     volumes:
-      - .:/app
+      - ./src:/app
     restart: always
     networks:
       - host
-    depends_on:
-      - database
-      - cache
 
 networks:
   host:
     driver: bridge
-
-volumes:
-  v-database:
-  v-cache:
