@@ -16,7 +16,6 @@ type Core struct {
 
 func NewCore() Core {
 	//Providers
-	braze := p.NewBraze()
 	firebase := p.NewFirebase()
 	mailgun := p.NewMailgun()
 	sendgrid := p.NewSendgrid()
@@ -25,8 +24,8 @@ func NewCore() Core {
 	whatsapp := p.NewWhatsapp()
 
 	//Managers
-	emailManager := m.NewEmailManager(sendgrid, mailgun, braze)
-	pushNotificationManager := m.NewPushNotificationManager(firebase, braze)
+	emailManager := m.NewEmailManager(sendgrid, mailgun)
+	pushNotificationManager := m.NewPushNotificationManager(firebase)
 	smsManager := m.NewSmsManager(sns)
 	telegramManager := m.NewTelegramManager(telegram)
 	whatsappManager := m.NewWhatsappManager(whatsapp)
