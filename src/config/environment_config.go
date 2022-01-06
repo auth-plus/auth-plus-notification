@@ -2,6 +2,10 @@ package config
 
 import "os"
 
+type SendgridEnv struct {
+	Url    string
+	ApiKey string
+}
 type FirebaseEnv struct {
 	CredentialPath string
 	AppName        string
@@ -9,6 +13,7 @@ type FirebaseEnv struct {
 
 type ProviderEnv struct {
 	Firebase FirebaseEnv
+	Sendgrid SendgridEnv
 }
 
 type AppEnv struct {
@@ -28,12 +33,17 @@ func GetEnv() Environment {
 		Port: os.Getenv("APP_PORT"),
 		Env:  os.Getenv("GO_ENV"),
 	}
+	sendgrid := SendgridEnv{
+		Url:    os.Getenv("SENDGRID_URL"),
+		ApiKey: os.Getenv("SENDGRID_API_KEY"),
+	}
 	firebase := FirebaseEnv{
 		CredentialPath: os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"),
 		AppName:        os.Getenv("GOOGLE_APPLICATION_NAME"),
 	}
 	providers := ProviderEnv{
 		Firebase: firebase,
+		Sendgrid: sendgrid,
 	}
 	env := Environment{
 		App:       app,

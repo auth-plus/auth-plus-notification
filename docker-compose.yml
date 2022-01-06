@@ -14,6 +14,8 @@ services:
       - GO_ENV=development
       - GOOGLE_APPLICATION_CREDENTIALS=./service-account-file.json
       - GOOGLE_APPLICATION_NAME=ifood2-63802
+      - SENDGRID_URL=https://api.sendgrid.com/v3/mail/send
+      - SENDGRID_API_KEY=asdwasdxcvr
     volumes:
       - ./src:/app
     restart: always
