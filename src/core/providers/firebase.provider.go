@@ -32,7 +32,6 @@ func NewFirebase() *Firebase {
 }
 
 func (e *Firebase) SendPN(deviceId string, title string, content string) {
-	fmt.Println(deviceId, title, content)
 	ctx := context.Background()
 	client, err := e.app.Messaging(ctx)
 	if err != nil {

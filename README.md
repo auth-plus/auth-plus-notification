@@ -14,10 +14,6 @@ This project it's a sample for notification as Email, SMS, Push Notification, Wh
 
 ```bash
 
-# rise/destroy all dependency
-make infra/up # already create tables based on ./db/schema.sql
-make infra/down # does not remove volume
-
 # make test on the same condition where it's executed on CI
 make test/ci
 
