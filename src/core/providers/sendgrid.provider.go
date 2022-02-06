@@ -15,7 +15,7 @@ type Sendgrid struct {
 	token string
 }
 
-type EmailPayload struct {
+type SendgridEmailPayload struct {
 	Personalizations string `json:"name"`
 	From             string `json:"from"`
 	Subject          string `json:"subject"`
@@ -32,7 +32,7 @@ func NewSendgrid() *Sendgrid {
 
 func (e *Sendgrid) SendEmail(email string, content string) {
 	client := &http.Client{}
-	emailPayload := EmailPayload{
+	emailPayload := SendgridEmailPayload{
 		Personalizations: "",
 		From:             "",
 		Subject:          "",

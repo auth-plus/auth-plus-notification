@@ -15,9 +15,11 @@ func Server() {
 
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true
-
 	router.Use(cors.New(config))
-	// This handler will match /user/john but will not match /user/ or /user
+	router.Use(gin.Logger())
+	router.Use(gin.Recovery())
+
+	// Default
 	router.GET("/health", func(c *gin.Context) {
 		c.String(http.StatusOK, "Ok")
 	})
