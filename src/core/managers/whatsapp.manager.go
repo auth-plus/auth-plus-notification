@@ -14,14 +14,11 @@ func NewWhatsappManager(whatsapp d.SendingWhatsapp) *WhatsappManager {
 }
 
 func (e *WhatsappManager) SendWhats(phone string, content string) {
-	choosedProvider := chooseWhatsappProvider(phone, content)
-	switch choosedProvider {
-	case "SendGrid":
-		e.whatsapp.SendWhats(phone, content)
-	}
+	provider := e.chooseWhatsappProvider(phone, content)
+	provider.SendWhats(phone, content)
 }
 
 //Function for choosing a provider, it can be by IP warming, Limit, timeout
-func chooseWhatsappProvider(phone string, content string) EnumWhatsappProvider {
-	return "Whatsapp"
+func (e *WhatsappManager) chooseWhatsappProvider(phone string, content string) d.SendingWhatsapp {
+	return e.whatsapp
 }

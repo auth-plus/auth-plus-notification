@@ -16,21 +16,14 @@ func NewSmsManager(sns d.SendingSms, onesignal d.SendingSms) *SmsManager {
 }
 
 func (e *SmsManager) SendSms(phone string, content string) {
-	choosedProvider := chooseSmsProvider(phone, content)
-	switch choosedProvider {
-	case "Sns":
-		e.sns.SendSms(phone, content)
-		break
-	case "OneSignal":
-		e.onesignal.SendSms(phone, content)
-		break
-	}
+	provider := e.chooseSmsProvider(phone, content)
+	provider.SendSms(phone, content)
 }
 
 //Function for choosing a provider, it can be by IP warming, Limit, timeout
-func chooseSmsProvider(phone string, content string) EnumSmsProvider {
+func (e *SmsManager) chooseSmsProvider(phone string, content string) d.SendingSms {
 	if rand.Float64() < 0.5 {
-		return "OneSignal"
+		return e.onesignal
 	}
-	return "Sns"
+	return e.sns
 }

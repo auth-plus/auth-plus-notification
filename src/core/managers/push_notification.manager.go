@@ -16,22 +16,14 @@ func NewPushNotificationManager(firebase d.SendingPushNotification, onesignal d.
 }
 
 func (e *PushNotificationManager) SendPN(deviceId string, title string, content string) {
-	choosedProvider := choosePushNotificationProvider(deviceId, title, content)
-	switch choosedProvider {
-	case "Firebase":
-		e.firebase.SendPN(deviceId, title, content)
-		break
-	case "OneSignal":
-		e.onesignal.SendPN(deviceId, title, content)
-		break
-	}
-
+	provider := e.choosePushNotificationProvider(deviceId, title, content)
+	provider.SendPN(deviceId, title, content)
 }
 
 //Function for choosing a provider, it can be by IP warming, Limit, timeout
-func choosePushNotificationProvider(deviceId string, title string, content string) EnumPushNotificationProvider {
+func (e *PushNotificationManager) choosePushNotificationProvider(deviceId string, title string, content string) d.SendingPushNotification {
 	if rand.Float64() < 0.5 {
-		return "OneSignal"
+		return e.onesignal
 	}
-	return "Firebase"
+	return e.firebase
 }
