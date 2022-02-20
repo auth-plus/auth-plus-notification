@@ -7,28 +7,28 @@ import (
 
 //Class for EmailManager
 type EmailManager struct {
-	sendgrid se.SendingEmail
-	mailgun  se.SendingEmail
+	sendgrid  se.SendingEmail
+	mailgun   se.SendingEmail
+	onesignal se.SendingEmail
 }
 
-func NewEmailManager(sendgrid se.SendingEmail, mailgun se.SendingEmail) *EmailManager {
-	return &EmailManager{sendgrid: sendgrid, mailgun: mailgun}
+func NewEmailManager(sendgrid se.SendingEmail, mailgun se.SendingEmail, onesignal se.SendingEmail) *EmailManager {
+	return &EmailManager{sendgrid: sendgrid, mailgun: mailgun, onesignal: onesignal}
 }
 
 func (e *EmailManager) SendEmail(email string, content string) {
-	choosedProvider := chooseEmailManager(email, content)
-	switch choosedProvider {
-	case "SendGrid":
-		e.sendgrid.SendEmail(email, content)
-	case "Mailgun":
-		e.mailgun.SendEmail(email, content)
-	}
+	provider := e.chooseEmailManager(email, content)
+	provider.SendEmail(email, content)
 }
 
 //Function for choosing a provider, it can be by IP warming, Limit, timeout
-func chooseEmailManager(email string, content string) EnumEmailProvider {
-	if rand.Float64() < 0.5 {
-		return "SendGrid"
+func (e *EmailManager) chooseEmailManager(email string, content string) se.SendingEmail {
+	random := rand.Float64()
+	if random < 0.333 {
+		return e.sendgrid
 	}
-	return "Mailgun"
+	if random < 0.666 {
+		return e.onesignal
+	}
+	return e.mailgun
 }
