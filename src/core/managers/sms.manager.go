@@ -2,26 +2,28 @@ package managers
 
 import (
 	d "auth-plus-notification/core/usecases/driven"
+	"math/rand"
 )
 
 //Class for SmsManager
 type SmsManager struct {
-	sns d.SendingSms
+	sns       d.SendingSms
+	onesignal d.SendingSms
 }
 
-func NewSmsManager(sns d.SendingSms) *SmsManager {
-	return &SmsManager{sns: sns}
+func NewSmsManager(sns d.SendingSms, onesignal d.SendingSms) *SmsManager {
+	return &SmsManager{sns: sns, onesignal: onesignal}
 }
 
 func (e *SmsManager) SendSms(phone string, content string) {
-	choosedProvider := chooseSmsProvider(phone, content)
-	switch choosedProvider {
-	case "Sns":
-		e.sns.SendSms(phone, content)
-	}
+	provider := e.chooseSmsProvider(phone, content)
+	provider.SendSms(phone, content)
 }
 
 //Function for choosing a provider, it can be by IP warming, Limit, timeout
-func chooseSmsProvider(phone string, content string) EnumSmsProvider {
-	return "Sns"
+func (e *SmsManager) chooseSmsProvider(phone string, content string) d.SendingSms {
+	if rand.Float64() < 0.5 {
+		return e.onesignal
+	}
+	return e.sns
 }

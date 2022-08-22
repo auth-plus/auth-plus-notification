@@ -22,11 +22,12 @@ func NewCore() Core {
 	sns := p.NewSNS()
 	telegram := p.NewTelegram()
 	whatsapp := p.NewWhatsapp()
+	onesignal := p.NewOneSignal()
 
 	//Managers
-	emailManager := m.NewEmailManager(sendgrid, mailgun)
-	pushNotificationManager := m.NewPushNotificationManager(firebase)
-	smsManager := m.NewSmsManager(sns)
+	emailManager := m.NewEmailManager(sendgrid, mailgun, onesignal)
+	pushNotificationManager := m.NewPushNotificationManager(firebase, onesignal)
+	smsManager := m.NewSmsManager(sns, onesignal)
 	telegramManager := m.NewTelegramManager(telegram)
 	whatsappManager := m.NewWhatsappManager(whatsapp)
 

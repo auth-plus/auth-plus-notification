@@ -14,14 +14,11 @@ func NewTelegramManager(telegram d.SendingTelegram) *TelegramManager {
 }
 
 func (e *TelegramManager) SendTele(phone string, content string) {
-	choosedProvider := chooseTelegramProvider(phone, content)
-	switch choosedProvider {
-	case "SendGrid":
-		e.telegram.SendTele(phone, content)
-	}
+	provider := e.chooseTelegramProvider(phone, content)
+	provider.SendTele(phone, content)
 }
 
 //Function for choosing a provider, it can be by IP warming, Limit, timeout
-func chooseTelegramProvider(phone string, content string) EnumTelegramProvider {
-	return "Telegram"
+func (e *TelegramManager) chooseTelegramProvider(phone string, content string) d.SendingTelegram {
+	return e.telegram
 }
