@@ -10,15 +10,21 @@ This project it's a sample for notification as Email, SMS, Push Notification, Wh
 - Docker Compose v1.28.4
 - Go v1.17.4
 
-## Commands
+## Commands with Docker Setup
 
 ```bash
 
 # make test on the same condition where it's executed on CI
 make test/ci
 
-# developer and test enviroment
+# developer and test enviroment on docker
 make dev
+
+# install dependecies on local
+go mod download
+
+# run server on local
+go run server.go
 
 # clean
 make clean/docker # prune for container, volumes and image

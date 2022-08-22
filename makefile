@@ -1,3 +1,6 @@
+infra/up:
+	docker-compose up -d database
+
 infra/down:
 	docker-compose down
 
