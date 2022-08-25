@@ -10,6 +10,10 @@ This project it's a sample for notification as Email, SMS, Push Notification, Wh
 - Docker Compose v1.28.4
 - Go v1.17.4
 
+## Enviroment Variables
+
+Please follow example.env
+
 ## Commands with Docker Setup
 
 ```bash
@@ -24,11 +28,24 @@ make dev
 go mod download
 
 # run server on local
-go run server.go
+go run ./server.go
 
 # clean
 make clean/docker # prune for container, volumes and image
 
+```
+
+## How to update packages
+
+```bash
+
+go get -u firebase.google.com/go v3.13.0+incompatible
+go get -u github.com/confluentinc/confluent-kafka-go v1.9.2
+go get -u github.com/gin-contrib/cors v1.4.0
+go get -u github.com/gin-gonic/gin v1.8.1
+go get -u github.com/prometheus/client_golang
+go get -u golang.org/x/lint/golint
+go mod tidy
 ```
 
 ## TODO

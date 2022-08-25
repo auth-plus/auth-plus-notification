@@ -1,7 +1,7 @@
 package routes
 
 import (
-	core "auth-plus-notification/core"
+	core "auth-plus-notification/cmd"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

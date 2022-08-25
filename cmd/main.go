@@ -1,9 +1,9 @@
 package providers
 
 import (
-	m "auth-plus-notification/core/managers"
-	p "auth-plus-notification/core/providers"
-	u "auth-plus-notification/core/usecases"
+	m "auth-plus-notification/cmd/managers"
+	p "auth-plus-notification/cmd/providers"
+	u "auth-plus-notification/cmd/usecases"
 )
 
 type Core struct {

@@ -1,4 +1,8 @@
 *
-!/deploy
-!/src
-src/server
+!/api
+!/cmd
+!/config
+!go.mod
+!go.sum
+!server.go
+!sonar-project.properties

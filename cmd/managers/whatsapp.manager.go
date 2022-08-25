@@ -1,7 +1,7 @@
 package managers
 
 import (
-	d "auth-plus-notification/core/usecases/driven"
+	d "auth-plus-notification/cmd/usecases/driven"
 )
 
 //Class for WhatsappManager

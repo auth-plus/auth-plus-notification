@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"auth-plus-notification/config"
+	config "auth-plus-notification/config"
 	"fmt"
 	"log"
 	"time"

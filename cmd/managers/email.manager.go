@@ -1,7 +1,7 @@
 package managers
 
 import (
-	se "auth-plus-notification/core/usecases/driven"
+	se "auth-plus-notification/cmd/usecases/driven"
 	"math/rand"
 )
 

@@ -1,15 +1,15 @@
-FROM golang:1.17-alpine as dependency
+FROM golang:1.19-alpine as dependency
 WORKDIR /app
-COPY /src .
-COPY /deploy .
+COPY . .
 RUN go mod download
 
 FROM dependency as builder
-RUN go build -o ./server
+RUN apk add build-base
+RUN go build -o ./build/server server.go
 
-FROM alpine:3.14 as deploy
+FROM alpine:3.16.2 as deploy
 RUN apk --no-cache add ca-certificates
 WORKDIR /app
-COPY --from=builder /app/server .
+COPY --from=builder /app/build/server .
 EXPOSE 5000
 CMD [ "./server" ]

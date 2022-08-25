@@ -1,8 +1,8 @@
 package http
 
 import (
+	"auth-plus-notification/api/http/routes"
 	"auth-plus-notification/config"
-	routes "auth-plus-notification/presentation/http/routes"
 	"net/http"
 
 	"github.com/gin-contrib/cors"
