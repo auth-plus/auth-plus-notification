@@ -20,5 +20,8 @@
 # Go workspace file
 go.work
 
+#custom
 .env
 service-account-file.json
+/vendor
+/build
