@@ -5,7 +5,6 @@ import (
 	"math/rand"
 )
 
-//Class for PushNotificationManager
 type PushNotificationManager struct {
 	firebase  d.SendingPushNotification
 	onesignal d.SendingPushNotification
@@ -20,7 +19,6 @@ func (e *PushNotificationManager) SendPN(deviceId string, title string, content 
 	provider.SendPN(deviceId, title, content)
 }
 
-//Function for choosing a provider, it can be by IP warming, Limit, timeout
 func (e *PushNotificationManager) choosePushNotificationProvider(deviceId string, title string, content string) d.SendingPushNotification {
 	if rand.Float64() < 0.5 {
 		return e.onesignal

@@ -5,7 +5,6 @@ import (
 	"math/rand"
 )
 
-//Class for SmsManager
 type SmsManager struct {
 	sns       d.SendingSms
 	onesignal d.SendingSms
@@ -20,7 +19,6 @@ func (e *SmsManager) SendSms(phone string, content string) {
 	provider.SendSms(phone, content)
 }
 
-//Function for choosing a provider, it can be by IP warming, Limit, timeout
 func (e *SmsManager) chooseSmsProvider(phone string, content string) d.SendingSms {
 	if rand.Float64() < 0.5 {
 		return e.onesignal

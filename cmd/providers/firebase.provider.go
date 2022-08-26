@@ -27,7 +27,6 @@ func NewFirebase() *Firebase {
 		log.Fatalf("error initializing app: %v\n", err)
 	}
 	instance.app = app
-	instance.logopath = "https://upload.wikimedia.org/wikipedia/commons/c/ce/Twitter_Logo.png"
 	return instance
 }
 

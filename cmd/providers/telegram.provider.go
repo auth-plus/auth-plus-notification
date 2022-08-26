@@ -1,6 +1,10 @@
 package providers
 
-import "fmt"
+import (
+	"log"
+
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+)
 
 type Telegram struct {
 	url   string
@@ -14,7 +18,16 @@ func NewTelegram() *Telegram {
 	return instance
 }
 
-func (e *Telegram) SendTele(phone string, content string) {
-	fmt.Println("phone:\t", phone)
-	fmt.Println("content:\t", content)
+func (e *Telegram) SendTele(chatId int64, text string) {
+	bot, err := tgbotapi.NewBotAPI("MyAwesomeBotToken")
+	if err != nil {
+		log.Fatal(err)
+	}
+	msg := tgbotapi.NewMessage(chatId, text)
+	if _, err := bot.Send(msg); err != nil {
+		// Note that panics are a bad way to handle errors. Telegram can
+		// have service outages or network errors, you should retry sending
+		// messages or more gracefully handle failures.
+		panic(err)
+	}
 }

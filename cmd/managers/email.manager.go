@@ -5,7 +5,6 @@ import (
 	"math/rand"
 )
 
-//Class for EmailManager
 type EmailManager struct {
 	sendgrid  se.SendingEmail
 	mailgun   se.SendingEmail
@@ -21,7 +20,7 @@ func (e *EmailManager) SendEmail(email string, content string) {
 	provider.SendEmail(email, content)
 }
 
-//Function for choosing a provider, it can be by IP warming, Limit, timeout
+// Function for choosing a provider, it can be by IP warming, Limit, timeout
 func (e *EmailManager) chooseEmailManager(email string, content string) se.SendingEmail {
 	random := rand.Float64()
 	if random < 0.333 {

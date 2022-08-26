@@ -14,6 +14,6 @@ func NewTelegramUsecase(sendingTelegram d.SendingTelegram) *TelegramUsecase {
 	return instance
 }
 
-func (e *TelegramUsecase) Send(phone string, content string) {
-	e.sendingTelegram.SendTele(phone, content)
+func (e *TelegramUsecase) Send(chatId int64, text string) {
+	e.sendingTelegram.SendTele(chatId, text)
 }

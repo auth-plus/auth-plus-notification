@@ -21,7 +21,7 @@ func NewCore() Core {
 	sendgrid := p.NewSendgrid()
 	sns := p.NewSNS()
 	telegram := p.NewTelegram()
-	whatsapp := p.NewWhatsapp()
+	twilio := p.NewTwilio()
 	onesignal := p.NewOneSignal()
 
 	//Managers
@@ -29,7 +29,7 @@ func NewCore() Core {
 	pushNotificationManager := m.NewPushNotificationManager(firebase, onesignal)
 	smsManager := m.NewSmsManager(sns, onesignal)
 	telegramManager := m.NewTelegramManager(telegram)
-	whatsappManager := m.NewWhatsappManager(whatsapp)
+	whatsappManager := m.NewWhatsappManager(twilio)
 
 	//Usecases
 	emailUsecase := u.NewEmailUsecase(emailManager)

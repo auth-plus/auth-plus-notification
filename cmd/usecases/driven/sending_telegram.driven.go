@@ -1,5 +1,5 @@
 package driven
 
 type SendingTelegram interface {
-	SendTele(phone string, content string)
+	SendTele(chatId int64, text string)
 }

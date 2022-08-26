@@ -1,6 +1,12 @@
 package providers
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/sns"
+)
 
 type SNS struct {
 	url   string
@@ -15,6 +21,18 @@ func NewSNS() *SNS {
 }
 
 func (e *SNS) SendSms(phone string, content string) {
-	fmt.Println("phone:\t", phone)
-	fmt.Println("content:\t", content)
+	sess := session.Must(session.NewSession())
+	svc := sns.New(sess)
+	params := &sns.PublishInput{
+		Message:     aws.String(content),
+		PhoneNumber: aws.String(phone),
+	}
+	resp, err := svc.Publish(params)
+	if err != nil {
+		// Print the error, cast err to awserr.Error to get the Code and
+		// Message from an error.
+		fmt.Println(err.Error())
+		return
+	}
+	fmt.Println(resp)
 }
