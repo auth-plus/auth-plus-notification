@@ -79,3 +79,4 @@ networks:
 
 volumes:
   v-database:
+  v-metrics:

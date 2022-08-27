@@ -15,9 +15,9 @@ func NewEmailManager(sendgrid se.SendingEmail, mailgun se.SendingEmail, onesigna
 	return &EmailManager{sendgrid: sendgrid, mailgun: mailgun, onesignal: onesignal}
 }
 
-func (e *EmailManager) SendEmail(email string, content string) {
+func (e *EmailManager) SendEmail(email string, content string) (bool, error) {
 	provider := e.chooseEmailManager(email, content)
-	provider.SendEmail(email, content)
+	return provider.SendEmail(email, content)
 }
 
 // Function for choosing a provider, it can be by IP warming, Limit, timeout

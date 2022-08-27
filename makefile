@@ -16,7 +16,7 @@ dev:
 test/ci:
 	make infra/up
 	docker-compose up -d api
-	docker-compose exec -T api go test *_test.go
+	docker-compose exec -T api go test ./... -v -coverpkg=./... -coverprofile=coverage.out 
 	make clean/docker
 
 .PHONY: clean/go

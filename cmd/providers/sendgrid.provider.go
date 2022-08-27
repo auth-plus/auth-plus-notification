@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 )
 
@@ -30,7 +29,7 @@ func NewSendgrid() *Sendgrid {
 	return instance
 }
 
-func (e *Sendgrid) SendEmail(email string, content string) {
+func (e *Sendgrid) SendEmail(email string, content string) (bool, error) {
 	client := &http.Client{}
 	emailPayload := SendgridEmailPayload{
 		Personalizations: "",
@@ -40,22 +39,23 @@ func (e *Sendgrid) SendEmail(email string, content string) {
 	}
 	json, err := json.Marshal(emailPayload)
 	if err != nil {
-		panic(err)
+		return false, err
 	}
 	req, err := http.NewRequest("POST", e.url, bytes.NewBuffer(json))
 	if err != nil {
-		log.Fatalln(err)
+		return false, err
 	}
 	req.Header.Add("Content-Type", `application/json`)
 	req.Header.Add("Authorization", "Bearer "+e.token)
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Fatalln(err)
+		return false, err
 	}
 	f, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Println(err)
+		return false, err
 	}
 	defer resp.Body.Close()
 	fmt.Println(string(f))
+	return true, nil
 }

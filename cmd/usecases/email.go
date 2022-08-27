@@ -14,6 +14,6 @@ func NewEmailUsecase(sendingEmail d.SendingEmail) *EmailUsecase {
 	return instance
 }
 
-func (e *EmailUsecase) Send(email string, content string) {
-	e.sendingEmail.SendEmail(email, content)
+func (e *EmailUsecase) Send(email string, content string) (bool, error) {
+	return e.sendingEmail.SendEmail(email, content)
 }
