@@ -30,6 +30,48 @@ services:
       - v-database:/var/lib/postgres
     networks:
       - host
+  
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:v2.29.1
+    restart: always
+    ports:
+      - '9090:9090'
+    volumes:
+      - v-metrics:/prometheus
+      - ./docker/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - host
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:8.1.2
+    restart: always
+    environment:
+      GF_AUTH_DISABLE_LOGIN_FORM: 'true'
+      GF_AUTH_ANONYMOUS_ENABLED: 'true'
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+    volumes:
+      - ./docker/grafana.yml:/etc/grafana/provisioning/datasources/datasources.yml
+    ports:
+      - 3000:3000
+    depends_on:
+      - prometheus
+    networks:
+      - host
+      
+  jaeger:
+    container_name: jaeger
+    image: jaegertracing/all-in-one:1.27.0
+    restart: always
+    ports:
+      - 6831:6831/udp
+      - 6832:6832/udp
+      - 16686:16686
+    networks:
+      - host
 
 networks:
   host:
