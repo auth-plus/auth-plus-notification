@@ -3,7 +3,6 @@ package http
 import (
 	"auth-plus-notification/api/http/middlewares"
 	"auth-plus-notification/api/http/routes"
-	"auth-plus-notification/config"
 	"net/http"
 
 	"github.com/gin-contrib/cors"
@@ -11,8 +10,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-func Server() {
-	env := config.GetEnv()
+func Server() *gin.Engine {
+
 	router := gin.New()
 
 	config := cors.DefaultConfig()
@@ -35,5 +34,5 @@ func Server() {
 	router.POST("/push_notification", routes.PushNotificationHandler)
 	router.POST("/sms", routes.SmsHandler)
 
-	router.Run(":" + env.App.Port)
+	return router
 }
