@@ -2,6 +2,7 @@
 !/api
 !/cmd
 !/config
+!/test
 !go.mod
 !go.sum
 !server.go

@@ -14,9 +14,10 @@ func NewOneSignal() *OneSignal {
 	return instance
 }
 
-func (e *OneSignal) SendEmail(email string, content string) {
+func (e *OneSignal) SendEmail(email string, content string) (bool, error) {
 	fmt.Println("email Id:\t", email)
 	fmt.Println("content Id:\t", content)
+	return true, nil
 }
 
 func (e *OneSignal) SendPN(deviceId string, title string, content string) {

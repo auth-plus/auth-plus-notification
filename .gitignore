@@ -25,3 +25,4 @@ go.work
 service-account-file.json
 /vendor
 /build
+coverage.out
