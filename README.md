@@ -1,6 +1,10 @@
 # Auth+ Notification
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=auth-plus_auth-plus-backend-notification&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=auth-plus_auth-plus-backend-notification)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=auth-plus_auth-plus-backend-notification&metric=coverage)](https://sonarcloud.io/summary/new_code?id=auth-plus_auth-plus-backend-notification)
+
+[![Test Coverage](https://api.codeclimate.com/v1/badges/8b06e8bee2391dc8817a/test_coverage)](https://codeclimate.com/github/auth-plus/auth-plus-backend-notification/test_coverage)
+
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/870535e320a4452eac49e677bd5025de)](https://www.codacy.com/gh/auth-plus/auth-plus-backend-notification/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=auth-plus/auth-plus-backend-notification&amp;utm_campaign=Badge_Grade)
 
 This project it's a sample for notification as Email, SMS, Push Notification, Whatsapp and Telegram.
 
