@@ -4,7 +4,7 @@
 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8b06e8bee2391dc8817a/test_coverage)](https://codeclimate.com/github/auth-plus/auth-plus-backend-notification/test_coverage)
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/870535e320a4452eac49e677bd5025de)](https://www.codacy.com/gh/auth-plus/auth-plus-backend-notification/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=auth-plus/auth-plus-backend-notification&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/870535e320a4452eac49e677bd5025de)](https://www.codacy.com/gh/auth-plus/auth-plus-backend-notification/dashboard?utm_source=github.com&utm_medium=referral&utm_content=auth-plus/auth-plus-backend-notification&utm_campaign=Badge_Coverage)
 
 This project it's a sample for notification as Email, SMS, Push Notification, Whatsapp and Telegram.
 
@@ -33,7 +33,7 @@ make clean/docker
 
 ## Commands with Local Setup
 
-```go
+```bash
 # install dependecies on local
 go mod download
 
@@ -41,14 +41,18 @@ go mod download
 go run ./server.go
 
 # run test
-go test ./... -v -coverpkg=./... -coverprofile=coverage.out 
+go test ./... -v -coverpkg=./... -coverprofile=coverage.out
+
 # take a look on coverage file in html after test
 go tool cover -html=coverage.out -o cover.html
+
+# run lint
+$HOME/go/bin/revive -formatter friendly ./...
 ```
 
 ## How to update packages
 
-```go
+```bash
 go get -u
 go mod tidy
 ```
