@@ -20,7 +20,7 @@ Please follow example.env
 
 ## Commands with Docker Setup
 
-```bash
+```makefile
 # make test on the same condition where it's executed on CI
 make test/ci
 
@@ -33,17 +33,22 @@ make clean/docker
 
 ## Commands with Local Setup
 
-```bash
+```go
 # install dependecies on local
 go mod download
 
 # run server on local
 go run ./server.go
+
+# run test
+go test ./... -v -coverpkg=./... -coverprofile=coverage.out 
+# take a look on coverage file in html after test
+go tool cover -html=coverage.out -o cover.html
 ```
 
 ## How to update packages
 
-```bash
+```go
 go get -u
 go mod tidy
 ```
@@ -53,7 +58,6 @@ go mod tidy
 ```bash
 make clean/go
 ```
-
 
 ## TODO
 
