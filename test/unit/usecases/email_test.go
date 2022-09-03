@@ -1,11 +1,11 @@
 package test
 
 import (
+	u "auth-plus-notification/cmd/usecases"
+	se "auth-plus-notification/cmd/usecases/driven"
 	"errors"
 	"fmt"
 	"testing"
-
-	u "auth-plus-notification/cmd/usecases"
 
 	"github.com/bxcodec/faker"
 	"github.com/stretchr/testify/assert"
@@ -20,8 +20,23 @@ type EmailUsecaseTestSuite struct {
 type EmailManagerMocked struct {
 	mock.Mock
 }
+type SendgridMocked struct {
+	mock.Mock
+}
+type MailgunMocked struct {
+	mock.Mock
+}
 
-func (m *EmailManagerMocked) SendEmail(email string, content string) (bool, error) {
+type OnesignalMocked struct {
+	mock.Mock
+}
+
+func (m *EmailManagerMocked) ChooseProvider(number float64) se.SendingEmail {
+	args := m.Called(number)
+	return args.Get(0).(*SendgridMocked)
+}
+
+func (m *SendgridMocked) SendEmail(email string, content string) (bool, error) {
 	args := m.Called(email, content)
 	return args.Bool(0), args.Error(1)
 }
@@ -38,13 +53,18 @@ func (suite *EmailUsecaseTestSuite) Test_succeed_when_sending() {
 		fmt.Println(err)
 	}
 
+	sendgridMocked := new(SendgridMocked)
+	sendgridMocked.On("SendEmail", mockData.Email, mockData.Sentence).Return(true, nil)
+
+	var number float64 = 0.4
 	emailManager := new(EmailManagerMocked)
-	emailManager.On("SendEmail", mockData.Email, mockData.Sentence).Return(true, nil)
+	emailManager.On("ChooseProvider", number).Return(sendgridMocked)
 
 	emailUsecase := u.NewEmailUsecase(emailManager)
 	resp, err := emailUsecase.Send(mockData.Email, mockData.Sentence)
 	assert.Equal(suite.T(), resp, true)
 	assert.Equal(suite.T(), err, nil)
+	sendgridMocked.AssertExpectations()
 }
 
 func (suite *EmailUsecaseTestSuite) Test_fail_when_sending() {
@@ -54,14 +74,17 @@ func (suite *EmailUsecaseTestSuite) Test_fail_when_sending() {
 		fmt.Println(err)
 	}
 
-	mockedErr := errors.New("Provider timeout")
+	sendgridMocked := new(SendgridMocked)
+	sendgridMocked.On("SendEmail", mockData.Email, mockData.Sentence).Return(false, errors.New("failed"))
+
+	var number float64 = 0.4
 	emailManager := new(EmailManagerMocked)
-	emailManager.On("SendEmail", mockData.Email, mockData.Sentence).Return(false, mockedErr)
+	emailManager.On("ChooseProvider", number).Return(sendgridMocked)
 
 	emailUsecase := u.NewEmailUsecase(emailManager)
 	resp, err := emailUsecase.Send(mockData.Email, mockData.Sentence)
-	assert.Equal(suite.T(), resp, false)
-	assert.Equal(suite.T(), err, mockedErr)
+	assert.Equal(suite.T(), resp, true)
+	assert.Equal(suite.T(), err, nil)
 }
 
 func TestEmailUsecase(t *testing.T) {

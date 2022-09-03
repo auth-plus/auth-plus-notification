@@ -1,13 +1,10 @@
 package test
 
 import (
-	"errors"
-	"fmt"
 	"testing"
 
 	m "auth-plus-notification/cmd/managers"
 
-	"github.com/bxcodec/faker"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
@@ -43,54 +40,39 @@ func (m *OnesignalMocked) SendEmail(email string, content string) (bool, error) 
 	return args.Bool(0), args.Error(1)
 }
 
-type MockedData struct {
-	Email    string `faker:"email"`
-	Sentence string `faker:"sentence"`
+func (suite *EmailManagerTestSuite) Test_succeed_when_choosing_sendgrid() {
+	sendgridMocked := new(SendgridMocked)
+	mailgunMocked := new(MailgunMocked)
+	onesignalMocked := new(OnesignalMocked)
+
+	emailManager := m.NewEmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
+	var number float64 = 0.1
+	provider := emailManager.ChooseProvider(number)
+	assert.Equal(suite.T(), provider, sendgridMocked)
 }
 
-func (suite *EmailManagerTestSuite) Test_succeed_when_sending() {
-	mockData := MockedData{}
-	err := faker.FakeData(&mockData)
-	if err != nil {
-		fmt.Println(err)
-	}
-
+func (suite *EmailManagerTestSuite) Test_succeed_when_choosing_onesignal() {
 	sendgridMocked := new(SendgridMocked)
-	sendgridMocked.On("SendEmail", mockData.Email, mockData.Sentence).Return(true, nil)
 	mailgunMocked := new(MailgunMocked)
-	mailgunMocked.On("SendEmail", mockData.Email, mockData.Sentence).Return(true, nil)
 	onesignalMocked := new(OnesignalMocked)
-	onesignalMocked.On("SendEmail", mockData.Email, mockData.Sentence).Return(true, nil)
 
-	emailUsecase := m.NewEmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
-	resp, err := emailUsecase.SendEmail(mockData.Email, mockData.Sentence)
-	assert.Equal(suite.T(), resp, true)
-	assert.Equal(suite.T(), err, nil)
+	emailManager := m.NewEmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
+	var number float64 = 0.4
+	provider := emailManager.ChooseProvider(number)
+	assert.Equal(suite.T(), provider, onesignalMocked)
 }
 
-func (suite *EmailManagerTestSuite) Test_fail_when_sending() {
-	mockedErr := errors.New("Provider timeout")
-	mockData := MockedData{}
-	err := faker.FakeData(&mockData)
-	if err != nil {
-		fmt.Println(err)
-	}
-
+func (suite *EmailManagerTestSuite) Test_succeed_when_choosing_mailgun() {
 	sendgridMocked := new(SendgridMocked)
-	sendgridMocked.On("SendEmail", mockData.Email, mockData.Sentence).Return(false, mockedErr)
 	mailgunMocked := new(MailgunMocked)
-	mailgunMocked.On("SendEmail", mockData.Email, mockData.Sentence).Return(false, mockedErr)
 	onesignalMocked := new(OnesignalMocked)
-	onesignalMocked.On("SendEmail", mockData.Email, mockData.Sentence).Return(false, mockedErr)
 
-	emailUsecase := m.NewEmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
-	resp, err := emailUsecase.SendEmail(mockData.Email, mockData.Sentence)
-	assert.Equal(suite.T(), resp, false)
-	assert.Equal(suite.T(), err, mockedErr)
+	emailManager := m.NewEmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
+	var number float64 = 0.7
+	provider := emailManager.ChooseProvider(number)
+	assert.Equal(suite.T(), provider, mailgunMocked)
 }
 
 func TestEmailManager(t *testing.T) {
-
 	suite.Run(t, new(EmailManagerTestSuite))
-
 }

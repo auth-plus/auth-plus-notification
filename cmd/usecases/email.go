@@ -1,19 +1,24 @@
 package usecases
 
 import (
-	d "auth-plus-notification/cmd/usecases/driven"
+	m "auth-plus-notification/cmd/managers"
+	"math/rand"
+	"time"
 )
 
 type EmailUsecase struct {
-	sendingEmail d.SendingEmail
+	EmailManager *m.EmailManager
 }
 
-func NewEmailUsecase(sendingEmail d.SendingEmail) *EmailUsecase {
+func NewEmailUsecase(emailManager *m.EmailManager) *EmailUsecase {
 	instance := new(EmailUsecase)
-	instance.sendingEmail = sendingEmail
+	instance.EmailManager = emailManager
 	return instance
 }
 
 func (e *EmailUsecase) Send(email string, content string) (bool, error) {
-	return e.sendingEmail.SendEmail(email, content)
+	rand.Seed(time.Now().UnixNano())
+	random := rand.Float64()
+	provider := e.EmailManager.ChooseProvider(random)
+	return provider.SendEmail(email, content)
 }

@@ -2,7 +2,6 @@ package managers
 
 import (
 	se "auth-plus-notification/cmd/usecases/driven"
-	"math/rand"
 )
 
 type EmailManager struct {
@@ -12,17 +11,15 @@ type EmailManager struct {
 }
 
 func NewEmailManager(sendgrid se.SendingEmail, mailgun se.SendingEmail, onesignal se.SendingEmail) *EmailManager {
-	return &EmailManager{sendgrid: sendgrid, mailgun: mailgun, onesignal: onesignal}
-}
-
-func (e *EmailManager) SendEmail(email string, content string) (bool, error) {
-	provider := e.chooseEmailManager(email, content)
-	return provider.SendEmail(email, content)
+	instance := new(EmailManager)
+	instance.mailgun = mailgun
+	instance.onesignal = onesignal
+	instance.sendgrid = sendgrid
+	return instance
 }
 
 // Function for choosing a provider, it can be by IP warming, Limit, timeout
-func (e *EmailManager) chooseEmailManager(email string, content string) se.SendingEmail {
-	random := rand.Float64()
+func (e *EmailManager) ChooseProvider(random float64) se.SendingEmail {
 	if random < 0.333 {
 		return e.sendgrid
 	}
