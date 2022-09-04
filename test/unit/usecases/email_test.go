@@ -23,16 +23,9 @@ type EmailManagerMocked struct {
 type SendgridMocked struct {
 	mock.Mock
 }
-type MailgunMocked struct {
-	mock.Mock
-}
 
-type OnesignalMocked struct {
-	mock.Mock
-}
-
-func (m *EmailManagerMocked) ChooseProvider(number float64) se.SendingEmail {
-	args := m.Called(number)
+func (m *EmailManagerMocked) ChooseProvider(random float64) se.SendingEmail {
+	args := m.Called(random)
 	return args.Get(0).(*SendgridMocked)
 }
 
@@ -64,7 +57,6 @@ func (suite *EmailUsecaseTestSuite) Test_succeed_when_sending() {
 	resp, err := emailUsecase.Send(mockData.Email, mockData.Sentence)
 	assert.Equal(suite.T(), resp, true)
 	assert.Equal(suite.T(), err, nil)
-	sendgridMocked.AssertExpectations()
 }
 
 func (suite *EmailUsecaseTestSuite) Test_fail_when_sending() {
