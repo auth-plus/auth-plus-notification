@@ -3,7 +3,7 @@ package test
 import (
 	"testing"
 
-	m "auth-plus-notification/cmd/managers"
+	me "auth-plus-notification/cmd/managers/email"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -44,11 +44,11 @@ func (suite *EmailManagerTestSuite) Test_succeed_when_choosing_sendgrid() {
 	sendgridMocked := new(SendgridMocked)
 	mailgunMocked := new(MailgunMocked)
 	onesignalMocked := new(OnesignalMocked)
-
-	emailManager := m.NewEmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
 	var number float64 = 0.1
-	provider := emailManager.ChooseProvider(number)
+	emailManager := me.NewRandomEmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
+	provider, err := emailManager.ChooseProvider(number)
 	assert.Equal(suite.T(), provider, sendgridMocked)
+	assert.Equal(suite.T(), err, nil)
 }
 
 func (suite *EmailManagerTestSuite) Test_succeed_when_choosing_onesignal() {
@@ -56,10 +56,11 @@ func (suite *EmailManagerTestSuite) Test_succeed_when_choosing_onesignal() {
 	mailgunMocked := new(MailgunMocked)
 	onesignalMocked := new(OnesignalMocked)
 
-	emailManager := m.NewEmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
+	emailManager := me.NewRandomEmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
 	var number float64 = 0.4
-	provider := emailManager.ChooseProvider(number)
+	provider, err := emailManager.ChooseProvider(number)
 	assert.Equal(suite.T(), provider, onesignalMocked)
+	assert.Equal(suite.T(), err, nil)
 }
 
 func (suite *EmailManagerTestSuite) Test_succeed_when_choosing_mailgun() {
@@ -67,10 +68,11 @@ func (suite *EmailManagerTestSuite) Test_succeed_when_choosing_mailgun() {
 	mailgunMocked := new(MailgunMocked)
 	onesignalMocked := new(OnesignalMocked)
 
-	emailManager := m.NewEmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
+	emailManager := me.NewRandomEmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
 	var number float64 = 0.7
-	provider := emailManager.ChooseProvider(number)
+	provider, err := emailManager.ChooseProvider(number)
 	assert.Equal(suite.T(), provider, mailgunMocked)
+	assert.Equal(suite.T(), err, nil)
 }
 
 func TestEmailManager(t *testing.T) {

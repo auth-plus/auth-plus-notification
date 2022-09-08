@@ -17,16 +17,20 @@ type EmailUsecaseTestSuite struct {
 	suite.Suite
 }
 
-type EmailManagerMocked struct {
+type RandomEmailManagerMocked struct {
 	mock.Mock
 }
 type SendgridMocked struct {
 	mock.Mock
 }
 
-func (m *EmailManagerMocked) ChooseProvider(random float64) se.SendingEmail {
-	args := m.Called(random)
-	return args.Get(0).(*SendgridMocked)
+func (m *RandomEmailManagerMocked) GetInput() (float64, error) {
+	args := m.Called()
+	return args.Get(0).(float64), args.Error(1)
+}
+func (m *RandomEmailManagerMocked) ChooseProvider(number float64) (se.SendingEmail, error) {
+	args := m.Called(number)
+	return args.Get(0).(*SendgridMocked), args.Error(1)
 }
 
 func (m *SendgridMocked) SendEmail(email string, content string) (bool, error) {
@@ -50,10 +54,11 @@ func (suite *EmailUsecaseTestSuite) Test_succeed_when_sending() {
 	sendgridMocked.On("SendEmail", mockData.Email, mockData.Sentence).Return(true, nil)
 
 	var number float64 = 0.4
-	emailManager := new(EmailManagerMocked)
-	emailManager.On("ChooseProvider", number).Return(sendgridMocked)
+	randomEmailManager := new(RandomEmailManagerMocked)
+	randomEmailManager.On("GetInput").Return(number, nil)
+	randomEmailManager.On("ChooseProvider", number).Return(sendgridMocked, nil)
 
-	emailUsecase := u.NewEmailUsecase(emailManager)
+	emailUsecase := u.NewEmailUsecase(randomEmailManager)
 	resp, err := emailUsecase.Send(mockData.Email, mockData.Sentence)
 	assert.Equal(suite.T(), resp, true)
 	assert.Equal(suite.T(), err, nil)
@@ -70,13 +75,14 @@ func (suite *EmailUsecaseTestSuite) Test_fail_when_sending() {
 	sendgridMocked.On("SendEmail", mockData.Email, mockData.Sentence).Return(false, errors.New("failed"))
 
 	var number float64 = 0.4
-	emailManager := new(EmailManagerMocked)
-	emailManager.On("ChooseProvider", number).Return(sendgridMocked)
+	randomEmailManager := new(RandomEmailManagerMocked)
+	randomEmailManager.On("GetInput").Return(number, nil)
+	randomEmailManager.On("ChooseProvider", number).Return(sendgridMocked, nil)
 
-	emailUsecase := u.NewEmailUsecase(emailManager)
+	emailUsecase := u.NewEmailUsecase(randomEmailManager)
 	resp, err := emailUsecase.Send(mockData.Email, mockData.Sentence)
-	assert.Equal(suite.T(), resp, true)
-	assert.Equal(suite.T(), err, nil)
+	assert.Equal(suite.T(), resp, false)
+	assert.Equal(suite.T(), err.Error(), "failed")
 }
 
 func TestEmailUsecase(t *testing.T) {
