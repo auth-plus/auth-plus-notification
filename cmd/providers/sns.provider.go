@@ -8,11 +8,13 @@ import (
 	"github.com/aws/aws-sdk-go/service/sns"
 )
 
+// SNS struct must contains all private property to work
 type SNS struct {
 	url   string
 	token string
 }
 
+// NewSNS for instanciate a sns provider
 func NewSNS() *SNS {
 	instance := new(SNS)
 	instance.url = ""
@@ -20,6 +22,7 @@ func NewSNS() *SNS {
 	return instance
 }
 
+// SendSms implementation of SendingSms
 func (e *SNS) SendSms(phone string, content string) (bool, error) {
 	sess := session.Must(session.NewSession())
 	svc := sns.New(sess)

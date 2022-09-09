@@ -1,3 +1,4 @@
+// Package http contain the function to start HTTP server
 package http
 
 import (
@@ -10,6 +11,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
+// Server for initiate http server
 func Server() *gin.Engine {
 
 	router := gin.New()

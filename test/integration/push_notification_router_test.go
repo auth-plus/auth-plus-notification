@@ -25,7 +25,7 @@ func TestPushNotificationHandler(t *testing.T) {
 		fmt.Println(err)
 	}
 	payload := routes.PushNotificationRequestBody{
-		DeviceId: mockData.DeviceID,
+		DeviceID: mockData.DeviceID,
 		Title:    mockData.Title,
 		Content:  mockData.Content,
 	}

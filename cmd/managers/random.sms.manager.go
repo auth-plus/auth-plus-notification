@@ -6,21 +6,22 @@ import (
 	"time"
 )
 
-type randomSmsManager struct {
+// RandomSmsManager must contains all provider that could be choosen
+type RandomSmsManager struct {
 	sns       d.SendingSms
 	onesignal d.SendingSms
 }
 
 // NewRandomSmsManager is a function for intanciate a pointer for PushNotification
-func NewRandomSmsManager(sns d.SendingSms, onesignal d.SendingSms) *randomSmsManager {
-	instance := new(randomSmsManager)
+func NewRandomSmsManager(sns d.SendingSms, onesignal d.SendingSms) *RandomSmsManager {
+	instance := new(RandomSmsManager)
 	instance.sns = sns
 	instance.onesignal = onesignal
 	return instance
 }
 
 // ChooseProvider is a function for choosing a provider based on a number
-func (e *randomSmsManager) ChooseProvider(number float64) (d.SendingSms, error) {
+func (e *RandomSmsManager) ChooseProvider(number float64) (d.SendingSms, error) {
 	if number < 0.5 {
 		return e.onesignal, nil
 	}
@@ -28,7 +29,7 @@ func (e *randomSmsManager) ChooseProvider(number float64) (d.SendingSms, error) 
 }
 
 // GetInput is a function that generate a random number
-func (e *randomSmsManager) GetInput() (float64, error) {
+func (e *RandomSmsManager) GetInput() (float64, error) {
 	rand.Seed(time.Now().UnixNano())
 	return rand.Float64(), nil
 }

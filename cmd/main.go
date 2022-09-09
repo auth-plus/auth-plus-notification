@@ -1,4 +1,5 @@
-package providers
+// Package cmd read on https://github.com/golang-standards/project-layout#cmd
+package cmd
 
 import (
 	m "auth-plus-notification/cmd/managers"
@@ -6,6 +7,7 @@ import (
 	u "auth-plus-notification/cmd/usecases"
 )
 
+// Core contains all usecases
 type Core struct {
 	EmailUsecase            *u.EmailUsecase
 	PushNotificationUsecase *u.PushNotificationUsecase
@@ -14,6 +16,7 @@ type Core struct {
 	WhatsappUsecase         *u.WhatsappUsecase
 }
 
+// NewCore is a function that make middle between presentation layer and the usecases
 func NewCore() Core {
 	//Providers
 	firebase := p.NewFirebase()

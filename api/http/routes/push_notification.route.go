@@ -8,12 +8,14 @@ import (
 	"github.com/gin-gonic/gin/binding"
 )
 
+// PushNotificationRequestBody is type for payload
 type PushNotificationRequestBody struct {
-	DeviceId string `json:"deviceId"`
+	DeviceID string `json:"deviceId"`
 	Title    string `json:"title"`
 	Content  string `json:"content"`
 }
 
+// PushNotificationHandler ia route handler for POST /push_notification
 func PushNotificationHandler(c *gin.Context) {
 	reqBody := PushNotificationRequestBody{}
 
@@ -22,7 +24,7 @@ func PushNotificationHandler(c *gin.Context) {
 		return
 	}
 	go core.NewCore().PushNotificationUsecase.Send(
-		reqBody.DeviceId,
+		reqBody.DeviceID,
 		reqBody.Title,
 		reqBody.Content)
 	c.String(http.StatusOK, "Ok")

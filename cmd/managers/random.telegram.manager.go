@@ -6,24 +6,25 @@ import (
 	"time"
 )
 
-type randomTelegramManager struct {
+// RandomTelegramManager must contains all provider that could be choosen
+type RandomTelegramManager struct {
 	telegram d.SendingTelegram
 }
 
 // NewRandomTelegramManager is a function for intanciate a pointer for PushNotification
-func NewRandomTelegramManager(telegram d.SendingTelegram) *randomTelegramManager {
-	instance := new(randomTelegramManager)
+func NewRandomTelegramManager(telegram d.SendingTelegram) *RandomTelegramManager {
+	instance := new(RandomTelegramManager)
 	instance.telegram = telegram
 	return instance
 }
 
 // ChooseProvider is a function for choosing a provider based on a number
-func (e *randomTelegramManager) ChooseProvider(number float64) (d.SendingTelegram, error) {
+func (e *RandomTelegramManager) ChooseProvider(number float64) (d.SendingTelegram, error) {
 	return e.telegram, nil
 }
 
 // GetInput is a function that generate a random number
-func (e *randomTelegramManager) GetInput() (float64, error) {
+func (e *RandomTelegramManager) GetInput() (float64, error) {
 	rand.Seed(time.Now().UnixNano())
 	return rand.Float64(), nil
 }

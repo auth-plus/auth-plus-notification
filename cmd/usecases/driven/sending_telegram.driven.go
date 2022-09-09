@@ -1,5 +1,6 @@
 package driven
 
+// SendingTelegram is a interface that must abstract how provider can send
 type SendingTelegram interface {
-	SendTele(chatId int64, text string) (bool, error)
+	SendTele(chatID int64, text string) (bool, error)
 }

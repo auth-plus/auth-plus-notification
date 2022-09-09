@@ -4,17 +4,20 @@ import (
 	d "auth-plus-notification/cmd/usecases/driven"
 )
 
+// TelegramUsecase dependencies
 type TelegramUsecase struct {
 	manager d.TelegramManager
 }
 
+// NewTelegramUsecase for instanciate a Telegram usecase
 func NewTelegramUsecase(manager d.TelegramManager) *TelegramUsecase {
 	instance := new(TelegramUsecase)
 	instance.manager = manager
 	return instance
 }
 
-func (e *TelegramUsecase) Send(chatId int64, text string) (bool, error) {
+// Send method for sending an telegram message by using manager on dependecy
+func (e *TelegramUsecase) Send(chatID int64, text string) (bool, error) {
 	number, errI := e.manager.GetInput()
 	if errI != nil {
 		return false, errI
@@ -23,5 +26,5 @@ func (e *TelegramUsecase) Send(chatId int64, text string) (bool, error) {
 	if errC != nil {
 		return false, errC
 	}
-	return provider.SendTele(chatId, text)
+	return provider.SendTele(chatID, text)
 }
