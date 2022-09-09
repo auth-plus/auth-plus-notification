@@ -4,17 +4,20 @@ import (
 	d "auth-plus-notification/cmd/usecases/driven"
 )
 
+// PushNotificationUsecase dependencies
 type PushNotificationUsecase struct {
 	manager d.PushNotificatioManager
 }
 
+// NewPushNotificationUsecase for instanciate a push notification usecase
 func NewPushNotificationUsecase(manager d.PushNotificatioManager) *PushNotificationUsecase {
 	instance := new(PushNotificationUsecase)
 	instance.manager = manager
 	return instance
 }
 
-func (e *PushNotificationUsecase) Send(deviceId string, title string, content string) (bool, error) {
+// Send method for sending an push notification by using manager on dependecy
+func (e *PushNotificationUsecase) Send(deviceID string, title string, content string) (bool, error) {
 	number, errI := e.manager.GetInput()
 	if errI != nil {
 		return false, errI
@@ -23,5 +26,5 @@ func (e *PushNotificationUsecase) Send(deviceId string, title string, content st
 	if errC != nil {
 		return false, errC
 	}
-	return provider.SendPN(deviceId, title, content)
+	return provider.SendPN(deviceID, title, content)
 }

@@ -1,3 +1,4 @@
+// Package managers contains all implementations of managers
 package managers
 
 import (
@@ -6,15 +7,16 @@ import (
 	"time"
 )
 
-type randomEmailManager struct {
+// RandomEmailManager must contains all provider that could be choosen
+type RandomEmailManager struct {
 	sendgrid  d.SendingEmail
 	mailgun   d.SendingEmail
 	onesignal d.SendingEmail
 }
 
 // NewRandomEmailManager is a function for intanciate a pointer for EmailManager
-func NewRandomEmailManager(sendgrid d.SendingEmail, mailgun d.SendingEmail, onesignal d.SendingEmail) *randomEmailManager {
-	instance := new(randomEmailManager)
+func NewRandomEmailManager(sendgrid d.SendingEmail, mailgun d.SendingEmail, onesignal d.SendingEmail) *RandomEmailManager {
+	instance := new(RandomEmailManager)
 	instance.mailgun = mailgun
 	instance.onesignal = onesignal
 	instance.sendgrid = sendgrid
@@ -22,7 +24,7 @@ func NewRandomEmailManager(sendgrid d.SendingEmail, mailgun d.SendingEmail, ones
 }
 
 // ChooseProvider is a function for choosing a provider based on a number
-func (e *randomEmailManager) ChooseProvider(number float64) (d.SendingEmail, error) {
+func (e *RandomEmailManager) ChooseProvider(number float64) (d.SendingEmail, error) {
 	if number < 0.333 {
 		return e.sendgrid, nil
 	}
@@ -33,7 +35,7 @@ func (e *randomEmailManager) ChooseProvider(number float64) (d.SendingEmail, err
 }
 
 // GetInput is a function that generate a random number
-func (e *randomEmailManager) GetInput() (float64, error) {
+func (e *RandomEmailManager) GetInput() (float64, error) {
 	rand.Seed(time.Now().UnixNano())
 	return rand.Float64(), nil
 }

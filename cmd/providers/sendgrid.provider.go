@@ -9,11 +9,13 @@ import (
 	"net/http"
 )
 
+// Sendgrid struct must contains all private property to work
 type Sendgrid struct {
 	url   string
 	token string
 }
 
+// SendgridEmailPayload is the payload that sendgrid require
 type SendgridEmailPayload struct {
 	Personalizations string `json:"name"`
 	From             string `json:"from"`
@@ -21,14 +23,16 @@ type SendgridEmailPayload struct {
 	Content          string `json:"content"`
 }
 
+// NewSendgrid for instanciate a sendgrid provider
 func NewSendgrid() *Sendgrid {
 	instance := new(Sendgrid)
 	env := config.GetEnv()
-	instance.url = env.Providers.Sendgrid.Url
-	instance.token = env.Providers.Sendgrid.ApiKey
+	instance.url = env.Providers.Sendgrid.URL
+	instance.token = env.Providers.Sendgrid.APIKey
 	return instance
 }
 
+// SendEmail implementation of SendingEmail
 func (e *Sendgrid) SendEmail(email string, content string) (bool, error) {
 	client := &http.Client{}
 	emailPayload := SendgridEmailPayload{

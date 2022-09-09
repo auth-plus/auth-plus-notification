@@ -2,11 +2,13 @@ package providers
 
 import "fmt"
 
+// OneSignal struct must contains all private property to work
 type OneSignal struct {
 	url   string
 	token string
 }
 
+// NewOneSignal for instanciate a onesignal provider
 func NewOneSignal() *OneSignal {
 	instance := new(OneSignal)
 	instance.url = ""
@@ -14,19 +16,22 @@ func NewOneSignal() *OneSignal {
 	return instance
 }
 
+// SendEmail implementation of SendingEmail
 func (e *OneSignal) SendEmail(email string, content string) (bool, error) {
 	fmt.Println("email Id:\t", email)
 	fmt.Println("content Id:\t", content)
 	return true, nil
 }
 
-func (e *OneSignal) SendPN(deviceId string, title string, content string) (bool, error) {
-	fmt.Println("device Id:\t", deviceId)
+// SendPN implementation of SendingPushNotification
+func (e *OneSignal) SendPN(deviceID string, title string, content string) (bool, error) {
+	fmt.Println("device Id:\t", deviceID)
 	fmt.Println("title:\t", title)
 	fmt.Println("content:\t", content)
 	return true, nil
 }
 
+// SendSms implementation of SendingSms
 func (e *OneSignal) SendSms(phone string, content string) (bool, error) {
 	fmt.Println("phone:\t", phone)
 	fmt.Println("content:\t", content)

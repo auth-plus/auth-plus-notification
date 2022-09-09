@@ -1,70 +1,85 @@
+// Package config contains ass configuration for application work
 package config
 
 import "os"
 
+// MailgunEnv is environment variable for mailgun work
 type MailgunEnv struct {
-	Url    string
-	ApiKey string
+	URL    string
+	APIKey string
 }
+
+// SendgridEnv is environment variable for sendgrid work
 type SendgridEnv struct {
-	Url    string
-	ApiKey string
+	URL    string
+	APIKey string
 }
+
+// FirebaseEnv is environment variable for firebase work
 type FirebaseEnv struct {
 	CredentialPath string
 	AppName        string
 }
 
+// ProviderEnv contains all providers configurations
 type ProviderEnv struct {
 	Firebase FirebaseEnv
 	Sendgrid SendgridEnv
 	Mailgun  MailgunEnv
 }
 
+// AppEnv contains all necessary property to application initiate
 type AppEnv struct {
 	Name string
 	Port string
 	Env  string
 }
 
+// PrometheusEnv for prometheus configuration
 type PrometheusEnv struct {
-	Url  string
+	URL  string
 	Port string
 }
 
+// Environment contains all configurations
 type Environment struct {
 	App        AppEnv
 	Providers  ProviderEnv
 	Prometheus PrometheusEnv
 }
 
+// GetEnv exports env config instead of multiplaces to maintain
 func GetEnv() Environment {
-	app := AppEnv{
-		Name: os.Getenv("APP_NAME"),
-		Port: os.Getenv("APP_PORT"),
-		Env:  os.Getenv("GO_ENV"),
-	}
-	prometheus := PrometheusEnv{
-		Url:  os.Getenv("PROMETHEUS_URL"),
-		Port: os.Getenv("PROMETHEUS_PORT"),
-	}
+
+	// Provider
 	sendgrid := SendgridEnv{
-		Url:    os.Getenv("SENDGRID_URL"),
-		ApiKey: os.Getenv("SENDGRID_API_KEY"),
+		URL:    os.Getenv("SENDGRID_URL"),
+		APIKey: os.Getenv("SENDGRID_API_KEY"),
 	}
 	firebase := FirebaseEnv{
 		CredentialPath: os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"),
 		AppName:        os.Getenv("GOOGLE_APPLICATION_NAME"),
 	}
 	mailgun := MailgunEnv{
-		Url:    os.Getenv("MAILGUN_URL"),
-		ApiKey: os.Getenv("MAILGUN_API_KEY"),
+		URL:    os.Getenv("MAILGUN_URL"),
+		APIKey: os.Getenv("MAILGUN_API_KEY"),
 	}
 	providers := ProviderEnv{
 		Firebase: firebase,
 		Sendgrid: sendgrid,
 		Mailgun:  mailgun,
 	}
+	//Default
+	app := AppEnv{
+		Name: os.Getenv("APP_NAME"),
+		Port: os.Getenv("APP_PORT"),
+		Env:  os.Getenv("GO_ENV"),
+	}
+	prometheus := PrometheusEnv{
+		URL:  os.Getenv("PROMETHEUS_URL"),
+		Port: os.Getenv("PROMETHEUS_PORT"),
+	}
+	//Exporting
 	env := Environment{
 		App:        app,
 		Providers:  providers,

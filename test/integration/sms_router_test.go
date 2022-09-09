@@ -17,20 +17,19 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestPushNotificationHandler(t *testing.T) {
+func TestSmsHandler(t *testing.T) {
 	r := app.Server()
 	mockData := mock.MockedData{}
 	err := faker.FakeData(&mockData)
 	if err != nil {
 		fmt.Println(err)
 	}
-	payload := routes.PushNotificationRequestBody{
-		DeviceID: mockData.DeviceID,
-		Title:    mockData.Title,
-		Content:  mockData.Content,
+	payload := routes.SmsRequestBody{
+		Phone:   mockData.Phone,
+		Content: mockData.Content,
 	}
 	jsonValue, _ := json.Marshal(payload)
-	req, _ := http.NewRequest("POST", "/push_notification", bytes.NewBuffer(jsonValue))
+	req, _ := http.NewRequest("POST", "/sms", bytes.NewBuffer(jsonValue))
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 

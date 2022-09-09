@@ -1,3 +1,4 @@
+// Package providers contains all implementations of providers
 package providers
 
 import (
@@ -12,11 +13,13 @@ import (
 	"google.golang.org/api/option"
 )
 
+// Firebase struct must contains all private property to work
 type Firebase struct {
 	app      *firebase.App
 	logopath string
 }
 
+// NewFirebase for instanciate a firebase provider
 func NewFirebase() *Firebase {
 	instance := new(Firebase)
 	env := config.GetEnv()
@@ -30,7 +33,8 @@ func NewFirebase() *Firebase {
 	return instance
 }
 
-func (e *Firebase) SendPN(deviceId string, title string, content string) (bool, error) {
+// SendPN implementation of SendingPushNotification
+func (e *Firebase) SendPN(deviceID string, title string, content string) (bool, error) {
 	ctx := context.Background()
 	client, err := e.app.Messaging(ctx)
 	if err != nil {
@@ -44,7 +48,7 @@ func (e *Firebase) SendPN(deviceId string, title string, content string) (bool, 
 			Body:     content,
 			ImageURL: e.logopath,
 		},
-		Token: deviceId,
+		Token: deviceID,
 	}
 
 	// Send a message to the device corresponding to the provided

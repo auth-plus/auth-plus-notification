@@ -7,11 +7,13 @@ import (
 	openapi "github.com/twilio/twilio-go/rest/api/v2010"
 )
 
+// Twilio struct must contains all private property to work
 type Twilio struct {
 	url   string
 	token string
 }
 
+// NewTwilio for instanciate a Twilio provider
 func NewTwilio() *Twilio {
 	instance := new(Twilio)
 	instance.url = ""
@@ -19,6 +21,7 @@ func NewTwilio() *Twilio {
 	return instance
 }
 
+// SendWhats implementation of SendingWhatsapp
 func (e *Twilio) SendWhats(phone string, content string) (bool, error) {
 	client := twilio.NewRestClient()
 
@@ -32,9 +35,8 @@ func (e *Twilio) SendWhats(phone string, content string) (bool, error) {
 		fmt.Println(err.Error())
 		return false, err
 
-	} else {
-		fmt.Println("Message sent successfully!")
 	}
+	fmt.Println("Message sent successfully!")
 	fmt.Println("phone:\t", phone)
 	fmt.Println("content:\t", content)
 	return true, nil

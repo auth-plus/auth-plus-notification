@@ -7,11 +7,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// SmsRequestBody is type for payload
 type SmsRequestBody struct {
 	Phone   string `json:"phone"`
 	Content string `json:"content"`
 }
 
+// SmsHandler ia route handler for POST /sms
 func SmsHandler(c *gin.Context) {
 	var reqBody SmsRequestBody
 

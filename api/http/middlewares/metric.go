@@ -1,3 +1,4 @@
+// Package middlewares contains all middleware for GIN
 package middlewares
 
 import (
@@ -7,6 +8,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 )
 
+// Metric is a middleware that gather metrics of system
 func Metric() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		t := time.Now()

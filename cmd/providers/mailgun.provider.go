@@ -9,11 +9,13 @@ import (
 	"net/http"
 )
 
+// Mailgun struct must contains all private property to work
 type Mailgun struct {
 	url   string
 	token string
 }
 
+// MailgunEmailPayload is the payload htat mailgun require
 type MailgunEmailPayload struct {
 	Personalizations string `json:"name"`
 	From             string `json:"from"`
@@ -21,14 +23,16 @@ type MailgunEmailPayload struct {
 	Content          string `json:"content"`
 }
 
+// NewMailgun for instanciate a mailgun provider
 func NewMailgun() *Mailgun {
 	instance := new(Mailgun)
 	env := config.GetEnv()
-	instance.url = env.Providers.Mailgun.Url
-	instance.token = env.Providers.Mailgun.ApiKey
+	instance.url = env.Providers.Mailgun.URL
+	instance.token = env.Providers.Mailgun.APIKey
 	return instance
 }
 
+// SendEmail implementation of SendingEmail
 func (e *Mailgun) SendEmail(email string, content string) (bool, error) {
 	client := &http.Client{}
 	emailPayload := MailgunEmailPayload{
