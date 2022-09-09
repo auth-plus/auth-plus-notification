@@ -30,11 +30,11 @@ func NewFirebase() *Firebase {
 	return instance
 }
 
-func (e *Firebase) SendPN(deviceId string, title string, content string) {
+func (e *Firebase) SendPN(deviceId string, title string, content string) (bool, error) {
 	ctx := context.Background()
 	client, err := e.app.Messaging(ctx)
 	if err != nil {
-		log.Fatalf("error getting Messaging client: %v\n", err)
+		return false, err
 	}
 
 	// See documentation on defining a message payload.
@@ -55,4 +55,5 @@ func (e *Firebase) SendPN(deviceId string, title string, content string) {
 	}
 	// Response is a message ID string.
 	fmt.Println("Successfully sent message:", response)
+	return true, nil
 }

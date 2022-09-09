@@ -20,13 +20,15 @@ func (e *OneSignal) SendEmail(email string, content string) (bool, error) {
 	return true, nil
 }
 
-func (e *OneSignal) SendPN(deviceId string, title string, content string) {
+func (e *OneSignal) SendPN(deviceId string, title string, content string) (bool, error) {
 	fmt.Println("device Id:\t", deviceId)
 	fmt.Println("title:\t", title)
 	fmt.Println("content:\t", content)
+	return true, nil
 }
 
-func (e *OneSignal) SendSms(phone string, content string) {
+func (e *OneSignal) SendSms(phone string, content string) (bool, error) {
 	fmt.Println("phone:\t", phone)
 	fmt.Println("content:\t", content)
+	return true, nil
 }

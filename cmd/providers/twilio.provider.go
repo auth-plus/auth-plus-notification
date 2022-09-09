@@ -19,7 +19,7 @@ func NewTwilio() *Twilio {
 	return instance
 }
 
-func (e *Twilio) SendWhats(phone string, content string) {
+func (e *Twilio) SendWhats(phone string, content string) (bool, error) {
 	client := twilio.NewRestClient()
 
 	params := &openapi.CreateMessageParams{}
@@ -30,9 +30,12 @@ func (e *Twilio) SendWhats(phone string, content string) {
 	_, err := client.Api.CreateMessage(params)
 	if err != nil {
 		fmt.Println(err.Error())
+		return false, err
+
 	} else {
 		fmt.Println("Message sent successfully!")
 	}
 	fmt.Println("phone:\t", phone)
 	fmt.Println("content:\t", content)
+	return true, nil
 }

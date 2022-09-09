@@ -5,21 +5,21 @@ import (
 )
 
 type EmailUsecase struct {
-	EmailManager se.EmailManager
+	manager se.EmailManager
 }
 
-func NewEmailUsecase(emailManager se.EmailManager) *EmailUsecase {
+func NewEmailUsecase(manager se.EmailManager) *EmailUsecase {
 	instance := new(EmailUsecase)
-	instance.EmailManager = emailManager
+	instance.manager = manager
 	return instance
 }
 
 func (e *EmailUsecase) Send(email string, content string) (bool, error) {
-	number, errI := e.EmailManager.GetInput()
+	number, errI := e.manager.GetInput()
 	if errI != nil {
 		return false, errI
 	}
-	provider, errC := e.EmailManager.ChooseProvider(number)
+	provider, errC := e.manager.ChooseProvider(number)
 	if errC != nil {
 		return false, errC
 	}

@@ -2,7 +2,6 @@ package providers
 
 import (
 	m "auth-plus-notification/cmd/managers"
-	me "auth-plus-notification/cmd/managers/email"
 	p "auth-plus-notification/cmd/providers"
 	u "auth-plus-notification/cmd/usecases"
 )
@@ -26,11 +25,11 @@ func NewCore() Core {
 	onesignal := p.NewOneSignal()
 
 	//Managers
-	emailManager := me.NewRandomEmailManager(sendgrid, mailgun, onesignal)
-	pushNotificationManager := m.NewPushNotificationManager(firebase, onesignal)
-	smsManager := m.NewSmsManager(sns, onesignal)
-	telegramManager := m.NewTelegramManager(telegram)
-	whatsappManager := m.NewWhatsappManager(twilio)
+	emailManager := m.NewRandomEmailManager(sendgrid, mailgun, onesignal)
+	pushNotificationManager := m.NewRandomPushNotificationManager(firebase, onesignal)
+	smsManager := m.NewRandomSmsManager(sns, onesignal)
+	telegramManager := m.NewRandomTelegramManager(telegram)
+	whatsappManager := m.NewRandomWhatsappManager(twilio)
 
 	//Usecases
 	emailUsecase := u.NewEmailUsecase(emailManager)

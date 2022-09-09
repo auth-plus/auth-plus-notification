@@ -5,15 +5,23 @@ import (
 )
 
 type WhatsappUsecase struct {
-	sendingWhatsapp d.SendingWhatsapp
+	manager d.WhatsappManager
 }
 
-func NewWhatsappUsecase(sendingWhatsapp d.SendingWhatsapp) *WhatsappUsecase {
+func NewWhatsappUsecase(manager d.WhatsappManager) *WhatsappUsecase {
 	instance := new(WhatsappUsecase)
-	instance.sendingWhatsapp = sendingWhatsapp
+	instance.manager = manager
 	return instance
 }
 
-func (e *WhatsappUsecase) Send(phone string, content string) {
-	e.sendingWhatsapp.SendWhats(phone, content)
+func (e *WhatsappUsecase) Send(phone string, content string) (bool, error) {
+	number, errI := e.manager.GetInput()
+	if errI != nil {
+		return false, errI
+	}
+	provider, errC := e.manager.ChooseProvider(number)
+	if errC != nil {
+		return false, errC
+	}
+	return provider.SendWhats(phone, content)
 }

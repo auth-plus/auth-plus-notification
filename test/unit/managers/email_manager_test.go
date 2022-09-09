@@ -3,7 +3,7 @@ package test
 import (
 	"testing"
 
-	me "auth-plus-notification/cmd/managers/email"
+	m "auth-plus-notification/cmd/managers"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -45,7 +45,7 @@ func (suite *EmailManagerTestSuite) Test_succeed_when_choosing_sendgrid() {
 	mailgunMocked := new(MailgunMocked)
 	onesignalMocked := new(OnesignalMocked)
 	var number float64 = 0.1
-	emailManager := me.NewRandomEmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
+	emailManager := m.NewRandomEmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
 	provider, err := emailManager.ChooseProvider(number)
 	assert.Equal(suite.T(), provider, sendgridMocked)
 	assert.Equal(suite.T(), err, nil)
@@ -56,7 +56,7 @@ func (suite *EmailManagerTestSuite) Test_succeed_when_choosing_onesignal() {
 	mailgunMocked := new(MailgunMocked)
 	onesignalMocked := new(OnesignalMocked)
 
-	emailManager := me.NewRandomEmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
+	emailManager := m.NewRandomEmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
 	var number float64 = 0.4
 	provider, err := emailManager.ChooseProvider(number)
 	assert.Equal(suite.T(), provider, onesignalMocked)
@@ -68,7 +68,7 @@ func (suite *EmailManagerTestSuite) Test_succeed_when_choosing_mailgun() {
 	mailgunMocked := new(MailgunMocked)
 	onesignalMocked := new(OnesignalMocked)
 
-	emailManager := me.NewRandomEmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
+	emailManager := m.NewRandomEmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
 	var number float64 = 0.7
 	provider, err := emailManager.ChooseProvider(number)
 	assert.Equal(suite.T(), provider, mailgunMocked)

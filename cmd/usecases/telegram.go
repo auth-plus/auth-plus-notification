@@ -5,15 +5,23 @@ import (
 )
 
 type TelegramUsecase struct {
-	sendingTelegram d.SendingTelegram
+	manager d.TelegramManager
 }
 
-func NewTelegramUsecase(sendingTelegram d.SendingTelegram) *TelegramUsecase {
+func NewTelegramUsecase(manager d.TelegramManager) *TelegramUsecase {
 	instance := new(TelegramUsecase)
-	instance.sendingTelegram = sendingTelegram
+	instance.manager = manager
 	return instance
 }
 
-func (e *TelegramUsecase) Send(chatId int64, text string) {
-	e.sendingTelegram.SendTele(chatId, text)
+func (e *TelegramUsecase) Send(chatId int64, text string) (bool, error) {
+	number, errI := e.manager.GetInput()
+	if errI != nil {
+		return false, errI
+	}
+	provider, errC := e.manager.ChooseProvider(number)
+	if errC != nil {
+		return false, errC
+	}
+	return provider.SendTele(chatId, text)
 }
