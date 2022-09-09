@@ -35,9 +35,8 @@ func (e *Twilio) SendWhats(phone string, content string) (bool, error) {
 		fmt.Println(err.Error())
 		return false, err
 
-	} else {
-		fmt.Println("Message sent successfully!")
 	}
+	fmt.Println("Message sent successfully!")
 	fmt.Println("phone:\t", phone)
 	fmt.Println("content:\t", content)
 	return true, nil
