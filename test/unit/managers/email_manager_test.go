@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/suite"
 
 	m "auth-plus-notification/cmd/managers"
-	t "auth-plus-notification/test/unit/mocks"
+	t "auth-plus-notification/test/mocks"
 )
 
 type EmailManagerTestSuite struct {

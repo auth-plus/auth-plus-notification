@@ -2,7 +2,7 @@ package test
 
 import (
 	u "auth-plus-notification/cmd/usecases"
-	t "auth-plus-notification/test/unit/mocks"
+	t "auth-plus-notification/test/mocks"
 
 	"errors"
 	"fmt"

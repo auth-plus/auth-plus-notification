@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/suite"
 
 	m "auth-plus-notification/cmd/managers"
-	t "auth-plus-notification/test/unit/mocks"
+	t "auth-plus-notification/test/mocks"
 )
 
 type PushNotificationManagerTestSuite struct {
@@ -25,11 +25,10 @@ func (suite *PushNotificationManagerTestSuite) Test_succeed_when_choosing_fireba
 }
 
 func (suite *PushNotificationManagerTestSuite) Test_succeed_when_choosing_onesignal() {
-	sendgridMocked := new(t.SendgridMocked)
-	mailgunMocked := new(t.MailgunMocked)
+	firebaseMocked := new(t.FirebaseMocked)
 	onesignalMocked := new(t.OnesignalMocked)
 
-	emailManager := m.NewRandomEmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
+	emailManager := m.NewRandomPushNotificationManager(firebaseMocked, onesignalMocked)
 	const number = 0.1
 	provider, err := emailManager.ChooseProvider(number)
 	assert.Equal(suite.T(), provider, onesignalMocked)
