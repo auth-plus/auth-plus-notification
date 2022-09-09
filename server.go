@@ -1,3 +1,4 @@
+// Package main is the mais file for starting http server or kafka or any trigger
 package main
 
 import (
