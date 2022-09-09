@@ -35,6 +35,6 @@ func (suite *PushNotificationManagerTestSuite) Test_succeed_when_choosing_onesig
 	assert.Equal(suite.T(), err, nil)
 }
 
-func TestPushNOtificationManager(t *testing.T) {
+func TestPushNotificationManager(t *testing.T) {
 	suite.Run(t, new(PushNotificationManagerTestSuite))
 }
