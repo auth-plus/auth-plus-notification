@@ -5,15 +5,23 @@ import (
 )
 
 type SmsUsecase struct {
-	sendingSms d.SendingSms
+	manager d.SmsManager
 }
 
-func NewSmsUsecase(sendingSms d.SendingSms) *SmsUsecase {
+func NewSmsUsecase(manager d.SmsManager) *SmsUsecase {
 	instance := new(SmsUsecase)
-	instance.sendingSms = sendingSms
+	instance.manager = manager
 	return instance
 }
 
-func (e *SmsUsecase) Send(phone string, content string) {
-	e.sendingSms.SendSms(phone, content)
+func (e *SmsUsecase) Send(phone string, content string) (bool, error) {
+	number, errI := e.manager.GetInput()
+	if errI != nil {
+		return false, errI
+	}
+	provider, errC := e.manager.ChooseProvider(number)
+	if errC != nil {
+		return false, errC
+	}
+	return provider.SendSms(phone, content)
 }

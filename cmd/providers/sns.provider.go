@@ -20,7 +20,7 @@ func NewSNS() *SNS {
 	return instance
 }
 
-func (e *SNS) SendSms(phone string, content string) {
+func (e *SNS) SendSms(phone string, content string) (bool, error) {
 	sess := session.Must(session.NewSession())
 	svc := sns.New(sess)
 	params := &sns.PublishInput{
@@ -32,7 +32,8 @@ func (e *SNS) SendSms(phone string, content string) {
 		// Print the error, cast err to awserr.Error to get the Code and
 		// Message from an error.
 		fmt.Println(err.Error())
-		return
+		return false, err
 	}
 	fmt.Println(resp)
+	return true, nil
 }

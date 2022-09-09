@@ -1,19 +1,27 @@
 package usecases
 
 import (
-	d "auth-plus-notification/cmd/usecases/driven"
+	se "auth-plus-notification/cmd/usecases/driven"
 )
 
 type EmailUsecase struct {
-	sendingEmail d.SendingEmail
+	manager se.EmailManager
 }
 
-func NewEmailUsecase(sendingEmail d.SendingEmail) *EmailUsecase {
+func NewEmailUsecase(manager se.EmailManager) *EmailUsecase {
 	instance := new(EmailUsecase)
-	instance.sendingEmail = sendingEmail
+	instance.manager = manager
 	return instance
 }
 
 func (e *EmailUsecase) Send(email string, content string) (bool, error) {
-	return e.sendingEmail.SendEmail(email, content)
+	number, errI := e.manager.GetInput()
+	if errI != nil {
+		return false, errI
+	}
+	provider, errC := e.manager.ChooseProvider(number)
+	if errC != nil {
+		return false, errC
+	}
+	return provider.SendEmail(email, content)
 }

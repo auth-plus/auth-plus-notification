@@ -5,15 +5,23 @@ import (
 )
 
 type PushNotificationUsecase struct {
-	sendingPushNotification d.SendingPushNotification
+	manager d.PushNotificatioManager
 }
 
-func NewPushNotificationUsecase(sendingPushNotification d.SendingPushNotification) *PushNotificationUsecase {
+func NewPushNotificationUsecase(manager d.PushNotificatioManager) *PushNotificationUsecase {
 	instance := new(PushNotificationUsecase)
-	instance.sendingPushNotification = sendingPushNotification
+	instance.manager = manager
 	return instance
 }
 
-func (e *PushNotificationUsecase) Send(deviceId string, title string, content string) {
-	e.sendingPushNotification.SendPN(deviceId, title, content)
+func (e *PushNotificationUsecase) Send(deviceId string, title string, content string) (bool, error) {
+	number, errI := e.manager.GetInput()
+	if errI != nil {
+		return false, errI
+	}
+	provider, errC := e.manager.ChooseProvider(number)
+	if errC != nil {
+		return false, errC
+	}
+	return provider.SendPN(deviceId, title, content)
 }
