@@ -27,12 +27,12 @@ func Metric() gin.HandlerFunc {
 			Help: "Gauge request latency",
 		})
 		errorCounter := prometheus.NewCounter(prometheus.CounterOpts{
-			Name: "request_latency",
-			Help: "Gauge request latency",
+			Name: "error_counter",
+			Help: "Counter request 50X/40X",
 		})
 		succeedCounter := prometheus.NewCounter(prometheus.CounterOpts{
-			Name: "request_latency",
-			Help: "Gauge request latency",
+			Name: "succeed_counter",
+			Help: "Counter request 20X",
 		})
 
 		completionTime.Set(latency)
