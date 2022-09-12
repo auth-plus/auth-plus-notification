@@ -6,7 +6,14 @@
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/870535e320a4452eac49e677bd5025de)](https://www.codacy.com/gh/auth-plus/auth-plus-backend-notification/dashboard?utm_source=github.com&utm_medium=referral&utm_content=auth-plus/auth-plus-backend-notification&utm_campaign=Badge_Coverage)
 
-This project it's a sample for notification as Email, SMS, Push Notification, Whatsapp and Telegram.
+This project it's a sample for notification system.
+In this application you cand send:
+
+- Email (Sendgrid, Mailgun, Onesignal)
+- SMS (Amazon SNS, Onesignal)
+- Push Notification (Firebase, Onesignal)
+- Whatsapp (Twilio)
+- Telegram (Telegram API)
 
 ## Pré-requisite
 
@@ -41,10 +48,10 @@ go mod download
 go run ./server.go
 
 # run test
-go test ./... -v -coverpkg=./... -coverprofile=coverage.out
+go test ./... -v -coverpkg=./... -coverprofile=c.out
 
 # take a look on coverage file in html after test
-go tool cover -html=coverage.out -o cover.html
+go tool cover -html=c.out -o cover.html
 
 # run lint
 $HOME/go/bin/revive -formatter friendly ./...
@@ -57,13 +64,7 @@ go get -u
 go mod tidy
 ```
 
-## How reset module / packages
-
-```bash
-make clean/go
-```
-
 ## TODO
 
-- Complete Test
+- Complete Test ()
 - Add Template

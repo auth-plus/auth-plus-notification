@@ -1,4 +1,4 @@
-// Package config contains ass configuration for application work
+// Package config contains all configuration for application work read more on https://github.com/golang-standards/project-layout#configs
 package config
 
 import "os"
