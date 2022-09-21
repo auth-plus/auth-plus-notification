@@ -12,7 +12,7 @@ jobs:
       APP_NAME: auth-plus-notification
       APP_PORT: 5001
       GO_ENV: test
-      GOOGLE_APPLICATION_CREDENTIALS: "/service-account-file.json"
+      GOOGLE_APPLICATION_CREDENTIALS: /home/runner/work/service-account-file.json
       SA_CONTENT: ${{ secrets.FIREBASE_SA_CREDENTIAL }}
       GOOGLE_APPLICATION_NAME: ${{ secrets.FIREBASE_PROJECT_ID }}
       SENDGRID_URL: https://api.sendgrid.com/v3/mail/send
@@ -30,8 +30,8 @@ jobs:
           go-version: "^1.19"
       - name: Create service-account file [TODO:REMOVE]
         run: |
-          touch /home/runner/work/service-account-file.json
-          echo "$SA_CONTENT" > /home/runner/work/service-account-file.json
+          touch $GOOGLE_APPLICATION_CREDENTIALS
+          echo "$SA_CONTENT" > $GOOGLE_APPLICATION_CREDENTIALS
       - name: Execute test
         run: go test ./... -coverpkg=./... -coverprofile=c.out
       - name: Code Climate Scan
