@@ -2,28 +2,26 @@
 package providers
 
 import (
+	"auth-plus-notification/config"
 	"context"
 	"fmt"
 	"log"
 
-	config "auth-plus-notification/config"
-
 	firebase "firebase.google.com/go"
-	messaging "firebase.google.com/go/messaging"
+	"firebase.google.com/go/messaging"
 	"google.golang.org/api/option"
 )
 
 // Firebase struct must contains all private property to work
 type Firebase struct {
-	app      *firebase.App
-	logopath string
+	app *firebase.App
 }
 
 // NewFirebase for instanciate a firebase provider
 func NewFirebase() *Firebase {
 	instance := new(Firebase)
 	env := config.GetEnv()
-	opt := option.WithCredentialsFile(env.Providers.Firebase.CredentialPath)
+	opt := option.WithCredentialsFile(env.Providers.Firebase.Credential)
 	config := &firebase.Config{ProjectID: env.Providers.Firebase.AppName}
 	app, err := firebase.NewApp(context.Background(), config, opt)
 	if err != nil {
@@ -38,15 +36,13 @@ func (e *Firebase) SendPN(deviceID string, title string, content string) (bool, 
 	ctx := context.Background()
 	client, err := e.app.Messaging(ctx)
 	if err != nil {
-		return false, err
+		log.Fatalf("error getting Messaging client: %v\n", err)
 	}
-
 	// See documentation on defining a message payload.
 	message := &messaging.Message{
 		Notification: &messaging.Notification{
-			Title:    title,
-			Body:     content,
-			ImageURL: e.logopath,
+			Title: title,
+			Body:  content,
 		},
 		Token: deviceID,
 	}

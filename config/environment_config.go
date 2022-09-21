@@ -17,8 +17,8 @@ type SendgridEnv struct {
 
 // FirebaseEnv is environment variable for firebase work
 type FirebaseEnv struct {
-	CredentialPath string
-	AppName        string
+	Credential string
+	AppName    string
 }
 
 // ProviderEnv contains all providers configurations
@@ -57,8 +57,8 @@ func GetEnv() Environment {
 		APIKey: os.Getenv("SENDGRID_API_KEY"),
 	}
 	firebase := FirebaseEnv{
-		CredentialPath: os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"),
-		AppName:        os.Getenv("GOOGLE_APPLICATION_NAME"),
+		Credential: os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"),
+		AppName:    os.Getenv("GOOGLE_APPLICATION_NAME"),
 	}
 	mailgun := MailgunEnv{
 		URL:    os.Getenv("MAILGUN_URL"),

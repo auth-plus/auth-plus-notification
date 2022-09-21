@@ -6,4 +6,5 @@
 !go.mod
 !go.sum
 !server.go
+!service-account-file.json
 !sonar-project.properties
