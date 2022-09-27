@@ -32,11 +32,12 @@ func NewFirebase() *Firebase {
 }
 
 // SendPN implementation of SendingPushNotification
-func (e *Firebase) SendPN(deviceID string, title string, content string) (bool, error) {
+func (e *Firebase) SendPN(deviceID string, title string, content string) error {
 	ctx := context.Background()
 	client, err := e.app.Messaging(ctx)
 	if err != nil {
 		log.Fatalf("error getting Messaging client: %v\n", err)
+		return err
 	}
 	// See documentation on defining a message payload.
 	message := &messaging.Message{
@@ -52,8 +53,9 @@ func (e *Firebase) SendPN(deviceID string, title string, content string) (bool, 
 	response, err := client.Send(ctx, message)
 	if err != nil {
 		log.Fatalln(err)
+		return err
 	}
 	// Response is a message ID string.
 	fmt.Println("Successfully sent message:", response)
-	return true, nil
+	return nil
 }

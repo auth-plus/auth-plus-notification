@@ -24,11 +24,11 @@ func (e *OneSignal) SendEmail(email string, content string) (bool, error) {
 }
 
 // SendPN implementation of SendingPushNotification
-func (e *OneSignal) SendPN(deviceID string, title string, content string) (bool, error) {
+func (e *OneSignal) SendPN(deviceID string, title string, content string) error {
 	fmt.Println("device Id:\t", deviceID)
 	fmt.Println("title:\t", title)
 	fmt.Println("content:\t", content)
-	return true, nil
+	return nil
 }
 
 // SendSms implementation of SendingSms

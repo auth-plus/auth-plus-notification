@@ -19,13 +19,13 @@ type PushNotificationUsecaseTestSuite struct {
 
 func (suite *PushNotificationUsecaseTestSuite) Test_succeed_when_sending() {
 	mockData := t.MockedData{}
-	err := faker.FakeData(&mockData)
-	if err != nil {
-		fmt.Println(err)
+	errMock := faker.FakeData(&mockData)
+	if errMock != nil {
+		fmt.Println(errMock)
 	}
 
 	firebaseMocked := new(t.FirebaseMocked)
-	firebaseMocked.On("SendPN", mockData.DeviceID, mockData.Title, mockData.Content).Return(true, nil)
+	firebaseMocked.On("SendPN", mockData.DeviceID, mockData.Title, mockData.Content).Return(nil)
 
 	const number = 0.7
 	randomManager := new(t.RandomPushNotificationManagerMocked)
@@ -33,20 +33,19 @@ func (suite *PushNotificationUsecaseTestSuite) Test_succeed_when_sending() {
 	randomManager.On("ChooseProvider", number).Return(firebaseMocked, nil)
 
 	pnUsecase := u.NewPushNotificationUsecase(randomManager)
-	resp, err := pnUsecase.Send(mockData.DeviceID, mockData.Title, mockData.Content)
-	assert.Equal(suite.T(), resp, true)
+	err := pnUsecase.Send(mockData.DeviceID, mockData.Title, mockData.Content)
 	assert.Equal(suite.T(), err, nil)
 }
 
 func (suite *PushNotificationUsecaseTestSuite) Test_fail_when_sending() {
 	mockData := t.MockedData{}
-	err := faker.FakeData(&mockData)
-	if err != nil {
-		fmt.Println(err)
+	errMock := faker.FakeData(&mockData)
+	if errMock != nil {
+		fmt.Println(errMock)
 	}
 
 	firebaseMocked := new(t.FirebaseMocked)
-	firebaseMocked.On("SendPN", mockData.DeviceID, mockData.Title, mockData.Content).Return(false, errors.New("failed"))
+	firebaseMocked.On("SendPN", mockData.DeviceID, mockData.Title, mockData.Content).Return(errors.New("failed"))
 
 	const number = 0.7
 	randomManager := new(t.RandomPushNotificationManagerMocked)
@@ -54,8 +53,7 @@ func (suite *PushNotificationUsecaseTestSuite) Test_fail_when_sending() {
 	randomManager.On("ChooseProvider", number).Return(firebaseMocked, nil)
 
 	pnUsecase := u.NewPushNotificationUsecase(randomManager)
-	resp, err := pnUsecase.Send(mockData.DeviceID, mockData.Title, mockData.Content)
-	assert.Equal(suite.T(), resp, false)
+	err := pnUsecase.Send(mockData.DeviceID, mockData.Title, mockData.Content)
 	assert.Equal(suite.T(), err.Error(), "failed")
 }
 

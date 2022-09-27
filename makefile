@@ -12,8 +12,8 @@ dev:
 	docker-compose up -d api
 	docker-compose exec api sh
 
-.PHONY: test/ci
-test/ci:
+.PHONY: test
+test:
 	make infra/up
 	docker-compose up -d api
 	docker-compose exec -T api go test ./... -coverpkg=./... -coverprofile=c.out 

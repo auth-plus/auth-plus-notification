@@ -17,14 +17,14 @@ func NewPushNotificationUsecase(manager d.PushNotificatioManager) *PushNotificat
 }
 
 // Send method for sending an push notification by using manager on dependecy
-func (e *PushNotificationUsecase) Send(deviceID string, title string, content string) (bool, error) {
+func (e *PushNotificationUsecase) Send(deviceID string, title string, content string) error {
 	number, errI := e.manager.GetInput()
 	if errI != nil {
-		return false, errI
+		return errI
 	}
 	provider, errC := e.manager.ChooseProvider(number)
 	if errC != nil {
-		return false, errC
+		return errC
 	}
 	return provider.SendPN(deviceID, title, content)
 }
