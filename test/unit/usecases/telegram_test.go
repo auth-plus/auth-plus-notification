@@ -19,13 +19,13 @@ type TelegramUsecaseTestSuite struct {
 
 func (suite *TelegramUsecaseTestSuite) Test_succeed_when_sending() {
 	mockData := t.MockedData{}
-	err := faker.FakeData(&mockData)
-	if err != nil {
-		fmt.Println(err)
+	errMock := faker.FakeData(&mockData)
+	if errMock != nil {
+		fmt.Println(errMock)
 	}
 
 	telegramMocked := new(t.TelegramMocked)
-	telegramMocked.On("SendTele", mockData.ChatID, mockData.Content).Return(true, nil)
+	telegramMocked.On("SendTele", mockData.ChatID, mockData.Content).Return(nil)
 
 	const number = 0.7
 	randomManager := new(t.RandomTelegramManagerMocked)
@@ -33,20 +33,19 @@ func (suite *TelegramUsecaseTestSuite) Test_succeed_when_sending() {
 	randomManager.On("ChooseProvider", number).Return(telegramMocked, nil)
 
 	telegramUsecase := u.NewTelegramUsecase(randomManager)
-	resp, err := telegramUsecase.Send(mockData.ChatID, mockData.Content)
-	assert.Equal(suite.T(), resp, true)
+	err := telegramUsecase.Send(mockData.ChatID, mockData.Content)
 	assert.Equal(suite.T(), err, nil)
 }
 
 func (suite *TelegramUsecaseTestSuite) Test_fail_when_sending() {
 	mockData := t.MockedData{}
-	err := faker.FakeData(&mockData)
-	if err != nil {
-		fmt.Println(err)
+	errMock := faker.FakeData(&mockData)
+	if errMock != nil {
+		fmt.Println(errMock)
 	}
 
 	telegramMocked := new(t.TelegramMocked)
-	telegramMocked.On("SendTele", mockData.ChatID, mockData.Content).Return(false, errors.New("failed"))
+	telegramMocked.On("SendTele", mockData.ChatID, mockData.Content).Return(errors.New("failed"))
 
 	const number = 0.7
 	randomManager := new(t.RandomTelegramManagerMocked)
@@ -54,8 +53,7 @@ func (suite *TelegramUsecaseTestSuite) Test_fail_when_sending() {
 	randomManager.On("ChooseProvider", number).Return(telegramMocked, nil)
 
 	telegramUsecase := u.NewTelegramUsecase(randomManager)
-	resp, err := telegramUsecase.Send(mockData.ChatID, mockData.Content)
-	assert.Equal(suite.T(), resp, false)
+	err := telegramUsecase.Send(mockData.ChatID, mockData.Content)
 	assert.Equal(suite.T(), err.Error(), "failed")
 }
 

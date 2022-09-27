@@ -19,13 +19,13 @@ type EmailUsecaseTestSuite struct {
 
 func (suite *EmailUsecaseTestSuite) Test_succeed_when_sending() {
 	mockData := t.MockedData{}
-	err := faker.FakeData(&mockData)
-	if err != nil {
-		fmt.Println(err)
+	errMock := faker.FakeData(&mockData)
+	if errMock != nil {
+		fmt.Println(errMock)
 	}
 
 	sendgridMocked := new(t.SendgridMocked)
-	sendgridMocked.On("SendEmail", mockData.Email, mockData.Content).Return(true, nil)
+	sendgridMocked.On("SendEmail", mockData.Email, mockData.Content).Return(nil)
 
 	const number = 0.4
 	randomEmailManager := new(t.RandomEmailManagerMocked)
@@ -33,20 +33,19 @@ func (suite *EmailUsecaseTestSuite) Test_succeed_when_sending() {
 	randomEmailManager.On("ChooseProvider", number).Return(sendgridMocked, nil)
 
 	emailUsecase := u.NewEmailUsecase(randomEmailManager)
-	resp, err := emailUsecase.Send(mockData.Email, mockData.Content)
-	assert.Equal(suite.T(), resp, true)
+	err := emailUsecase.Send(mockData.Email, mockData.Content)
 	assert.Equal(suite.T(), err, nil)
 }
 
 func (suite *EmailUsecaseTestSuite) Test_fail_when_sending() {
 	mockData := t.MockedData{}
-	err := faker.FakeData(&mockData)
-	if err != nil {
-		fmt.Println(err)
+	errMock := faker.FakeData(&mockData)
+	if errMock != nil {
+		fmt.Println(errMock)
 	}
 
 	sendgridMocked := new(t.SendgridMocked)
-	sendgridMocked.On("SendEmail", mockData.Email, mockData.Content).Return(false, errors.New("failed"))
+	sendgridMocked.On("SendEmail", mockData.Email, mockData.Content).Return(errors.New("failed"))
 
 	const number = 0.4
 	randomEmailManager := new(t.RandomEmailManagerMocked)
@@ -54,8 +53,7 @@ func (suite *EmailUsecaseTestSuite) Test_fail_when_sending() {
 	randomEmailManager.On("ChooseProvider", number).Return(sendgridMocked, nil)
 
 	emailUsecase := u.NewEmailUsecase(randomEmailManager)
-	resp, err := emailUsecase.Send(mockData.Email, mockData.Content)
-	assert.Equal(suite.T(), resp, false)
+	err := emailUsecase.Send(mockData.Email, mockData.Content)
 	assert.Equal(suite.T(), err.Error(), "failed")
 }
 

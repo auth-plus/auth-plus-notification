@@ -17,14 +17,14 @@ func NewWhatsappUsecase(manager d.WhatsappManager) *WhatsappUsecase {
 }
 
 // Send method for sending an whatsapp by using manager on dependecy
-func (e *WhatsappUsecase) Send(phone string, content string) (bool, error) {
+func (e *WhatsappUsecase) Send(phone string, content string) error {
 	number, errI := e.manager.GetInput()
 	if errI != nil {
-		return false, errI
+		return errI
 	}
 	provider, errC := e.manager.ChooseProvider(number)
 	if errC != nil {
-		return false, errC
+		return errC
 	}
 	return provider.SendWhats(phone, content)
 }

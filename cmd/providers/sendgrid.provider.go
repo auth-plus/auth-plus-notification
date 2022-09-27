@@ -33,7 +33,7 @@ func NewSendgrid() *Sendgrid {
 }
 
 // SendEmail implementation of SendingEmail
-func (e *Sendgrid) SendEmail(email string, content string) (bool, error) {
+func (e *Sendgrid) SendEmail(email string, content string) error {
 	client := &http.Client{}
 	emailPayload := SendgridEmailPayload{
 		Personalizations: "",
@@ -41,25 +41,25 @@ func (e *Sendgrid) SendEmail(email string, content string) (bool, error) {
 		Subject:          "",
 		Content:          "",
 	}
-	json, err := json.Marshal(emailPayload)
-	if err != nil {
-		return false, err
+	json, errJSON := json.Marshal(emailPayload)
+	if errJSON != nil {
+		return errJSON
 	}
-	req, err := http.NewRequest("POST", e.url, bytes.NewBuffer(json))
-	if err != nil {
-		return false, err
+	req, errReq := http.NewRequest("POST", e.url, bytes.NewBuffer(json))
+	if errReq != nil {
+		return errReq
 	}
 	req.Header.Add("Content-Type", `application/json`)
 	req.Header.Add("Authorization", "Bearer "+e.token)
-	resp, err := client.Do(req)
-	if err != nil {
-		return false, err
+	resp, errExec := client.Do(req)
+	if errExec != nil {
+		return errExec
 	}
-	f, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return false, err
+	f, errBody := ioutil.ReadAll(resp.Body)
+	if errBody != nil {
+		return errBody
 	}
 	defer resp.Body.Close()
 	fmt.Println(string(f))
-	return true, nil
+	return nil
 }

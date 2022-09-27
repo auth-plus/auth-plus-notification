@@ -18,14 +18,14 @@ func NewEmailUsecase(manager se.EmailManager) *EmailUsecase {
 }
 
 // Send method for sending an email by using manager on dependecy
-func (e *EmailUsecase) Send(email string, content string) (bool, error) {
+func (e *EmailUsecase) Send(email string, content string) error {
 	number, errI := e.manager.GetInput()
 	if errI != nil {
-		return false, errI
+		return errI
 	}
 	provider, errC := e.manager.ChooseProvider(number)
 	if errC != nil {
-		return false, errC
+		return errC
 	}
 	return provider.SendEmail(email, content)
 }

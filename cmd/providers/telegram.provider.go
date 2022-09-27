@@ -21,7 +21,7 @@ func NewTelegram() *Telegram {
 }
 
 // SendTele implementation of SendingTelegram
-func (e *Telegram) SendTele(chatID int64, text string) (bool, error) {
+func (e *Telegram) SendTele(chatID int64, text string) error {
 	bot, err := tgbotapi.NewBotAPI("MyAwesomeBotToken")
 	if err != nil {
 		log.Fatal(err)
@@ -31,8 +31,8 @@ func (e *Telegram) SendTele(chatID int64, text string) (bool, error) {
 		// Note that panics are a bad way to handle errors. Telegram can
 		// have service outages or network errors, you should retry sending
 		// messages or more gracefully handle failures.
-		return false, err
+		return err
 	}
-	return true, nil
+	return nil
 
 }
