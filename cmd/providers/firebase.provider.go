@@ -2,55 +2,67 @@
 package providers
 
 import (
-	"auth-plus-notification/config"
-	"context"
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 
-	firebase "firebase.google.com/go"
-	"firebase.google.com/go/messaging"
-	"google.golang.org/api/option"
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/google"
 )
 
 // Firebase struct must contains all private property to work
 type Firebase struct {
-	app *firebase.App
+	client *http.Client
 }
 
 // NewFirebase for instanciate a firebase provider
 func NewFirebase() *Firebase {
 	instance := new(Firebase)
-	env := config.GetEnv()
-	opt := option.WithCredentialsFile(env.Providers.Firebase.Credential)
-	config := &firebase.Config{ProjectID: env.Providers.Firebase.AppName}
-	app, err := firebase.NewApp(context.Background(), config, opt)
+	// env := config.GetEnv()
+	client, err := google.DefaultClient(oauth2.NoContext,
+		"https://www.googleapis.com/auth/firebase.messaging")
 	if err != nil {
-		log.Fatalf("error initializing app: %v\n", err)
+		log.Fatal(err)
 	}
-	instance.app = app
+	instance.client = client
 	return instance
+}
+
+type notificationContent struct {
+	Title string `json:"title"`
+	Body  string `json:"body"`
+}
+type notification struct {
+	Notification notificationContent `json:"notification"`
+	Token        string              `json:"token"`
+}
+
+type payload struct {
+	Message notification `json:"message"`
 }
 
 // SendPN implementation of SendingPushNotification
 func (e *Firebase) SendPN(deviceID string, title string, content string) error {
-	ctx := context.Background()
-	client, err := e.app.Messaging(ctx)
-	if err != nil {
-		log.Fatalf("error getting Messaging client: %v\n", err)
-		return err
-	}
 	// See documentation on defining a message payload.
-	message := &messaging.Message{
-		Notification: &messaging.Notification{
-			Title: title,
-			Body:  content,
+	message := payload{
+		Message: notification{
+			Notification: notificationContent{
+				Title: title,
+				Body:  content,
+			},
+			Token: deviceID,
 		},
-		Token: deviceID,
 	}
+	jsonData, err := json.Marshal(message)
 
+	if err != nil {
+		log.Fatal(err)
+	}
 	// Send a message to the device corresponding to the provided
 	// registration token.
-	response, err := client.Send(ctx, message)
+	response, err := e.client.Post("https://fcm.googleapis.com/v1/projects/auth-plus-c2b74/messages:send", "application/json", bytes.NewBuffer(jsonData))
 	if err != nil {
 		log.Fatalln(err)
 		return err

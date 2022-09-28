@@ -40,7 +40,7 @@ make clean/docker
 
 ## Commands with Local Setup
 
-```bash
+```go
 # install dependecies on local
 go mod download
 

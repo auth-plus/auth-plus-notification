@@ -31,6 +31,9 @@ func (suite *FirebaseTestSuite) Test_succeed_when_sending() {
 		Post("/messages:send").
 		Reply(200)
 
+	gock.New("https://oauth2.googleapis.com").
+		Post("/token").
+		Reply(200).Body()
 	provider := p.NewFirebase()
 	err := provider.SendPN(DeviceID, mockData.Title, mockData.Content)
 	assert.Equal(suite.T(), err, nil)
