@@ -17,14 +17,14 @@ func NewSmsUsecase(manager d.SmsManager) *SmsUsecase {
 }
 
 // Send method for sending an sms by using manager on dependecy
-func (e *SmsUsecase) Send(phone string, content string) (bool, error) {
+func (e *SmsUsecase) Send(phone string, content string) error {
 	number, errI := e.manager.GetInput()
 	if errI != nil {
-		return false, errI
+		return errI
 	}
 	provider, errC := e.manager.ChooseProvider(number)
 	if errC != nil {
-		return false, errC
+		return errC
 	}
 	return provider.SendSms(phone, content)
 }

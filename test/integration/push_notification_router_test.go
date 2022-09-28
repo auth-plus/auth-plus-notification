@@ -24,8 +24,9 @@ func TestPushNotificationHandler(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
+	const deviceID string = "eqEiHBNFOisH1w2wlmZgUH:APA91bGV0clbAlzqgzgRJOFXawN1Kp4163nwjRSWZ46pNXnfBbwEiaV-Bop4R2YrnliXPMic3XXa9N7DU_orVMPjc7bPrgJcGk9bqwRzJYfR62J5fGdg_umaeSyHTyyTQeDGhRoBSsjR"
 	payload := routes.PushNotificationRequestBody{
-		DeviceID: mockData.DeviceID,
+		DeviceID: deviceID,
 		Title:    mockData.Title,
 		Content:  mockData.Content,
 	}
@@ -33,7 +34,6 @@ func TestPushNotificationHandler(t *testing.T) {
 	req, _ := http.NewRequest("POST", "/push_notification", bytes.NewBuffer(jsonValue))
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
-
 	responseData, _ := ioutil.ReadAll(w.Body)
 	assert.Equal(t, "Ok", string(responseData))
 	assert.Equal(t, http.StatusOK, w.Code)

@@ -15,7 +15,7 @@ import (
 func Server() *gin.Engine {
 
 	router := gin.New()
-
+	gin.SetMode(gin.ReleaseMode)
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true
 	router.Use(cors.New(config))

@@ -33,7 +33,7 @@ func NewMailgun() *Mailgun {
 }
 
 // SendEmail implementation of SendingEmail
-func (e *Mailgun) SendEmail(email string, content string) (bool, error) {
+func (e *Mailgun) SendEmail(email string, content string) error {
 	client := &http.Client{}
 	emailPayload := MailgunEmailPayload{
 		Personalizations: "",
@@ -43,23 +43,23 @@ func (e *Mailgun) SendEmail(email string, content string) (bool, error) {
 	}
 	json, err := json.Marshal(emailPayload)
 	if err != nil {
-		return false, err
+		return err
 	}
 	req, err := http.NewRequest("POST", e.url, bytes.NewBuffer(json))
 	if err != nil {
-		return false, err
+		return err
 	}
 	req.Header.Add("Content-Type", `application/json`)
 	req.Header.Add("Authorization", "Bearer "+e.token)
 	resp, err := client.Do(req)
 	if err != nil {
-		return false, err
+		return err
 	}
 	f, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return false, err
+		return err
 	}
 	defer resp.Body.Close()
 	fmt.Println(string(f))
-	return true, nil
+	return nil
 }

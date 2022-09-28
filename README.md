@@ -29,7 +29,7 @@ Please follow example.env
 
 ```makefile
 # make test on the same condition where it's executed on CI
-make test/ci
+make test
 
 # developer on docker
 make dev
@@ -40,7 +40,7 @@ make clean/docker
 
 ## Commands with Local Setup
 
-```bash
+```go
 # install dependecies on local
 go mod download
 

@@ -17,14 +17,14 @@ func NewTelegramUsecase(manager d.TelegramManager) *TelegramUsecase {
 }
 
 // Send method for sending an telegram message by using manager on dependecy
-func (e *TelegramUsecase) Send(chatID int64, text string) (bool, error) {
+func (e *TelegramUsecase) Send(chatID int64, text string) error {
 	number, errI := e.manager.GetInput()
 	if errI != nil {
-		return false, errI
+		return errI
 	}
 	provider, errC := e.manager.ChooseProvider(number)
 	if errC != nil {
-		return false, errC
+		return errC
 	}
 	return provider.SendTele(chatID, text)
 }
