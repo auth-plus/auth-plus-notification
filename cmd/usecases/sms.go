@@ -6,11 +6,11 @@ import (
 
 // SmsUsecase dependencies
 type SmsUsecase struct {
-	manager d.SmsManager
+	manager d.Manager[d.SendingSms]
 }
 
 // NewSmsUsecase for instanciate a sms usecase
-func NewSmsUsecase(manager d.SmsManager) *SmsUsecase {
+func NewSmsUsecase(manager d.Manager[d.SendingSms]) *SmsUsecase {
 	instance := new(SmsUsecase)
 	instance.manager = manager
 	return instance

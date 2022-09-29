@@ -6,11 +6,11 @@ import (
 
 // WhatsappUsecase dependencies
 type WhatsappUsecase struct {
-	manager d.WhatsappManager
+	manager d.Manager[d.SendingWhatsapp]
 }
 
 // NewWhatsappUsecase for instanciate a whatsapp usecase
-func NewWhatsappUsecase(manager d.WhatsappManager) *WhatsappUsecase {
+func NewWhatsappUsecase(manager d.Manager[d.SendingWhatsapp]) *WhatsappUsecase {
 	instance := new(WhatsappUsecase)
 	instance.manager = manager
 	return instance

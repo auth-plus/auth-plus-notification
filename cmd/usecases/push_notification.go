@@ -6,11 +6,11 @@ import (
 
 // PushNotificationUsecase dependencies
 type PushNotificationUsecase struct {
-	manager d.PushNotificatioManager
+	manager d.Manager[d.SendingPushNotification]
 }
 
 // NewPushNotificationUsecase for instanciate a push notification usecase
-func NewPushNotificationUsecase(manager d.PushNotificatioManager) *PushNotificationUsecase {
+func NewPushNotificationUsecase(manager d.Manager[d.SendingPushNotification]) *PushNotificationUsecase {
 	instance := new(PushNotificationUsecase)
 	instance.manager = manager
 	return instance

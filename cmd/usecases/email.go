@@ -7,11 +7,11 @@ import (
 
 // EmailUsecase dependencies
 type EmailUsecase struct {
-	manager se.EmailManager
+	manager se.Manager[se.SendingEmail]
 }
 
 // NewEmailUsecase for instanciate a email usecase
-func NewEmailUsecase(manager se.EmailManager) *EmailUsecase {
+func NewEmailUsecase(manager se.Manager[se.SendingEmail]) *EmailUsecase {
 	instance := new(EmailUsecase)
 	instance.manager = manager
 	return instance

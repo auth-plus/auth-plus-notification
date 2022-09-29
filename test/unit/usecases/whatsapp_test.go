@@ -2,6 +2,7 @@ package test
 
 import (
 	u "auth-plus-notification/cmd/usecases"
+	d "auth-plus-notification/cmd/usecases/driven"
 	t "auth-plus-notification/test/mocks"
 
 	"errors"
@@ -28,7 +29,7 @@ func (suite *WhatsappUsecaseTestSuite) Test_succeed_when_sending() {
 	twilioMocked.On("SendWhats", mockData.Phone, mockData.Content).Return(nil)
 
 	const number = 0.7
-	randomManager := new(t.RandomWhatsappManagerMocked)
+	randomManager := new(t.ManagerMocked[d.SendingWhatsapp])
 	randomManager.On("GetInput").Return(number, nil)
 	randomManager.On("ChooseProvider", number).Return(twilioMocked, nil)
 
@@ -48,7 +49,7 @@ func (suite *WhatsappUsecaseTestSuite) Test_fail_when_sending() {
 	twilioMocked.On("SendWhats", mockData.Phone, mockData.Content).Return(errors.New("failed"))
 
 	const number = 0.7
-	randomManager := new(t.RandomWhatsappManagerMocked)
+	randomManager := new(t.ManagerMocked[d.SendingWhatsapp])
 	randomManager.On("GetInput").Return(number, nil)
 	randomManager.On("ChooseProvider", number).Return(twilioMocked, nil)
 

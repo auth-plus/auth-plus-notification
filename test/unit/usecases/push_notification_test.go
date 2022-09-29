@@ -2,6 +2,7 @@ package test
 
 import (
 	u "auth-plus-notification/cmd/usecases"
+	d "auth-plus-notification/cmd/usecases/driven"
 	t "auth-plus-notification/test/mocks"
 
 	"errors"
@@ -28,7 +29,7 @@ func (suite *PushNotificationUsecaseTestSuite) Test_succeed_when_sending() {
 	firebaseMocked.On("SendPN", mockData.DeviceID, mockData.Title, mockData.Content).Return(nil)
 
 	const number = 0.7
-	randomManager := new(t.RandomPushNotificationManagerMocked)
+	randomManager := new(t.ManagerMocked[d.SendingPushNotification])
 	randomManager.On("GetInput").Return(number, nil)
 	randomManager.On("ChooseProvider", number).Return(firebaseMocked, nil)
 
@@ -48,7 +49,7 @@ func (suite *PushNotificationUsecaseTestSuite) Test_fail_when_sending() {
 	firebaseMocked.On("SendPN", mockData.DeviceID, mockData.Title, mockData.Content).Return(errors.New("failed"))
 
 	const number = 0.7
-	randomManager := new(t.RandomPushNotificationManagerMocked)
+	randomManager := new(t.ManagerMocked[d.SendingPushNotification])
 	randomManager.On("GetInput").Return(number, nil)
 	randomManager.On("ChooseProvider", number).Return(firebaseMocked, nil)
 
