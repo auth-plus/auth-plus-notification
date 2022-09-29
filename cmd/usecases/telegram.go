@@ -6,11 +6,11 @@ import (
 
 // TelegramUsecase dependencies
 type TelegramUsecase struct {
-	manager d.Manager[d.SendingTelegram]
+	manager d.Manager[d.SendingTelegram, float64]
 }
 
 // NewTelegramUsecase for instanciate a Telegram usecase
-func NewTelegramUsecase(manager d.Manager[d.SendingTelegram]) *TelegramUsecase {
+func NewTelegramUsecase(manager d.Manager[d.SendingTelegram, float64]) *TelegramUsecase {
 	instance := new(TelegramUsecase)
 	instance.manager = manager
 	return instance

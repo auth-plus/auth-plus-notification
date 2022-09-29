@@ -10,11 +10,11 @@ import (
 	t "auth-plus-notification/test/mocks"
 )
 
-type PushNotificationManagerTestSuite struct {
+type RandomPushNotificationManagerTestSuite struct {
 	suite.Suite
 }
 
-func (suite *PushNotificationManagerTestSuite) Test_succeed_when_choosing_firebase() {
+func (suite *RandomPushNotificationManagerTestSuite) Test_succeed_when_choosing_firebase() {
 	firebaseMocked := new(t.FirebaseMocked)
 	onesignalMocked := new(t.OnesignalMocked)
 	const number = 0.7
@@ -24,7 +24,7 @@ func (suite *PushNotificationManagerTestSuite) Test_succeed_when_choosing_fireba
 	assert.Equal(suite.T(), err, nil)
 }
 
-func (suite *PushNotificationManagerTestSuite) Test_succeed_when_choosing_onesignal() {
+func (suite *RandomPushNotificationManagerTestSuite) Test_succeed_when_choosing_onesignal() {
 	firebaseMocked := new(t.FirebaseMocked)
 	onesignalMocked := new(t.OnesignalMocked)
 
@@ -36,5 +36,5 @@ func (suite *PushNotificationManagerTestSuite) Test_succeed_when_choosing_onesig
 }
 
 func TestPushNotificationManager(t *testing.T) {
-	suite.Run(t, new(PushNotificationManagerTestSuite))
+	suite.Run(t, new(RandomPushNotificationManagerTestSuite))
 }

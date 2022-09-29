@@ -29,7 +29,7 @@ func (suite *TelegramUsecaseTestSuite) Test_succeed_when_sending() {
 	telegramMocked.On("SendTele", mockData.ChatID, mockData.Content).Return(nil)
 
 	const number = 0.7
-	randomManager := new(t.ManagerMocked[d.SendingTelegram])
+	randomManager := new(t.ManagerMocked[d.SendingTelegram, float64])
 	randomManager.On("GetInput").Return(number, nil)
 	randomManager.On("ChooseProvider", number).Return(telegramMocked, nil)
 
@@ -49,7 +49,7 @@ func (suite *TelegramUsecaseTestSuite) Test_fail_when_sending() {
 	telegramMocked.On("SendTele", mockData.ChatID, mockData.Content).Return(errors.New("failed"))
 
 	const number = 0.7
-	randomManager := new(t.ManagerMocked[d.SendingTelegram])
+	randomManager := new(t.ManagerMocked[d.SendingTelegram, float64])
 	randomManager.On("GetInput").Return(number, nil)
 	randomManager.On("ChooseProvider", number).Return(telegramMocked, nil)
 

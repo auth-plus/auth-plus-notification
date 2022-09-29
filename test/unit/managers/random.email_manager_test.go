@@ -10,11 +10,11 @@ import (
 	t "auth-plus-notification/test/mocks"
 )
 
-type EmailManagerTestSuite struct {
+type RandomEmailManagerTestSuite struct {
 	suite.Suite
 }
 
-func (suite *EmailManagerTestSuite) Test_succeed_when_choosing_sendgrid() {
+func (suite *RandomEmailManagerTestSuite) Test_succeed_when_choosing_sendgrid() {
 	sendgridMocked := new(t.SendgridMocked)
 	mailgunMocked := new(t.MailgunMocked)
 	onesignalMocked := new(t.OnesignalMocked)
@@ -25,7 +25,7 @@ func (suite *EmailManagerTestSuite) Test_succeed_when_choosing_sendgrid() {
 	assert.Equal(suite.T(), err, nil)
 }
 
-func (suite *EmailManagerTestSuite) Test_succeed_when_choosing_onesignal() {
+func (suite *RandomEmailManagerTestSuite) Test_succeed_when_choosing_onesignal() {
 	sendgridMocked := new(t.SendgridMocked)
 	mailgunMocked := new(t.MailgunMocked)
 	onesignalMocked := new(t.OnesignalMocked)
@@ -37,7 +37,7 @@ func (suite *EmailManagerTestSuite) Test_succeed_when_choosing_onesignal() {
 	assert.Equal(suite.T(), err, nil)
 }
 
-func (suite *EmailManagerTestSuite) Test_succeed_when_choosing_mailgun() {
+func (suite *RandomEmailManagerTestSuite) Test_succeed_when_choosing_mailgun() {
 	sendgridMocked := new(t.SendgridMocked)
 	mailgunMocked := new(t.MailgunMocked)
 	onesignalMocked := new(t.OnesignalMocked)
@@ -50,5 +50,5 @@ func (suite *EmailManagerTestSuite) Test_succeed_when_choosing_mailgun() {
 }
 
 func TestEmailManager(t *testing.T) {
-	suite.Run(t, new(EmailManagerTestSuite))
+	suite.Run(t, new(RandomEmailManagerTestSuite))
 }
