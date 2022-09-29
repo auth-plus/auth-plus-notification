@@ -2,6 +2,7 @@ package test
 
 import (
 	u "auth-plus-notification/cmd/usecases"
+	d "auth-plus-notification/cmd/usecases/driven"
 	t "auth-plus-notification/test/mocks"
 
 	"errors"
@@ -28,7 +29,7 @@ func (suite *SmsUsecaseTestSuite) Test_succeed_when_sending() {
 	snsMocked.On("SendSms", mockData.Phone, mockData.Content).Return(nil)
 
 	const number = 0.7
-	randomManager := new(t.RandomSmsManagerMocked)
+	randomManager := new(t.ManagerMocked[d.SendingSms])
 	randomManager.On("GetInput").Return(number, nil)
 	randomManager.On("ChooseProvider", number).Return(snsMocked, nil)
 
@@ -48,7 +49,7 @@ func (suite *SmsUsecaseTestSuite) Test_fail_when_sending() {
 	snsMocked.On("SendSms", mockData.Phone, mockData.Content).Return(errors.New("failed"))
 
 	const number = 0.7
-	randomManager := new(t.RandomSmsManagerMocked)
+	randomManager := new(t.ManagerMocked[d.SendingSms])
 	randomManager.On("GetInput").Return(number, nil)
 	randomManager.On("ChooseProvider", number).Return(snsMocked, nil)
 

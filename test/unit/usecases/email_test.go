@@ -2,6 +2,7 @@ package test
 
 import (
 	u "auth-plus-notification/cmd/usecases"
+	d "auth-plus-notification/cmd/usecases/driven"
 	t "auth-plus-notification/test/mocks"
 
 	"errors"
@@ -28,7 +29,7 @@ func (suite *EmailUsecaseTestSuite) Test_succeed_when_sending() {
 	sendgridMocked.On("SendEmail", mockData.Email, mockData.Content).Return(nil)
 
 	const number = 0.4
-	randomEmailManager := new(t.RandomEmailManagerMocked)
+	randomEmailManager := new(t.ManagerMocked[d.SendingEmail])
 	randomEmailManager.On("GetInput").Return(number, nil)
 	randomEmailManager.On("ChooseProvider", number).Return(sendgridMocked, nil)
 
@@ -48,7 +49,7 @@ func (suite *EmailUsecaseTestSuite) Test_fail_when_sending() {
 	sendgridMocked.On("SendEmail", mockData.Email, mockData.Content).Return(errors.New("failed"))
 
 	const number = 0.4
-	randomEmailManager := new(t.RandomEmailManagerMocked)
+	randomEmailManager := new(t.ManagerMocked[d.SendingEmail])
 	randomEmailManager.On("GetInput").Return(number, nil)
 	randomEmailManager.On("ChooseProvider", number).Return(sendgridMocked, nil)
 
