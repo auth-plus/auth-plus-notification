@@ -10,11 +10,11 @@ import (
 	t "auth-plus-notification/test/mocks"
 )
 
-type SmsManagerTestSuite struct {
+type RandomSmsManagerTestSuite struct {
 	suite.Suite
 }
 
-func (suite *SmsManagerTestSuite) Test_succeed_when_choosing_sns() {
+func (suite *RandomSmsManagerTestSuite) Test_succeed_when_choosing_sns() {
 	snsMocked := new(t.SnsMocked)
 	onesignalMocked := new(t.OnesignalMocked)
 	const number = 0.7
@@ -24,7 +24,7 @@ func (suite *SmsManagerTestSuite) Test_succeed_when_choosing_sns() {
 	assert.Equal(suite.T(), err, nil)
 }
 
-func (suite *SmsManagerTestSuite) Test_succeed_when_choosing_onesignal() {
+func (suite *RandomSmsManagerTestSuite) Test_succeed_when_choosing_onesignal() {
 	snsMocked := new(t.SnsMocked)
 	onesignalMocked := new(t.OnesignalMocked)
 
@@ -36,5 +36,5 @@ func (suite *SmsManagerTestSuite) Test_succeed_when_choosing_onesignal() {
 }
 
 func TestSmsManager(t *testing.T) {
-	suite.Run(t, new(PushNotificationManagerTestSuite))
+	suite.Run(t, new(RandomPushNotificationManagerTestSuite))
 }

@@ -10,11 +10,11 @@ import (
 	t "auth-plus-notification/test/mocks"
 )
 
-type WhatsappManagerTestSuite struct {
+type RandomWhatsappManagerTestSuite struct {
 	suite.Suite
 }
 
-func (suite *WhatsappManagerTestSuite) Test_succeed_when_choosing_twilio() {
+func (suite *RandomWhatsappManagerTestSuite) Test_succeed_when_choosing_twilio() {
 	twilioMocked := new(t.TwilioMocked)
 	const number = 0.7
 	smsManager := m.NewRandomWhatsappManager(twilioMocked)
@@ -24,5 +24,5 @@ func (suite *WhatsappManagerTestSuite) Test_succeed_when_choosing_twilio() {
 }
 
 func TestWhatsappManager(t *testing.T) {
-	suite.Run(t, new(PushNotificationManagerTestSuite))
+	suite.Run(t, new(RandomPushNotificationManagerTestSuite))
 }

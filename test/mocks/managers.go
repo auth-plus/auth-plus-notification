@@ -5,18 +5,18 @@ import (
 )
 
 // ManagerMocked is a mock for Manager interface
-type ManagerMocked[Provider any] struct {
+type ManagerMocked[Provider any, Input any] struct {
 	mock.Mock
 }
 
 // GetInput mocking of EmailManager method
-func (m *ManagerMocked[P]) GetInput() (float64, error) {
+func (m *ManagerMocked[Provider, Input]) GetInput() (Input, error) {
 	args := m.Called()
-	return args.Get(0).(float64), args.Error(1)
+	return args.Get(0).(Input), args.Error(1)
 }
 
 // ChooseProvider mocking of EmailManager method
-func (m *ManagerMocked[Provider]) ChooseProvider(number float64) (Provider, error) {
-	args := m.Called(number)
+func (m *ManagerMocked[Provider, Input]) ChooseProvider(ipt Input) (Provider, error) {
+	args := m.Called(ipt)
 	return args.Get(0).(Provider), args.Error(1)
 }

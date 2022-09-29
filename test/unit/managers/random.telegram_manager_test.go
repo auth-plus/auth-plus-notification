@@ -10,11 +10,11 @@ import (
 	t "auth-plus-notification/test/mocks"
 )
 
-type TelegramManagerTestSuite struct {
+type RandomTelegramManagerTestSuite struct {
 	suite.Suite
 }
 
-func (suite *TelegramManagerTestSuite) Test_succeed_when_choosing_telegram() {
+func (suite *RandomTelegramManagerTestSuite) Test_succeed_when_choosing_telegram() {
 	telegramMocked := new(t.TelegramMocked)
 	const number = 0.7
 	smsManager := m.NewRandomTelegramManager(telegramMocked)
@@ -24,5 +24,5 @@ func (suite *TelegramManagerTestSuite) Test_succeed_when_choosing_telegram() {
 }
 
 func TestTelegramManager(t *testing.T) {
-	suite.Run(t, new(PushNotificationManagerTestSuite))
+	suite.Run(t, new(RandomPushNotificationManagerTestSuite))
 }

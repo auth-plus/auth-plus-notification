@@ -28,7 +28,8 @@ func NewCore() Core {
 	onesignal := p.NewOneSignal()
 
 	//Managers
-	emailManager := m.NewRandomEmailManager(sendgrid, mailgun, onesignal)
+	// emailManager := m.NewRandomEmailManager(sendgrid, mailgun, onesignal)
+	emailManager := m.NewIPWarmimgmailManager(sendgrid, mailgun, onesignal)
 	pushNotificationManager := m.NewRandomPushNotificationManager(firebase, onesignal)
 	smsManager := m.NewRandomSmsManager(sns, onesignal)
 	telegramManager := m.NewRandomTelegramManager(telegram)
