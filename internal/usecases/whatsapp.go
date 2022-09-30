@@ -1,7 +1,7 @@
 package usecases
 
 import (
-	d "auth-plus-notification/cmd/usecases/driven"
+	d "auth-plus-notification/internal/usecases/driven"
 )
 
 // WhatsappUsecase dependencies

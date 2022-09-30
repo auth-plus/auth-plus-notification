@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 
-	m "auth-plus-notification/cmd/managers"
+	m "auth-plus-notification/internal/managers"
 	t "auth-plus-notification/test/mocks"
 )
 

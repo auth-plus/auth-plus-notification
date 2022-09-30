@@ -2,8 +2,8 @@
 package usecases
 
 import (
-	m "auth-plus-notification/cmd/managers"
-	se "auth-plus-notification/cmd/usecases/driven"
+	m "auth-plus-notification/internal/managers"
+	se "auth-plus-notification/internal/usecases/driven"
 )
 
 // EmailUsecase dependencies

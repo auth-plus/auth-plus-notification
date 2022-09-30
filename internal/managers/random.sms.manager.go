@@ -1,7 +1,7 @@
 package managers
 
 import (
-	d "auth-plus-notification/cmd/usecases/driven"
+	d "auth-plus-notification/internal/usecases/driven"
 	"math/rand"
 	"time"
 )

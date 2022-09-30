@@ -45,7 +45,7 @@ make clean/docker
 go mod download
 
 # run server on local
-go run ./server.go
+go run ./cmd/http_server.go
 
 # run test
 go test ./... -v -coverpkg=./... -coverprofile=c.out
