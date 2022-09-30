@@ -25,7 +25,6 @@ func (suite *SNSTestSuite) Test_succeed_when_sending() {
 	}
 
 	defer gock.Off() // Flush pending mocks after test execution
-	gock.Observe(gock.DumpRequest)
 	gock.New("https://sns.us-west-2.amazonaws.com").
 		Post("/").
 		Reply(200)
