@@ -35,6 +35,6 @@ func (suite *RandomPushNotificationManagerTestSuite) Test_succeed_when_choosing_
 	assert.Equal(suite.T(), err, nil)
 }
 
-func TestPushNotificationManager(t *testing.T) {
+func TestRandomPushNotificationManager(t *testing.T) {
 	suite.Run(t, new(RandomPushNotificationManagerTestSuite))
 }

@@ -20,7 +20,6 @@ type Firebase struct {
 // NewFirebase for instanciate a firebase provider
 func NewFirebase() *Firebase {
 	instance := new(Firebase)
-	// env := config.GetEnv()
 	client, err := google.DefaultClient(oauth2.NoContext,
 		"https://www.googleapis.com/auth/firebase.messaging")
 	if err != nil {

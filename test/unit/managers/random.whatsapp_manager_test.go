@@ -23,6 +23,6 @@ func (suite *RandomWhatsappManagerTestSuite) Test_succeed_when_choosing_twilio()
 	assert.Equal(suite.T(), err, nil)
 }
 
-func TestWhatsappManager(t *testing.T) {
-	suite.Run(t, new(RandomPushNotificationManagerTestSuite))
+func TestRandomWhatsappManager(t *testing.T) {
+	suite.Run(t, new(RandomWhatsappManagerTestSuite))
 }

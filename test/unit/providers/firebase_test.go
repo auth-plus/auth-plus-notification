@@ -27,7 +27,6 @@ func (suite *FirebaseTestSuite) Test_succeed_when_sending() {
 	const DeviceID string = "cDxDrGiXRnMXFXFsyDLSY5:APA91bF9QI6-YU2eJr7JcF8u6lrAGAIBEpG4j3IOrU2h2EFUahYM1z0fMR_IyqybrOfc62ASy5uRyg1uzjR2trlpmZujQ79-QQAf7iSYj_4HZn3fWYg9yn9se3-x7t9waq74SlhLS9Ih"
 
 	defer gock.Off() // Flush pending mocks after test execution
-	gock.Observe(gock.DumpRequest)
 	gock.New("https://fcm.googleapis.com/v1/projects/auth-plus-c2b74").
 		MatchHeader("Authorization", fmt.Sprintf("Bearer %s", AccesToken)).
 		Post("/messages:send").
