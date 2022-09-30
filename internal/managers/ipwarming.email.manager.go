@@ -2,7 +2,7 @@
 package managers
 
 import (
-	d "auth-plus-notification/cmd/usecases/driven"
+	d "auth-plus-notification/internal/usecases/driven"
 )
 
 // IPWarmimgEmailManager must contains all provider that could be choosen

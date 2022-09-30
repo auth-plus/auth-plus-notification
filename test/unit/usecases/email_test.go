@@ -1,9 +1,9 @@
 package test
 
 import (
-	m "auth-plus-notification/cmd/managers"
-	u "auth-plus-notification/cmd/usecases"
-	d "auth-plus-notification/cmd/usecases/driven"
+	m "auth-plus-notification/internal/managers"
+	u "auth-plus-notification/internal/usecases"
+	d "auth-plus-notification/internal/usecases/driven"
 	t "auth-plus-notification/test/mocks"
 
 	"errors"

@@ -1,7 +1,7 @@
 package test
 
 import (
-	p "auth-plus-notification/cmd/providers"
+	p "auth-plus-notification/internal/providers"
 	t "auth-plus-notification/test/mocks"
 
 	"fmt"

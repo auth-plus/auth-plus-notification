@@ -1,10 +1,10 @@
-// Package cmd read on https://github.com/golang-standards/project-layout#cmd
-package cmd
+// Package internal read on https://github.com/golang-standards/project-layout#internal
+package internal
 
 import (
-	m "auth-plus-notification/cmd/managers"
-	p "auth-plus-notification/cmd/providers"
-	u "auth-plus-notification/cmd/usecases"
+	m "auth-plus-notification/internal/managers"
+	p "auth-plus-notification/internal/providers"
+	u "auth-plus-notification/internal/usecases"
 )
 
 // Core contains all usecases
