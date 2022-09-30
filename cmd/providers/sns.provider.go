@@ -1,6 +1,7 @@
 package providers
 
 import (
+	config "auth-plus-notification/config"
 	"fmt"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -10,21 +11,26 @@ import (
 
 // SNS struct must contains all private property to work
 type SNS struct {
-	url   string
-	token string
+	accessKeyID     string
+	secretAccessKey string
+	sessionToken    string
 }
 
 // NewSNS for instanciate a sns provider
 func NewSNS() *SNS {
+	env := config.GetEnv()
 	instance := new(SNS)
-	instance.url = ""
-	instance.token = ""
+	instance.accessKeyID = env.Providers.Amazon.AccessKeyID
+	instance.secretAccessKey = env.Providers.Amazon.SecretAccessKey
+	instance.sessionToken = env.Providers.Amazon.SessionToken
 	return instance
 }
 
 // SendSms implementation of SendingSms
 func (e *SNS) SendSms(phone string, content string) error {
-	sess := session.Must(session.NewSession())
+	sess, err := session.NewSession(&aws.Config{
+		Region: aws.String("us-west-2")},
+	)
 	svc := sns.New(sess)
 	params := &sns.PublishInput{
 		Message:     aws.String(content),

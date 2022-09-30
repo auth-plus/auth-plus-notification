@@ -3,6 +3,13 @@ package config
 
 import "os"
 
+// AmazonEnv is environment variable for sns work
+type AmazonEnv struct {
+	AccessKeyID     string
+	SecretAccessKey string
+	SessionToken    string
+}
+
 // MailgunEnv is environment variable for mailgun work
 type MailgunEnv struct {
 	URL    string
@@ -23,9 +30,10 @@ type FirebaseEnv struct {
 
 // ProviderEnv contains all providers configurations
 type ProviderEnv struct {
+	Amazon   AmazonEnv
 	Firebase FirebaseEnv
-	Sendgrid SendgridEnv
 	Mailgun  MailgunEnv
+	Sendgrid SendgridEnv
 }
 
 // AppEnv contains all necessary property to application initiate
@@ -52,6 +60,11 @@ type Environment struct {
 func GetEnv() Environment {
 
 	// Provider
+	amazon := AmazonEnv{
+		AccessKeyID:     os.Getenv("AWS_ACCESS_KEY_ID"),
+		SecretAccessKey: os.Getenv("AWS_SECRET_ACCESS_KEY"),
+		SessionToken:    os.Getenv("AWS_SESSION_TOKEN"),
+	}
 	sendgrid := SendgridEnv{
 		URL:    os.Getenv("SENDGRID_URL"),
 		APIKey: os.Getenv("SENDGRID_API_KEY"),
@@ -65,9 +78,10 @@ func GetEnv() Environment {
 		APIKey: os.Getenv("MAILGUN_API_KEY"),
 	}
 	providers := ProviderEnv{
+		Amazon:   amazon,
 		Firebase: firebase,
-		Sendgrid: sendgrid,
 		Mailgun:  mailgun,
+		Sendgrid: sendgrid,
 	}
 	//Default
 	app := AppEnv{

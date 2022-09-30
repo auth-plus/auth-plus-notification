@@ -23,6 +23,6 @@ func (suite *RandomTelegramManagerTestSuite) Test_succeed_when_choosing_telegram
 	assert.Equal(suite.T(), err, nil)
 }
 
-func TestTelegramManager(t *testing.T) {
-	suite.Run(t, new(RandomPushNotificationManagerTestSuite))
+func TestRandomTelegramManager(t *testing.T) {
+	suite.Run(t, new(RandomTelegramManagerTestSuite))
 }

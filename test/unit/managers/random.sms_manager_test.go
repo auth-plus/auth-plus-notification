@@ -35,6 +35,6 @@ func (suite *RandomSmsManagerTestSuite) Test_succeed_when_choosing_onesignal() {
 	assert.Equal(suite.T(), err, nil)
 }
 
-func TestSmsManager(t *testing.T) {
-	suite.Run(t, new(RandomPushNotificationManagerTestSuite))
+func TestRandomSmsManager(t *testing.T) {
+	suite.Run(t, new(RandomSmsManagerTestSuite))
 }
