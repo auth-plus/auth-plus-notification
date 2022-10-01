@@ -35,7 +35,7 @@ func (suite *EmailUsecaseTestSuite) Test_succeed_when_sending() {
 	randomEmailManager.On("ChooseProvider", input).Return(sendgridMocked, nil)
 
 	emailUsecase := u.NewEmailUsecase(randomEmailManager)
-	err := emailUsecase.Send(mockData.Email, mockData.Content)
+	err := emailUsecase.Send(mockData.Email, mockData.Subject, mockData.Content)
 	assert.Equal(suite.T(), err, nil)
 }
 
@@ -55,7 +55,7 @@ func (suite *EmailUsecaseTestSuite) Test_fail_when_sending() {
 	randomEmailManager.On("ChooseProvider", input).Return(sendgridMocked, nil)
 
 	emailUsecase := u.NewEmailUsecase(randomEmailManager)
-	err := emailUsecase.Send(mockData.Email, mockData.Content)
+	err := emailUsecase.Send(mockData.Email, mockData.Subject, mockData.Content)
 	assert.Equal(suite.T(), err.Error(), "failed")
 }
 

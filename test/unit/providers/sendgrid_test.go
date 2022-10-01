@@ -29,13 +29,13 @@ func (suite *SendgridTestSuite) Test_succeed_when_sending() {
 
 	defer gock.Off() // Flush pending mocks after test execution
 	gock.Observe(gock.DumpRequest)
-	gock.New(env.Providers.Sendgrid.URL).
+	gock.New("https://api.sendgrid.com/v3/mail").
 		MatchHeader("Authorization", fmt.Sprintf("Bearer %s", env.Providers.Sendgrid.APIKey)).
-		Post("/").
+		Post("/send").
 		Reply(200)
 
 	provider := p.NewSendgrid()
-	err := provider.SendEmail(mockData.Email, mockData.Content)
+	err := provider.SendEmail(mockData.Email, mockData.Subject, mockData.Content)
 	assert.Equal(suite.T(), err, nil)
 }
 

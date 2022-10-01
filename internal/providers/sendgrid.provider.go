@@ -27,13 +27,13 @@ type SendgridEmailPayload struct {
 func NewSendgrid() *Sendgrid {
 	instance := new(Sendgrid)
 	env := config.GetEnv()
-	instance.url = env.Providers.Sendgrid.URL
+	instance.url = "https://api.sendgrid.com/v3/mail/send"
 	instance.token = env.Providers.Sendgrid.APIKey
 	return instance
 }
 
 // SendEmail implementation of SendingEmail
-func (e *Sendgrid) SendEmail(email string, content string) error {
+func (e *Sendgrid) SendEmail(email string, subject string, content string) error {
 	client := &http.Client{}
 	emailPayload := SendgridEmailPayload{
 		Personalizations: "",

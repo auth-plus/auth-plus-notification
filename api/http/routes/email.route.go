@@ -11,6 +11,7 @@ import (
 // EmailRequestBody is type for payload
 type EmailRequestBody struct {
 	Email   string `json:"email"`
+	Subject string `json:"subject"`
 	Content string `json:"content"`
 }
 
@@ -23,6 +24,7 @@ func EmailHandler(c *gin.Context) {
 	}
 	go core.NewCore().EmailUsecase.Send(
 		requestBody.Email,
+		requestBody.Subject,
 		requestBody.Content)
 	c.String(http.StatusOK, "Ok")
 }
