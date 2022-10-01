@@ -40,27 +40,14 @@ func (e *OneSignal) SendEmail(email string, subject string, content string) erro
 	idList := [1]string{email}
 	emailPayload := oneSignalEmailPayload{e.appID, idList, subject, content}
 
-	json, err := json.Marshal(emailPayload)
-	if err != nil {
-		return err
+	json, jsonErr := json.Marshal(emailPayload)
+	if jsonErr != nil {
+		return jsonErr
 	}
-
-	req, _ := http.NewRequest("POST", e.url, bytes.NewBuffer(json))
-
-	req.Header.Add("accept", "application/json")
-	req.Header.Add("Authorization", fmt.Sprintf("Basic %s", e.token))
-	req.Header.Add("content-type", "application/json; charset=utf-8")
-
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return err
+	reqErr := e.sendRequest(json)
+	if reqErr != nil {
+		return reqErr
 	}
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
 	return nil
 }
 
@@ -78,34 +65,21 @@ type oneSignalPNPayload struct {
 // SendPN implementation of SendingPushNotification: https://documentation.onesignal.com/reference/push-channel-properties
 func (e *OneSignal) SendPN(deviceID string, title string, content string) error {
 	idList := [1]string{deviceID}
-	emailPayload := oneSignalPNPayload{
+	pnPayload := oneSignalPNPayload{
 		AppID:   e.appID,
 		Ids:     idList,
 		Data:    map[string]interface{}{"foo": "bar"},
 		Content: oneSignalPNPayloadContent{En: content},
 	}
 
-	json, err := json.Marshal(emailPayload)
-	if err != nil {
-		return err
+	json, jsonErr := json.Marshal(pnPayload)
+	if jsonErr != nil {
+		return jsonErr
 	}
-
-	req, _ := http.NewRequest("POST", e.url, bytes.NewBuffer(json))
-
-	req.Header.Add("accept", "application/json")
-	req.Header.Add("Authorization", fmt.Sprintf("Basic %s", e.token))
-	req.Header.Add("content-type", "application/json; charset=utf-8")
-
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return err
+	reqErr := e.sendRequest(json)
+	if reqErr != nil {
+		return reqErr
 	}
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
 	return nil
 }
 
@@ -121,18 +95,25 @@ func (e *OneSignal) SendSms(phone string, content string) error {
 	rand.Seed(time.Now().UnixNano())
 	idList := [1]string{phone}
 	name := fmt.Sprintf("%f", rand.Float64())
-	emailPayload := oneSignalSMSPayload{
+	smsPayload := oneSignalSMSPayload{
 		AppID:   e.appID,
 		Phone:   idList,
 		Name:    name,
 		Content: oneSignalPNPayloadContent{En: content},
 	}
 
-	json, err := json.Marshal(emailPayload)
-	if err != nil {
-		return err
+	json, jsonErr := json.Marshal(smsPayload)
+	if jsonErr != nil {
+		return jsonErr
 	}
+	reqErr := e.sendRequest(json)
+	if reqErr != nil {
+		return reqErr
+	}
+	return nil
+}
 
+func (e *OneSignal) sendRequest(json []byte) error {
 	req, _ := http.NewRequest("POST", e.url, bytes.NewBuffer(json))
 
 	req.Header.Add("accept", "application/json")
