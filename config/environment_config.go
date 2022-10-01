@@ -12,13 +12,16 @@ type AmazonEnv struct {
 
 // MailgunEnv is environment variable for mailgun work
 type MailgunEnv struct {
-	URL    string
+	APIKey string
+}
+
+// OnesignalEnv is environment variable for onesignal work
+type OnesignalEnv struct {
 	APIKey string
 }
 
 // SendgridEnv is environment variable for sendgrid work
 type SendgridEnv struct {
-	URL    string
 	APIKey string
 }
 
@@ -30,10 +33,11 @@ type FirebaseEnv struct {
 
 // ProviderEnv contains all providers configurations
 type ProviderEnv struct {
-	Amazon   AmazonEnv
-	Firebase FirebaseEnv
-	Mailgun  MailgunEnv
-	Sendgrid SendgridEnv
+	Amazon    AmazonEnv
+	Firebase  FirebaseEnv
+	Mailgun   MailgunEnv
+	Onesignal OnesignalEnv
+	Sendgrid  SendgridEnv
 }
 
 // AppEnv contains all necessary property to application initiate
@@ -66,7 +70,6 @@ func GetEnv() Environment {
 		SessionToken:    os.Getenv("AWS_SESSION_TOKEN"),
 	}
 	sendgrid := SendgridEnv{
-		URL:    os.Getenv("SENDGRID_URL"),
 		APIKey: os.Getenv("SENDGRID_API_KEY"),
 	}
 	firebase := FirebaseEnv{
@@ -74,14 +77,17 @@ func GetEnv() Environment {
 		AppName:    os.Getenv("GOOGLE_APPLICATION_NAME"),
 	}
 	mailgun := MailgunEnv{
-		URL:    os.Getenv("MAILGUN_URL"),
 		APIKey: os.Getenv("MAILGUN_API_KEY"),
 	}
+	onesignal := OnesignalEnv{
+		APIKey: os.Getenv("ONESIGNAL_API_KEY"),
+	}
 	providers := ProviderEnv{
-		Amazon:   amazon,
-		Firebase: firebase,
-		Mailgun:  mailgun,
-		Sendgrid: sendgrid,
+		Amazon:    amazon,
+		Firebase:  firebase,
+		Mailgun:   mailgun,
+		Onesignal: onesignal,
+		Sendgrid:  sendgrid,
 	}
 	//Default
 	app := AppEnv{

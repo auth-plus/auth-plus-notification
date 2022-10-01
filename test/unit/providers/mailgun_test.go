@@ -29,13 +29,13 @@ func (suite *MailgunTestSuite) Test_succeed_when_sending() {
 
 	defer gock.Off() // Flush pending mocks after test execution
 	gock.Observe(gock.DumpRequest)
-	gock.New(env.Providers.Mailgun.URL).
+	gock.New("https://api.mailgun.net").
 		MatchHeader("Authorization", fmt.Sprintf("Bearer %s", env.Providers.Mailgun.APIKey)).
 		Post("/").
 		Reply(200)
 
 	provider := p.NewMailgun()
-	err := provider.SendEmail(mockData.Email, mockData.Content)
+	err := provider.SendEmail(mockData.Email, mockData.Subject, mockData.Content)
 	assert.Equal(suite.T(), err, nil)
 }
 

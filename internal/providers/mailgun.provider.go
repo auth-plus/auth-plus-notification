@@ -27,13 +27,13 @@ type MailgunEmailPayload struct {
 func NewMailgun() *Mailgun {
 	instance := new(Mailgun)
 	env := config.GetEnv()
-	instance.url = env.Providers.Mailgun.URL
+	instance.url = "https://api.mailgun.net"
 	instance.token = env.Providers.Mailgun.APIKey
 	return instance
 }
 
 // SendEmail implementation of SendingEmail
-func (e *Mailgun) SendEmail(email string, content string) error {
+func (e *Mailgun) SendEmail(email string, subject string, content string) error {
 	client := &http.Client{}
 	emailPayload := MailgunEmailPayload{
 		Personalizations: "",

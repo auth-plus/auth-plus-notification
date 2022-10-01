@@ -12,16 +12,15 @@ jobs:
       APP_NAME: auth-plus-notification
       APP_PORT: 5001
       GO_ENV: test
-      GOOGLE_APPLICATION_CREDENTIALS: "/home/runner/work/service-account-file.json"
       SA_CONTENT: ${{ secrets.FIREBASE_SA_CREDENTIAL }}
-      GOOGLE_APPLICATION_NAME: ${{ secrets.FIREBASE_PROJECT_ID }}
-      SENDGRID_URL: https://api.sendgrid.com/v3/mail/send
-      SENDGRID_API_KEY: your-sendgrid-api-key
-      MAILGUN_URL: https://api.mailgun.net/
-      MAILGUN_API_KEY: your-mailgun-api-key
       AWS_ACCESS_KEY_ID: YOUR_AKID
       AWS_SECRET_ACCESS_KEY: YOUR_SECRET_KEY
       AWS_SESSION_TOKEN: TOKEN
+      GOOGLE_APPLICATION_CREDENTIALS: "/home/runner/work/service-account-file.json"
+      GOOGLE_APPLICATION_NAME: ${{ secrets.FIREBASE_PROJECT_ID }}
+      MAILGUN_API_KEY: your-mailgun-api-key
+      SENDGRID_API_KEY: your-sendgrid-api-key
+      ONESIGNAL_API_KEY: your-onesignal-api-key
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2

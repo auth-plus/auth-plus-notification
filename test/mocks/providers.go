@@ -46,13 +46,13 @@ func (m *FirebaseMocked) SendPN(deviceID string, title string, content string) e
 }
 
 // SendEmail mocked method for MailgunMocked
-func (m *MailgunMocked) SendEmail(email string, content string) error {
+func (m *MailgunMocked) SendEmail(email string, subject string, content string) error {
 	args := m.Called(email, content)
 	return args.Error(0)
 }
 
 // SendEmail mocked method for MailgunMocked
-func (m *OnesignalMocked) SendEmail(email string, content string) error {
+func (m *OnesignalMocked) SendEmail(email string, subject string, content string) error {
 	args := m.Called(email, content)
 	return args.Error(0)
 }
@@ -70,7 +70,7 @@ func (m *OnesignalMocked) SendSms(phone string, content string) error {
 }
 
 // SendEmail mocked method for SendgridMocked
-func (m *SendgridMocked) SendEmail(email string, content string) error {
+func (m *SendgridMocked) SendEmail(email string, subject string, content string) error {
 	args := m.Called(email, content)
 	return args.Error(0)
 }

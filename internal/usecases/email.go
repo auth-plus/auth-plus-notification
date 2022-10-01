@@ -19,7 +19,7 @@ func NewEmailUsecase(manager se.Manager[se.SendingEmail, m.IPWarmingInput]) *Ema
 }
 
 // Send method for sending an email by using manager on dependecy
-func (e *EmailUsecase) Send(email string, content string) error {
+func (e *EmailUsecase) Send(email string, subject string, content string) error {
 	input, errI := e.manager.GetInput()
 	if errI != nil {
 		return errI
@@ -28,5 +28,5 @@ func (e *EmailUsecase) Send(email string, content string) error {
 	if errC != nil {
 		return errC
 	}
-	return provider.SendEmail(email, content)
+	return provider.SendEmail(email, subject, content)
 }
