@@ -114,21 +114,24 @@ func (e *OneSignal) SendSms(phone string, content string) error {
 }
 
 func (e *OneSignal) sendRequest(json []byte) error {
-	req, _ := http.NewRequest("POST", e.url, bytes.NewBuffer(json))
+	req, errReq := http.NewRequest("POST", e.url, bytes.NewBuffer(json))
+	if errReq != nil {
+		return errReq
+	}
 
 	req.Header.Add("accept", "application/json")
 	req.Header.Add("Authorization", fmt.Sprintf("Basic %s", e.token))
 	req.Header.Add("content-type", "application/json; charset=utf-8")
 
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return err
+	res, errHTTP := http.DefaultClient.Do(req)
+	if errHTTP != nil {
+		return errHTTP
 	}
 
 	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
+	_, errBody := ioutil.ReadAll(res.Body)
+	if errBody != nil {
+		return errBody
+	}
 	return nil
 }

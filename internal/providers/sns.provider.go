@@ -2,7 +2,6 @@ package providers
 
 import (
 	config "auth-plus-notification/config"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -28,21 +27,20 @@ func NewSNS() *SNS {
 
 // SendSms implementation of SendingSms
 func (e *SNS) SendSms(phone string, content string) error {
-	sess, err := session.NewSession(&aws.Config{
+	sess, errInit := session.NewSession(&aws.Config{
 		Region: aws.String("us-west-2")},
 	)
+	if errInit != nil {
+		return errInit
+	}
 	svc := sns.New(sess)
 	params := &sns.PublishInput{
 		Message:     aws.String(content),
 		PhoneNumber: aws.String(phone),
 	}
-	resp, err := svc.Publish(params)
-	if err != nil {
-		// Print the error, cast err to awserr.Error to get the Code and
-		// Message from an error.
-		fmt.Println(err.Error())
-		return err
+	_, errPub := svc.Publish(params)
+	if errPub != nil {
+		return errPub
 	}
-	fmt.Println(resp)
 	return nil
 }

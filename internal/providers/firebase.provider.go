@@ -4,7 +4,6 @@ package providers
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -54,19 +53,16 @@ func (e *Firebase) SendPN(deviceID string, title string, content string) error {
 			Token: deviceID,
 		},
 	}
-	jsonData, err := json.Marshal(message)
+	jsonData, errJSON := json.Marshal(message)
 
-	if err != nil {
-		log.Fatal(err)
+	if errJSON != nil {
+		return errJSON
 	}
 	// Send a message to the device corresponding to the provided
 	// registration token.
-	response, err := e.client.Post("https://fcm.googleapis.com/v1/projects/auth-plus-c2b74/messages:send", "application/json", bytes.NewBuffer(jsonData))
-	if err != nil {
-		log.Fatalln(err)
-		return err
+	_, errReq := e.client.Post("https://fcm.googleapis.com/v1/projects/auth-plus-c2b74/messages:send", "application/json", bytes.NewBuffer(jsonData))
+	if errReq != nil {
+		return errReq
 	}
-	// Response is a message ID string.
-	fmt.Println("Successfully sent message:", response)
 	return nil
 }

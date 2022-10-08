@@ -28,7 +28,6 @@ func (suite *MailgunTestSuite) Test_succeed_when_sending() {
 	env := config.GetEnv()
 
 	defer gock.Off() // Flush pending mocks after test execution
-	gock.Observe(gock.DumpRequest)
 	gock.New("https://api.mailgun.net").
 		MatchHeader("Authorization", fmt.Sprintf("Bearer %s", env.Providers.Mailgun.APIKey)).
 		Post("/").

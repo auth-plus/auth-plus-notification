@@ -21,6 +21,7 @@ jobs:
       MAILGUN_API_KEY: your-mailgun-api-key
       SENDGRID_API_KEY: your-sendgrid-api-key
       ONESIGNAL_API_KEY: your-onesignal-api-key
+      TELEGRAM_API_KEY: your-telegram-api-key
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2

@@ -4,7 +4,6 @@ import (
 	config "auth-plus-notification/config"
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -13,14 +12,6 @@ import (
 type Mailgun struct {
 	url   string
 	token string
-}
-
-// MailgunEmailPayload is the payload htat mailgun require
-type MailgunEmailPayload struct {
-	Personalizations string `json:"name"`
-	From             string `json:"from"`
-	Subject          string `json:"subject"`
-	Content          string `json:"content"`
 }
 
 // NewMailgun for instanciate a mailgun provider
@@ -32,34 +23,40 @@ func NewMailgun() *Mailgun {
 	return instance
 }
 
-// SendEmail implementation of SendingEmail
+type mailgunEmailPayload struct {
+	Personalizations string `json:"name"`
+	From             string `json:"from"`
+	Subject          string `json:"subject"`
+	Content          string `json:"content"`
+}
+
+// SendEmail implementation of SendingEmail: https://documentation.mailgun.com/en/latest/api-intro.html#introduction
 func (e *Mailgun) SendEmail(email string, subject string, content string) error {
 	client := &http.Client{}
-	emailPayload := MailgunEmailPayload{
+	emailPayload := mailgunEmailPayload{
 		Personalizations: "",
 		From:             "",
 		Subject:          "",
 		Content:          "",
 	}
-	json, err := json.Marshal(emailPayload)
-	if err != nil {
-		return err
+	json, errJSON := json.Marshal(emailPayload)
+	if errJSON != nil {
+		return errJSON
 	}
-	req, err := http.NewRequest("POST", e.url, bytes.NewBuffer(json))
-	if err != nil {
-		return err
+	req, errReq := http.NewRequest("POST", e.url, bytes.NewBuffer(json))
+	if errReq != nil {
+		return errReq
 	}
 	req.Header.Add("Content-Type", `application/json`)
 	req.Header.Add("Authorization", "Bearer "+e.token)
-	resp, err := client.Do(req)
-	if err != nil {
-		return err
+	resp, errHTTP := client.Do(req)
+	if errHTTP != nil {
+		return errHTTP
 	}
-	f, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return err
+	_, errBody := ioutil.ReadAll(resp.Body)
+	if errBody != nil {
+		return errBody
 	}
 	defer resp.Body.Close()
-	fmt.Println(string(f))
 	return nil
 }
