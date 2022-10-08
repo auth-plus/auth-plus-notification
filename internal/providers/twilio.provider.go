@@ -26,18 +26,13 @@ func (e *Twilio) SendWhats(phone string, content string) error {
 	client := twilio.NewRestClient()
 
 	params := &openapi.CreateMessageParams{}
-	params.SetTo("whatsapp:<YOUR-PHONE-NUMBER-HERE>")
+	params.SetTo(fmt.Sprintf("whatsapp:%s", phone))
 	params.SetFrom("whatsapp:+14155238886")
-	params.SetBody("Hello from Golang!")
+	params.SetBody(content)
 
 	_, err := client.Api.CreateMessage(params)
 	if err != nil {
-		fmt.Println(err.Error())
 		return err
-
 	}
-	fmt.Println("Message sent successfully!")
-	fmt.Println("phone:\t", phone)
-	fmt.Println("content:\t", content)
 	return nil
 }

@@ -28,7 +28,6 @@ func (suite *SendgridTestSuite) Test_succeed_when_sending() {
 	env := config.GetEnv()
 
 	defer gock.Off() // Flush pending mocks after test execution
-	gock.Observe(gock.DumpRequest)
 	gock.New("https://api.sendgrid.com/v3/mail").
 		MatchHeader("Authorization", fmt.Sprintf("Bearer %s", env.Providers.Sendgrid.APIKey)).
 		Post("/send").

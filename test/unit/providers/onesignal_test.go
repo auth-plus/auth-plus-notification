@@ -28,7 +28,6 @@ func (suite *OnesignalTestSuite) Test_succeed_when_sending_email() {
 	env := config.GetEnv()
 
 	defer gock.Off() // Flush pending mocks after test execution
-	gock.Observe(gock.DumpRequest)
 	gock.New("https://onesignal.com/api/v1").
 		MatchHeader("Authorization", fmt.Sprintf("Basic %s", env.Providers.Onesignal.APIKey)).
 		Post("/notifications").
@@ -48,7 +47,6 @@ func (suite *OnesignalTestSuite) Test_succeed_when_sending_push_notification() {
 	env := config.GetEnv()
 
 	defer gock.Off() // Flush pending mocks after test execution
-	gock.Observe(gock.DumpRequest)
 	gock.New("https://onesignal.com/api/v1").
 		MatchHeader("Authorization", fmt.Sprintf("Basic %s", env.Providers.Onesignal.APIKey)).
 		Post("/notifications").
@@ -68,7 +66,6 @@ func (suite *OnesignalTestSuite) Test_succeed_when_sending_sms() {
 	env := config.GetEnv()
 
 	defer gock.Off() // Flush pending mocks after test execution
-	gock.Observe(gock.DumpRequest)
 	gock.New("https://onesignal.com/api/v1").
 		MatchHeader("Authorization", fmt.Sprintf("Basic %s", env.Providers.Onesignal.APIKey)).
 		Post("/notifications").

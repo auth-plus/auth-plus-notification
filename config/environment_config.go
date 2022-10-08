@@ -31,6 +31,11 @@ type FirebaseEnv struct {
 	AppName    string
 }
 
+// TelegramEnv is environment variable for mailgun work
+type TelegramEnv struct {
+	APIKey string
+}
+
 // ProviderEnv contains all providers configurations
 type ProviderEnv struct {
 	Amazon    AmazonEnv
@@ -38,6 +43,7 @@ type ProviderEnv struct {
 	Mailgun   MailgunEnv
 	Onesignal OnesignalEnv
 	Sendgrid  SendgridEnv
+	Telegram  TelegramEnv
 }
 
 // AppEnv contains all necessary property to application initiate
@@ -82,12 +88,16 @@ func GetEnv() Environment {
 	onesignal := OnesignalEnv{
 		APIKey: os.Getenv("ONESIGNAL_API_KEY"),
 	}
+	telegram := TelegramEnv{
+		APIKey: os.Getenv("TELEGRAM_API_KEY"),
+	}
 	providers := ProviderEnv{
 		Amazon:    amazon,
 		Firebase:  firebase,
 		Mailgun:   mailgun,
 		Onesignal: onesignal,
 		Sendgrid:  sendgrid,
+		Telegram:  telegram,
 	}
 	//Default
 	app := AppEnv{
