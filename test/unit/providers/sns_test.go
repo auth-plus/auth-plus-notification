@@ -34,6 +34,45 @@ func (suite *SNSTestSuite) Test_succeed_when_sending() {
 	assert.Equal(suite.T(), err, nil)
 }
 
+type xmlError struct {
+	Type    string `xml:"Type"`
+	Code    string `xml:"Code"`
+	Message string `xml:"Message"`
+}
+
+type xmlErrorResponse struct {
+	Error xmlError `xml:"Error"`
+}
+
+type xml struct {
+	ErrorResponse xmlErrorResponse `xml:"ErrorResponse"`
+}
+
+func (suite *SNSTestSuite) Test_fail_when_sending() {
+	mockData := t.MockedData{}
+	errMock := faker.FakeData(&mockData)
+	if errMock != nil {
+		fmt.Println(errMock)
+	}
+
+	defer gock.Off() // Flush pending mocks after test execution
+	gock.Observe(gock.DumpRequest)
+	gock.New("https://sns.us-west-2.amazonaws.com").
+		Post("/").
+		Reply(400).
+		XML(xml{ErrorResponse: xmlErrorResponse{
+			Error: xmlError{
+				Type:    "Sender",
+				Code:    "IncompleteSignature",
+				Message: "Authorization header requires e...",
+			},
+		}})
+
+	provider := p.NewSNS()
+	err := provider.SendSms(mockData.Phone, mockData.Content)
+	assert.Equal(suite.T(), err, nil)
+}
+
 func TestSNS(t *testing.T) {
 	suite.Run(t, new(SNSTestSuite))
 }

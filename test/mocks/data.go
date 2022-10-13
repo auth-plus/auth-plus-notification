@@ -10,4 +10,5 @@ type MockedData struct {
 	DeviceID string `faker:"uuid_digit"`
 	Phone    string `faker:"phone_number"`
 	ChatID   int64  `faker:"unix_time"`
+	Error    string `faker:"sentence"`
 }

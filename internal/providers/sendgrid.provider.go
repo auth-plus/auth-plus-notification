@@ -4,7 +4,9 @@ import (
 	config "auth-plus-notification/config"
 	"bytes"
 	"encoding/json"
+	"errors"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -64,10 +66,24 @@ func (e *Sendgrid) SendEmail(email string, subject string, content string) error
 	if errExec != nil {
 		return errExec
 	}
-	_, errBody := ioutil.ReadAll(resp.Body)
-	if errBody != nil {
-		return errBody
-	}
 	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		errMsg, err := e.getError(resp)
+		if err != nil {
+			log.Println("Error parsing", err)
+		}
+		log.Println(errMsg)
+		return errors.New("OneSignalProvider: something went wrong")
+	}
+
 	return nil
+}
+
+func (e *Sendgrid) getError(resp *http.Response) (string, error) {
+	respBody, errBody := ioutil.ReadAll(resp.Body)
+	if errBody != nil {
+		return "", errBody
+	}
+	return string(respBody), nil
 }
