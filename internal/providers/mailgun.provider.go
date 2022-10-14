@@ -4,7 +4,9 @@ import (
 	config "auth-plus-notification/config"
 	"bytes"
 	"encoding/json"
+	"errors"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -34,29 +36,46 @@ type mailgunEmailPayload struct {
 func (e *Mailgun) SendEmail(email string, subject string, content string) error {
 	client := &http.Client{}
 	emailPayload := mailgunEmailPayload{
-		Personalizations: "",
-		From:             "",
-		Subject:          "",
-		Content:          "",
+		Personalizations: email,
+		From:             "noreply@auth-plus.com",
+		Subject:          subject,
+		Content:          content,
 	}
+
 	json, errJSON := json.Marshal(emailPayload)
 	if errJSON != nil {
 		return errJSON
 	}
+
 	req, errReq := http.NewRequest("POST", e.url, bytes.NewBuffer(json))
 	if errReq != nil {
 		return errReq
 	}
 	req.Header.Add("Content-Type", `application/json`)
 	req.Header.Add("Authorization", "Bearer "+e.token)
+
 	resp, errHTTP := client.Do(req)
 	if errHTTP != nil {
 		return errHTTP
 	}
-	_, errBody := ioutil.ReadAll(resp.Body)
-	if errBody != nil {
-		return errBody
-	}
 	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		errMsg, err := e.getError(resp)
+		if err != nil {
+			log.Println("Error parsing", err)
+		}
+		log.Println("MailgunError:", errMsg)
+		return errors.New("MailgunProvider: something went wrong")
+	}
+
 	return nil
+}
+
+func (e *Mailgun) getError(resp *http.Response) (string, error) {
+	respBody, errBody := ioutil.ReadAll(resp.Body)
+	if errBody != nil {
+		return "", errBody
+	}
+	return string(respBody), nil
 }

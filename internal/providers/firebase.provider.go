@@ -4,6 +4,8 @@ package providers
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -41,9 +43,18 @@ type payload struct {
 	Message notification `json:"message"`
 }
 
+type errorType struct {
+	Code    int                      `json:"code"`
+	Message string                   `json:"message"`
+	Status  string                   `json:"status"`
+	Details []map[string]interface{} `json:"details"`
+}
+type errorRequest struct {
+	Error errorType `json:"error"`
+}
+
 // SendPN implementation of SendingPushNotification
 func (e *Firebase) SendPN(deviceID string, title string, content string) error {
-	// See documentation on defining a message payload.
 	message := payload{
 		Message: notification{
 			Notification: notificationContent{
@@ -54,15 +65,36 @@ func (e *Firebase) SendPN(deviceID string, title string, content string) error {
 		},
 	}
 	jsonData, errJSON := json.Marshal(message)
-
 	if errJSON != nil {
 		return errJSON
 	}
-	// Send a message to the device corresponding to the provided
-	// registration token.
-	_, errReq := e.client.Post("https://fcm.googleapis.com/v1/projects/auth-plus-c2b74/messages:send", "application/json", bytes.NewBuffer(jsonData))
+
+	resp, errReq := e.client.Post("https://fcm.googleapis.com/v1/projects/auth-plus-c2b74/messages:send", "application/json", bytes.NewBuffer(jsonData))
 	if errReq != nil {
 		return errReq
 	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		errMsg, err := e.getError(resp)
+		if err != nil {
+			log.Println("Error parsing", err)
+		}
+		log.Println("FirebaseError:", errMsg)
+		return errors.New("FirebaseProvider: something went wrong")
+	}
 	return nil
+}
+
+func (e *Firebase) getError(resp *http.Response) (string, error) {
+	respBody, errBody := ioutil.ReadAll(resp.Body)
+	if errBody != nil {
+		return "", errBody
+	}
+	var respJSON errorRequest
+	errJSON := json.Unmarshal(respBody, &respJSON)
+	if errJSON != nil {
+		return "", errJSON
+	}
+	return respJSON.Error.Message, nil
 }

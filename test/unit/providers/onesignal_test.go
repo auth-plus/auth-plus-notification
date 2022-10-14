@@ -76,6 +76,27 @@ func (suite *OnesignalTestSuite) Test_succeed_when_sending_sms() {
 	assert.Equal(suite.T(), err, nil)
 }
 
+func (suite *OnesignalTestSuite) Test_fail_when_sending_sms() {
+	mockData := t.MockedData{}
+	errMock := faker.FakeData(&mockData)
+	if errMock != nil {
+		fmt.Println(errMock)
+	}
+
+	env := config.GetEnv()
+
+	defer gock.Off() // Flush pending mocks after test execution
+	gock.New("https://onesignal.com/api/v1").
+		MatchHeader("Authorization", fmt.Sprintf("Basic %s", env.Providers.Onesignal.APIKey)).
+		Post("/notifications").
+		Reply(500).
+		BodyString(mockData.Error)
+
+	provider := p.NewOneSignal()
+	err := provider.SendSms(mockData.Phone, mockData.Content)
+	assert.Equal(suite.T(), err.Error(), "OneSignalProvider: something went wrong")
+}
+
 func TestOnesignal(t *testing.T) {
 	suite.Run(t, new(OnesignalTestSuite))
 }

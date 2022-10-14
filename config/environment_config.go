@@ -36,6 +36,12 @@ type TelegramEnv struct {
 	APIKey string
 }
 
+// TwilioEnv is environment variable for mailgun work
+type TwilioEnv struct {
+	AccountID string
+	Token     string
+}
+
 // ProviderEnv contains all providers configurations
 type ProviderEnv struct {
 	Amazon    AmazonEnv
@@ -44,6 +50,7 @@ type ProviderEnv struct {
 	Onesignal OnesignalEnv
 	Sendgrid  SendgridEnv
 	Telegram  TelegramEnv
+	Twilio    TwilioEnv
 }
 
 // AppEnv contains all necessary property to application initiate
@@ -91,6 +98,10 @@ func GetEnv() Environment {
 	telegram := TelegramEnv{
 		APIKey: os.Getenv("TELEGRAM_API_KEY"),
 	}
+	twilio := TwilioEnv{
+		AccountID: os.Getenv("TWILIO_ACCOUNT_SID"),
+		Token:     os.Getenv("TWILIO_AUTH_TOKEN"),
+	}
 	providers := ProviderEnv{
 		Amazon:    amazon,
 		Firebase:  firebase,
@@ -98,6 +109,7 @@ func GetEnv() Environment {
 		Onesignal: onesignal,
 		Sendgrid:  sendgrid,
 		Telegram:  telegram,
+		Twilio:    twilio,
 	}
 	//Default
 	app := AppEnv{

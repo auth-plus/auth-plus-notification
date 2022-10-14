@@ -38,6 +38,27 @@ func (suite *SendgridTestSuite) Test_succeed_when_sending() {
 	assert.Equal(suite.T(), err, nil)
 }
 
+func (suite *SendgridTestSuite) Test_fail_when_sending() {
+	mockData := t.MockedData{}
+	errMock := faker.FakeData(&mockData)
+	if errMock != nil {
+		fmt.Println(errMock)
+	}
+
+	env := config.GetEnv()
+
+	defer gock.Off() // Flush pending mocks after test execution
+	gock.New("https://api.sendgrid.com/v3/mail").
+		MatchHeader("Authorization", fmt.Sprintf("Bearer %s", env.Providers.Sendgrid.APIKey)).
+		Post("/send").
+		Reply(500).
+		BodyString(mockData.Error)
+
+	provider := p.NewSendgrid()
+	err := provider.SendEmail(mockData.Email, mockData.Subject, mockData.Content)
+	assert.Equal(suite.T(), err.Error(), "SendgridProvider: something went wrong")
+}
+
 func TestSendgrid(t *testing.T) {
 	suite.Run(t, new(SendgridTestSuite))
 }

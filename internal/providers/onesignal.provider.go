@@ -4,8 +4,10 @@ import (
 	config "auth-plus-notification/config"
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"math/rand"
 	"net/http"
 	"time"
@@ -123,15 +125,27 @@ func (e *OneSignal) sendRequest(json []byte) error {
 	req.Header.Add("Authorization", fmt.Sprintf("Basic %s", e.token))
 	req.Header.Add("content-type", "application/json; charset=utf-8")
 
-	res, errHTTP := http.DefaultClient.Do(req)
+	resp, errHTTP := http.DefaultClient.Do(req)
 	if errHTTP != nil {
 		return errHTTP
 	}
 
-	defer res.Body.Close()
-	_, errBody := ioutil.ReadAll(res.Body)
-	if errBody != nil {
-		return errBody
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		errMsg, err := e.getError(resp)
+		if err != nil {
+			log.Println("Error parsing", err)
+		}
+		log.Println("OneSignalError:", errMsg)
+		return errors.New("OneSignalProvider: something went wrong")
 	}
 	return nil
+}
+
+func (e *OneSignal) getError(resp *http.Response) (string, error) {
+	respBody, errBody := ioutil.ReadAll(resp.Body)
+	if errBody != nil {
+		return "", errBody
+	}
+	return string(respBody), nil
 }

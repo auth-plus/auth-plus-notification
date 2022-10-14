@@ -2,6 +2,8 @@ package providers
 
 import (
 	config "auth-plus-notification/config"
+	"errors"
+	"log"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -40,7 +42,8 @@ func (e *SNS) SendSms(phone string, content string) error {
 	}
 	_, errPub := svc.Publish(params)
 	if errPub != nil {
-		return errPub
+		log.Println("SNSError:", errPub)
+		return errors.New("SNSProvider: something went wrong")
 	}
 	return nil
 }
