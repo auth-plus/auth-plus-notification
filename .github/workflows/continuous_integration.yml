@@ -22,6 +22,8 @@ jobs:
       SENDGRID_API_KEY: your-sendgrid-api-key
       ONESIGNAL_API_KEY: your-onesignal-api-key
       TELEGRAM_API_KEY: your-telegram-api-key
+      TWILIO_ACCOUNT_SID: ACthismusthavethirtyfourcharacters
+      TWILIO_AUTH_TOKEN: your-twilio-api-key
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
