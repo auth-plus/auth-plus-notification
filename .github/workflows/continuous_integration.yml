@@ -26,7 +26,7 @@ jobs:
       TWILIO_AUTH_TOKEN: your-twilio-api-key
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Use right version of golang
@@ -62,7 +62,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Run Revive Action by pulling pre-built image
         uses: docker://morphy/revive-action:v2
       - name: Run Revive Action by building from repository
@@ -72,7 +72,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Use right version of golang
         uses: actions/setup-go@v2
         with:
