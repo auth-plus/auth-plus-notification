@@ -1,7 +1,9 @@
 package providers
 
 import (
+	"errors"
 	"fmt"
+	"log"
 
 	twilio "github.com/twilio/twilio-go"
 	openapi "github.com/twilio/twilio-go/rest/api/v2010"
@@ -21,7 +23,7 @@ func NewTwilio() *Twilio {
 	return instance
 }
 
-// SendWhats implementation of SendingWhatsapp
+// SendWhats implementation of SendingWhatsapp (https://www.twilio.com/blog/send-whatsapp-message-30-seconds-golang)
 func (e *Twilio) SendWhats(phone string, content string) error {
 	client := twilio.NewRestClient()
 
@@ -32,7 +34,8 @@ func (e *Twilio) SendWhats(phone string, content string) error {
 
 	_, err := client.Api.CreateMessage(params)
 	if err != nil {
-		return err
+		log.Println("TwilioError:", err)
+		return errors.New("TwilioProvider: something went wrong")
 	}
 	return nil
 }

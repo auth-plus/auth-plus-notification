@@ -80,7 +80,7 @@ func (e *Firebase) SendPN(deviceID string, title string, content string) error {
 		if err != nil {
 			log.Println("Error parsing", err)
 		}
-		log.Println(errMsg)
+		log.Println("FirebaseError:", errMsg)
 		return errors.New("FirebaseProvider: something went wrong")
 	}
 	return nil

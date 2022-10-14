@@ -59,6 +59,42 @@ func (suite *TelegramTestSuite) Test_succeed_when_sending() {
 	assert.Equal(suite.T(), err, nil)
 }
 
+func (suite *TelegramTestSuite) Test_fail_when_sending() {
+	mockData := t.MockedData{}
+	errMock := faker.FakeData(&mockData)
+	if errMock != nil {
+		fmt.Println(errMock)
+	}
+	env := config.GetEnv()
+	defer gock.Off() // Flush pending mocks after test execution
+	gock.New("https://api.telegram.org").
+		Post(fmt.Sprintf("/bot%s/getMe", env.Providers.Telegram.APIKey)).
+		Reply(200).
+		JSON(map[string]interface{}{
+			"ok": true,
+			"result": map[string]interface{}{
+				"id":                          5198414170,
+				"is_bot":                      true,
+				"first_name":                  "Echo",
+				"username":                    "EeCcHh0oBot",
+				"can_join_groups":             true,
+				"can_read_all_group_messages": false,
+				"supports_inline_queries":     false,
+			}})
+	gock.New("https://api.telegram.org").
+		Post(fmt.Sprintf("/bot%s/sendMessage", env.Providers.Telegram.APIKey)).
+		Reply(500).
+		JSON(map[string]interface{}{
+			"ok":          false,
+			"error_code":  401,
+			"description": "Unauthorized",
+		})
+
+	provider := p.NewTelegram()
+	err := provider.SendTele(mockData.ChatID, mockData.Content)
+	assert.Equal(suite.T(), err.Error(), "TelegramProvider: something went wrong")
+}
+
 func TestTelegram(t *testing.T) {
 	suite.Run(t, new(TelegramTestSuite))
 }

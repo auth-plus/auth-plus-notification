@@ -36,10 +36,10 @@ type mailgunEmailPayload struct {
 func (e *Mailgun) SendEmail(email string, subject string, content string) error {
 	client := &http.Client{}
 	emailPayload := mailgunEmailPayload{
-		Personalizations: "",
-		From:             "",
-		Subject:          "",
-		Content:          "",
+		Personalizations: email,
+		From:             "noreply@auth-plus.com",
+		Subject:          subject,
+		Content:          content,
 	}
 
 	json, errJSON := json.Marshal(emailPayload)
@@ -65,7 +65,7 @@ func (e *Mailgun) SendEmail(email string, subject string, content string) error 
 		if err != nil {
 			log.Println("Error parsing", err)
 		}
-		log.Println(errMsg)
+		log.Println("MailgunError:", errMsg)
 		return errors.New("MailgunProvider: something went wrong")
 	}
 

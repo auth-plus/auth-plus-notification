@@ -136,7 +136,7 @@ func (e *OneSignal) sendRequest(json []byte) error {
 		if err != nil {
 			log.Println("Error parsing", err)
 		}
-		log.Println(errMsg)
+		log.Println("OneSignalError:", errMsg)
 		return errors.New("OneSignalProvider: something went wrong")
 	}
 	return nil

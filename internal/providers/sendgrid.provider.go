@@ -73,8 +73,8 @@ func (e *Sendgrid) SendEmail(email string, subject string, content string) error
 		if err != nil {
 			log.Println("Error parsing", err)
 		}
-		log.Println(errMsg)
-		return errors.New("OneSignalProvider: something went wrong")
+		log.Println("SendgridError:", errMsg)
+		return errors.New("SendgridProvider: something went wrong")
 	}
 
 	return nil

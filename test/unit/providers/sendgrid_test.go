@@ -38,7 +38,7 @@ func (suite *SendgridTestSuite) Test_succeed_when_sending() {
 	assert.Equal(suite.T(), err, nil)
 }
 
-func (suite *SendgridTestSuite) Test_faili_when_sending() {
+func (suite *SendgridTestSuite) Test_fail_when_sending() {
 	mockData := t.MockedData{}
 	errMock := faker.FakeData(&mockData)
 	if errMock != nil {
@@ -56,7 +56,7 @@ func (suite *SendgridTestSuite) Test_faili_when_sending() {
 
 	provider := p.NewSendgrid()
 	err := provider.SendEmail(mockData.Email, mockData.Subject, mockData.Content)
-	assert.Equal(suite.T(), err, nil)
+	assert.Equal(suite.T(), err.Error(), "SendgridProvider: something went wrong")
 }
 
 func TestSendgrid(t *testing.T) {

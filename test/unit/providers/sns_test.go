@@ -56,7 +56,6 @@ func (suite *SNSTestSuite) Test_fail_when_sending() {
 	}
 
 	defer gock.Off() // Flush pending mocks after test execution
-	gock.Observe(gock.DumpRequest)
 	gock.New("https://sns.us-west-2.amazonaws.com").
 		Post("/").
 		Reply(400).
@@ -70,7 +69,7 @@ func (suite *SNSTestSuite) Test_fail_when_sending() {
 
 	provider := p.NewSNS()
 	err := provider.SendSms(mockData.Phone, mockData.Content)
-	assert.Equal(suite.T(), err, nil)
+	assert.Equal(suite.T(), err.Error(), "SNSProvider: something went wrong")
 }
 
 func TestSNS(t *testing.T) {

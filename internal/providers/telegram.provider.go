@@ -2,6 +2,8 @@ package providers
 
 import (
 	config "auth-plus-notification/config"
+	"errors"
+	"log"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
@@ -28,7 +30,8 @@ func (e *Telegram) SendTele(chatID int64, text string) error {
 	msg := tgbotapi.NewMessage(chatID, text)
 	_, errR := bot.Send(msg)
 	if errR != nil {
-		return errR
+		log.Println("TelegramError:", errR)
+		return errors.New("TelegramProvider: something went wrong")
 	}
 	return nil
 
