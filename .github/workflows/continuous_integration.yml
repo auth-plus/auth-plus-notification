@@ -52,7 +52,7 @@ jobs:
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           force-coverage-parser: go
-          coverage-reports: coverage.out
+          coverage-reports: c.out
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
