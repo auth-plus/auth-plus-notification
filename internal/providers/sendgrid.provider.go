@@ -6,14 +6,16 @@ import (
 	"encoding/json"
 	"errors"
 	"io/ioutil"
-	"log"
 	"net/http"
+
+	"go.uber.org/zap"
 )
 
 // Sendgrid struct must contains all private property to work
 type Sendgrid struct {
-	url   string
-	token string
+	url    string
+	token  string
+	logger *zap.Logger
 }
 
 // NewSendgrid for instanciate a sendgrid provider
@@ -22,6 +24,7 @@ func NewSendgrid() *Sendgrid {
 	env := config.GetEnv()
 	instance.url = "https://api.sendgrid.com/v3/mail/send"
 	instance.token = env.Providers.Sendgrid.APIKey
+	instance.logger = config.GetLogger()
 	return instance
 }
 
@@ -71,9 +74,9 @@ func (e *Sendgrid) SendEmail(email string, subject string, content string) error
 	if resp.StatusCode != http.StatusOK {
 		errMsg, err := e.getError(resp)
 		if err != nil {
-			log.Println("Error parsing", err)
+			e.logger.Error(err.Error())
 		}
-		log.Println("SendgridError:", errMsg)
+		e.logger.Error(errMsg)
 		return errors.New("SendgridProvider: something went wrong")
 	}
 
