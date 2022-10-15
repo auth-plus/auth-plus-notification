@@ -2,6 +2,7 @@
 package providers
 
 import (
+	"auth-plus-notification/config"
 	"bytes"
 	"encoding/json"
 	"errors"
@@ -9,6 +10,7 @@ import (
 	"log"
 	"net/http"
 
+	"go.uber.org/zap"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )
@@ -16,6 +18,7 @@ import (
 // Firebase struct must contains all private property to work
 type Firebase struct {
 	client *http.Client
+	logger *zap.Logger
 }
 
 // NewFirebase for instanciate a firebase provider
@@ -27,6 +30,7 @@ func NewFirebase() *Firebase {
 		log.Fatal(err)
 	}
 	instance.client = client
+	instance.logger = config.GetLogger()
 	return instance
 }
 
@@ -78,9 +82,9 @@ func (e *Firebase) SendPN(deviceID string, title string, content string) error {
 	if resp.StatusCode != http.StatusOK {
 		errMsg, err := e.getError(resp)
 		if err != nil {
-			log.Println("Error parsing", err)
+			e.logger.Error(err.Error())
 		}
-		log.Println("FirebaseError:", errMsg)
+		e.logger.Error(errMsg)
 		return errors.New("FirebaseProvider: something went wrong")
 	}
 	return nil

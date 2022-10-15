@@ -6,14 +6,16 @@ import (
 	"encoding/json"
 	"errors"
 	"io/ioutil"
-	"log"
 	"net/http"
+
+	"go.uber.org/zap"
 )
 
 // Mailgun struct must contains all private property to work
 type Mailgun struct {
-	url   string
-	token string
+	url    string
+	token  string
+	logger *zap.Logger
 }
 
 // NewMailgun for instanciate a mailgun provider
@@ -22,6 +24,7 @@ func NewMailgun() *Mailgun {
 	env := config.GetEnv()
 	instance.url = "https://api.mailgun.net"
 	instance.token = env.Providers.Mailgun.APIKey
+	instance.logger = config.GetLogger()
 	return instance
 }
 
@@ -63,9 +66,9 @@ func (e *Mailgun) SendEmail(email string, subject string, content string) error 
 	if resp.StatusCode != http.StatusOK {
 		errMsg, err := e.getError(resp)
 		if err != nil {
-			log.Println("Error parsing", err)
+			e.logger.Error(err.Error())
 		}
-		log.Println("MailgunError:", errMsg)
+		e.logger.Error(errMsg)
 		return errors.New("MailgunProvider: something went wrong")
 	}
 

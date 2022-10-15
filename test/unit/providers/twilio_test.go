@@ -26,8 +26,7 @@ func (suite *TwilioTestSuite) Test_succeed_when_sending() {
 		fmt.Println(errMock)
 	}
 	env := config.GetEnv()
-	defer gock.Off() // Flush pending mocks after test execution
-	gock.Observe(gock.DumpRequest)
+	defer gock.Off()
 	gock.New("https://api.twilio.com").
 		Post(fmt.Sprintf("/2010-04-01/Accounts/%s/Messages.json", env.Providers.Twilio.AccountID)).
 		Reply(200).

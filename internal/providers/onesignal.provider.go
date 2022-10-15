@@ -7,17 +7,19 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"math/rand"
 	"net/http"
 	"time"
+
+	"go.uber.org/zap"
 )
 
 // OneSignal struct must contains all private property to work
 type OneSignal struct {
-	url   string
-	token string
-	appID string
+	url    string
+	token  string
+	appID  string
+	logger *zap.Logger
 }
 
 // NewOneSignal for instanciate a onesignal provider
@@ -27,6 +29,7 @@ func NewOneSignal() *OneSignal {
 	instance.url = "https://onesignal.com/api/v1/notifications"
 	instance.token = env.Providers.Onesignal.APIKey
 	instance.appID = ""
+	instance.logger = config.GetLogger()
 	return instance
 }
 
@@ -134,9 +137,9 @@ func (e *OneSignal) sendRequest(json []byte) error {
 	if resp.StatusCode != http.StatusOK {
 		errMsg, err := e.getError(resp)
 		if err != nil {
-			log.Println("Error parsing", err)
+			e.logger.Error(err.Error())
 		}
-		log.Println("OneSignalError:", errMsg)
+		e.logger.Error(errMsg)
 		return errors.New("OneSignalProvider: something went wrong")
 	}
 	return nil
