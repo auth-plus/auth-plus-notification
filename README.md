@@ -66,5 +66,4 @@ go mod tidy
 
 ## TODO
 
-- Add Log Tool as [Zap](https://github.com/uber-go/zap)
 - Add Template
