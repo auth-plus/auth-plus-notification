@@ -29,44 +29,60 @@ type Prometheus struct {
 
 // CreateGauge is a function using prometheus lib
 func (p *Prometheus) CreateGauge(id string, help string) {
-	promGauge := prometheus.NewGauge(prometheus.GaugeOpts{
-		Name: id,
-		Help: help,
+	idx := sort.Search(len(p.gaugeList), func(i int) bool {
+		return string(p.gaugeList[i].id) == id
 	})
-	gauge := typeGauge{
-		id:    id,
-		gauge: promGauge,
+	if idx < 0 {
+		promGauge := prometheus.NewGauge(prometheus.GaugeOpts{
+			Name: id,
+			Help: help,
+		})
+		gauge := typeGauge{
+			id:    id,
+			gauge: promGauge,
+		}
+		p.gaugeList = append(p.gaugeList, gauge)
+		prometheus.MustRegister(promGauge)
 	}
-	p.gaugeList = append(p.gaugeList, gauge)
-	prometheus.MustRegister(promGauge)
 }
 
 // CreateCounter is a function using prometheus lib
 func (p *Prometheus) CreateCounter(id string, help string) {
-	promCounter := prometheus.NewCounter(prometheus.CounterOpts{
-		Name: id,
-		Help: help,
+	idx := sort.Search(len(p.counterList), func(i int) bool {
+		return string(p.counterList[i].id) == id
 	})
-	counter := typeCounter{
-		id:      id,
-		counter: promCounter,
+	print(idx, id)
+	if idx < 0 {
+		promCounter := prometheus.NewCounter(prometheus.CounterOpts{
+			Name: id,
+			Help: help,
+		})
+		counter := typeCounter{
+			id:      id,
+			counter: promCounter,
+		}
+		p.counterList = append(p.counterList, counter)
+		prometheus.MustRegister(promCounter)
 	}
-	p.counterList = append(p.counterList, counter)
-	prometheus.MustRegister(promCounter)
 }
 
 // CreateHistogram is a function using prometheus lib
 func (p *Prometheus) CreateHistogram(id string, help string) {
-	promHistogram := prometheus.NewHistogram(prometheus.HistogramOpts{
-		Name: id,
-		Help: help,
+	idx := sort.Search(len(p.histogramList), func(i int) bool {
+		return string(p.histogramList[i].id) == id
 	})
-	histogram := typeHistogram{
-		id:        id,
-		histogram: promHistogram,
+	if idx < 0 {
+		promHistogram := prometheus.NewHistogram(prometheus.HistogramOpts{
+			Name: id,
+			Help: help,
+		})
+		histogram := typeHistogram{
+			id:        id,
+			histogram: promHistogram,
+		}
+		p.histogramList = append(p.histogramList, histogram)
+		prometheus.MustRegister(promHistogram)
 	}
-	p.histogramList = append(p.histogramList, histogram)
-	prometheus.MustRegister(promHistogram)
 }
 
 // CounterIncrement is a function using prometheus lib
