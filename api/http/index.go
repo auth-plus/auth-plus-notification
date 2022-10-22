@@ -14,6 +14,7 @@ import (
 // Server for initiate http server
 func Server() *gin.Engine {
 	middlewares.MetricSetup()
+
 	router := gin.New()
 	gin.SetMode(gin.ReleaseMode)
 	config := cors.DefaultConfig()
@@ -22,6 +23,7 @@ func Server() *gin.Engine {
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 	router.Use(middlewares.Metric())
+	router.Use(middlewares.Trace())
 
 	// Default
 	router.GET("/health", func(c *gin.Context) {
