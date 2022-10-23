@@ -13,8 +13,6 @@ import (
 
 // Server for initiate http server
 func Server() *gin.Engine {
-	middlewares.MetricSetup()
-
 	router := gin.New()
 	gin.SetMode(gin.ReleaseMode)
 	config := cors.DefaultConfig()

@@ -3,6 +3,7 @@ package pkg
 
 import (
 	"fmt"
+	"log"
 	"sort"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -34,7 +35,6 @@ func (p *Prometheus) CreateGauge(id string, help string) {
 	idx := sort.Search(size, func(i int) bool {
 		return string(p.gaugeList[i].id) == id
 	})
-	print("CreateGauge", len(p.gaugeList), " --- ", idx)
 	if idx == size {
 		promGauge := prometheus.NewGauge(prometheus.GaugeOpts{
 			Name: id,
@@ -45,6 +45,7 @@ func (p *Prometheus) CreateGauge(id string, help string) {
 			gauge: promGauge,
 		}
 		p.gaugeList = append(p.gaugeList, gauge)
+		log.Println("registering: ", id)
 		prometheus.MustRegister(promGauge)
 	}
 }
@@ -65,6 +66,7 @@ func (p *Prometheus) CreateCounter(id string, help string) {
 			counter: promCounter,
 		}
 		p.counterList = append(p.counterList, counter)
+		log.Println("registering: ", id)
 		prometheus.MustRegister(promCounter)
 	}
 }
