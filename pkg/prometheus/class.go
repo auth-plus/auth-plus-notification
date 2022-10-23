@@ -2,6 +2,8 @@
 package pkg
 
 import (
+	"fmt"
+	"log"
 	"sort"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -29,10 +31,11 @@ type Prometheus struct {
 
 // CreateGauge is a function using prometheus lib
 func (p *Prometheus) CreateGauge(id string, help string) {
-	idx := sort.Search(len(p.gaugeList), func(i int) bool {
+	size := len(p.gaugeList)
+	idx := sort.Search(size, func(i int) bool {
 		return string(p.gaugeList[i].id) == id
 	})
-	if idx < 0 {
+	if idx == size {
 		promGauge := prometheus.NewGauge(prometheus.GaugeOpts{
 			Name: id,
 			Help: help,
@@ -42,17 +45,18 @@ func (p *Prometheus) CreateGauge(id string, help string) {
 			gauge: promGauge,
 		}
 		p.gaugeList = append(p.gaugeList, gauge)
+		log.Println("registering: ", id)
 		prometheus.MustRegister(promGauge)
 	}
 }
 
 // CreateCounter is a function using prometheus lib
 func (p *Prometheus) CreateCounter(id string, help string) {
-	idx := sort.Search(len(p.counterList), func(i int) bool {
+	size := len(p.counterList)
+	idx := sort.Search(size, func(i int) bool {
 		return string(p.counterList[i].id) == id
 	})
-	print(idx, id)
-	if idx < 0 {
+	if idx == size {
 		promCounter := prometheus.NewCounter(prometheus.CounterOpts{
 			Name: id,
 			Help: help,
@@ -62,16 +66,18 @@ func (p *Prometheus) CreateCounter(id string, help string) {
 			counter: promCounter,
 		}
 		p.counterList = append(p.counterList, counter)
+		log.Println("registering: ", id)
 		prometheus.MustRegister(promCounter)
 	}
 }
 
 // CreateHistogram is a function using prometheus lib
 func (p *Prometheus) CreateHistogram(id string, help string) {
-	idx := sort.Search(len(p.histogramList), func(i int) bool {
+	size := len(p.histogramList)
+	idx := sort.Search(size, func(i int) bool {
 		return string(p.histogramList[i].id) == id
 	})
-	if idx < 0 {
+	if idx == size {
 		promHistogram := prometheus.NewHistogram(prometheus.HistogramOpts{
 			Name: id,
 			Help: help,
@@ -87,16 +93,28 @@ func (p *Prometheus) CreateHistogram(id string, help string) {
 
 // CounterIncrement is a function using prometheus lib
 func (p *Prometheus) CounterIncrement(id string) {
-	idx := sort.Search(len(p.counterList), func(i int) bool {
+	size := len(p.counterList)
+	if size == 0 {
+		panic(fmt.Sprintf("Counter %s need to initalize first", id))
+	}
+	idx := sort.Search(size, func(i int) bool {
 		return string(p.counterList[i].id) == id
 	})
-	p.counterList[idx].counter.Inc()
+	if idx != size {
+		p.counterList[idx].counter.Inc()
+	}
 }
 
 // GaugeSet is a function using prometheus lib
 func (p *Prometheus) GaugeSet(id string, value float64) {
-	idx := sort.Search(len(p.gaugeList), func(i int) bool {
+	size := len(p.gaugeList)
+	if size == 0 {
+		panic(fmt.Sprintf("Gauge %s need to initalize first", id))
+	}
+	idx := sort.Search(size, func(i int) bool {
 		return string(p.gaugeList[i].id) == id
 	})
-	p.gaugeList[idx].gauge.Set(value)
+	if idx != size {
+		p.gaugeList[idx].gauge.Set(value)
+	}
 }

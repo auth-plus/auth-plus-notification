@@ -1,6 +1,6 @@
 .PHONY: infra/up
 infra/up:
-	docker-compose up -d database prometheus grafana
+	docker-compose up -d database prometheus grafana jaeger
 
 .PHONY: infra/down
 infra/down:
