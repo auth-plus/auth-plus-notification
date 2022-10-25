@@ -3,6 +3,7 @@
 !/cmd
 !/config
 !/internal
+!/pkg
 !/test
 !go.mod
 !go.sum
