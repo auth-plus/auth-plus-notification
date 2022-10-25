@@ -1,6 +1,6 @@
 # Auth+ Notification
 
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=auth-plus_auth-plus-backend-notification&metric=coverage)](https://sonarcloud.io/summary/new_code?id=auth-plus_auth-plus-backend-notification)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=auth-plus_auth-plus-notification&metric=coverage)](https://sonarcloud.io/summary/new_code?id=auth-plus_auth-plus-notification)
 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8b06e8bee2391dc8817a/test_coverage)](https://codeclimate.com/github/auth-plus/auth-plus-backend-notification/test_coverage)
 
