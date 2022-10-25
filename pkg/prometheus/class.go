@@ -118,3 +118,17 @@ func (p *Prometheus) GaugeSet(id string, value float64) {
 		p.gaugeList[idx].gauge.Set(value)
 	}
 }
+
+// HistogramObserve is a function using prometheus lib
+func (p *Prometheus) HistogramObserve(id string, value float64) {
+	size := len(p.histogramList)
+	if size == 0 {
+		panic(fmt.Sprintf("Histogram %s need to initalize first", id))
+	}
+	idx := sort.Search(size, func(i int) bool {
+		return string(p.histogramList[i].id) == id
+	})
+	if idx != size {
+		p.histogramList[idx].histogram.Observe(value)
+	}
+}
