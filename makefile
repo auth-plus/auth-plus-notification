@@ -1,6 +1,6 @@
 .PHONY: infra/up
 infra/up:
-	docker-compose up -d database prometheus grafana jaeger
+	docker-compose up -d api database
 
 .PHONY: infra/down
 infra/down:
@@ -9,13 +9,11 @@ infra/down:
 .PHONY: dev
 dev:
 	make infra/up
-	docker-compose up -d api
 	docker-compose exec api sh
 
 .PHONY: test
 test:
 	make infra/up
-	docker-compose up -d api
 	docker-compose exec -T api go test ./... -coverpkg=./... -coverprofile=c.out 
 	make clean/docker
 

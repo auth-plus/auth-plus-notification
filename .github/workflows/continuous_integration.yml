@@ -41,7 +41,7 @@ jobs:
       - name: Execute test
         run: go test ./... -coverpkg=./... -coverprofile=c.out
       - name: Code Climate Scan
-        uses: paambaati/codeclimate-action@v3.0.0
+        uses: paambaati/codeclimate-action@v3.2.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TOKEN }}
         with:
