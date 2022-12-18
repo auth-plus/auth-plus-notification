@@ -14,7 +14,7 @@ services:
       - .:/app
     restart: always
     networks:
-      - host
+      - notification-net
   
   database:
     container_name: postgres
@@ -29,10 +29,10 @@ services:
     volumes:
       - v-database:/var/lib/postgres
     networks:
-      - host
+      - notification-net
 
 networks:
-  host:
+  notification-net:
     driver: bridge
 
 volumes:
