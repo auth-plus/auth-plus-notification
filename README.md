@@ -60,7 +60,7 @@ $HOME/go/bin/revive -formatter friendly ./...
 ## How to update packages
 
 ```bash
-go get -u
+go get -u all
 go mod tidy
 ```
 
