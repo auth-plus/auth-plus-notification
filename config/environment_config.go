@@ -60,17 +60,17 @@ type AppEnv struct {
 	Env  string
 }
 
-// PrometheusEnv for prometheus configuration
-type PrometheusEnv struct {
+// KafkaEnv for kafka configuration
+type KafkaEnv struct {
 	URL  string
 	Port string
 }
 
 // Environment contains all configurations
 type Environment struct {
-	App        AppEnv
-	Providers  ProviderEnv
-	Prometheus PrometheusEnv
+	App       AppEnv
+	Providers ProviderEnv
+	Kafka     KafkaEnv
 }
 
 // GetEnv exports env config instead of multiplaces to maintain
@@ -117,15 +117,15 @@ func GetEnv() Environment {
 		Port: os.Getenv("APP_PORT"),
 		Env:  os.Getenv("GO_ENV"),
 	}
-	prometheus := PrometheusEnv{
-		URL:  os.Getenv("PROMETHEUS_URL"),
-		Port: os.Getenv("PROMETHEUS_PORT"),
+	kafka := KafkaEnv{
+		URL:  os.Getenv("KAFKA_URL"),
+		Port: os.Getenv("KAFKA_PORT"),
 	}
 	//Exporting
 	env := Environment{
-		App:        app,
-		Providers:  providers,
-		Prometheus: prometheus,
+		App:       app,
+		Providers: providers,
+		Kafka:     kafka,
 	}
 	return env
 }
