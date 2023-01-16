@@ -9,6 +9,7 @@ require (
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
 	github.com/prometheus/client_golang v1.13.0
+	github.com/segmentio/kafka-go v0.4.38
 	github.com/stretchr/testify v1.8.1
 	github.com/twilio/twilio-go v0.26.0
 	go.opentelemetry.io/otel/exporters/zipkin v1.11.2
@@ -17,7 +18,11 @@ require (
 	gopkg.in/h2non/gock.v1 v1.1.2
 )
 
-require github.com/openzipkin/zipkin-go v0.4.1 // indirect
+require (
+	github.com/klauspost/compress v1.15.11 // indirect
+	github.com/openzipkin/zipkin-go v0.4.1 // indirect
+	github.com/pierrec/lz4/v4 v4.1.17 // indirect
+)
 
 require (
 	cloud.google.com/go/compute v1.9.0 // indirect

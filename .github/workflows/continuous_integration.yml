@@ -79,4 +79,4 @@ jobs:
         with:
           go-version: "^1.19"
       - name: Checking if build
-        run: go build -o ./build/server ./cmd/http_server.go
+        run: go build -o ./build/server ./cmd/http/http_server.go
