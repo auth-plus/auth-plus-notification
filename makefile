@@ -1,20 +1,20 @@
 .PHONY: infra/up
 infra/up:
-	docker-compose up -d api database
+	docker compose up -d api database
 
 .PHONY: infra/down
 infra/down:
-	docker-compose down
+	docker compose down
 
 .PHONY: dev
 dev:
 	make infra/up
-	docker-compose exec api sh
+	docker compose exec api sh
 
 .PHONY: test
 test:
 	make infra/up
-	docker-compose exec -T api go test ./... -coverpkg=./... -coverprofile=c.out 
+	docker compose exec -T api go test ./... -coverpkg=./... -coverprofile=c.out 
 	make clean/docker
 
 .PHONY: clean/docker
