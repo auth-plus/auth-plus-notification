@@ -66,4 +66,17 @@ go mod tidy
 
 ## TODO
 
-- Add Template
+### Business
+
+- Add Template system
+- Add [Queue](https://github.com/adjust/rmq) to retry notifications
+
+### Development
+
+- Add mutation testing with [Gremlins](https://github.com/go-gremlins/gremlins)
+- Add load testing with [k6](https://k6.io/docs/)
+
+### Security
+
+- Add [grype](https://github.com/anchore/grype) for security scan (SAST)
+- Add [OWASP ZAP](https://owasp.org/www-project-zap/) to scan vulnerabilities (DAST)
