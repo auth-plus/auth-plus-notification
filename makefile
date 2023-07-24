@@ -25,3 +25,8 @@ clean/docker:
 	docker image prune -f
 	rm -rf db/schema.sql
 	rm -f db/schema.sql
+
+.PHONY: clean/test
+clean/test:
+	rm -f ./c.out
+	rm -rf build

@@ -8,8 +8,19 @@ services:
     ports:
       - "5001:5001"
     command: tail -f /dev/null
-    env_file:
-      - .env
+    environment:
+      APP_NAME: auth-plus-notification
+      APP_PORT: 5001
+      GO_ENV: development
+      AWS_ACCESS_KEY_ID: YOUR_AKID
+      AWS_SECRET_ACCESS_KEY: YOUR_SECRET_KEY
+      AWS_SESSION_TOKEN: TOKEN
+      GOOGLE_APPLICATION_CREDENTIALS: /app/service-account-file.json
+      GOOGLE_APPLICATION_NAME: auth-plus-c2b74
+      MAILGUN_API_KEY: mailgun-api-key
+      ONESIGNAL_API_KEY: onesignal-api-key
+      SENDGRID_API_KEY: sendgrid-api-key
+      TELEGRAM_API_KEY: your-telegram-api-key
     volumes:
       - .:/app
     restart: always
