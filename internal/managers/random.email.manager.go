@@ -4,7 +4,6 @@ package managers
 import (
 	d "auth-plus-notification/internal/usecases/driven"
 	"math/rand"
-	"time"
 )
 
 // RandomEmailManager must contains all provider that could be choosen
@@ -36,6 +35,5 @@ func (e *RandomEmailManager) ChooseProvider(number float64) (d.SendingEmail, err
 
 // GetInput is a function that generate a random number
 func (e *RandomEmailManager) GetInput() (float64, error) {
-	rand.Seed(time.Now().UnixNano())
 	return rand.Float64(), nil
 }

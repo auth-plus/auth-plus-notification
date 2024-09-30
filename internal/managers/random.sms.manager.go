@@ -3,7 +3,6 @@ package managers
 import (
 	d "auth-plus-notification/internal/usecases/driven"
 	"math/rand"
-	"time"
 )
 
 // RandomSmsManager must contains all provider that could be choosen
@@ -30,6 +29,5 @@ func (e *RandomSmsManager) ChooseProvider(number float64) (d.SendingSms, error) 
 
 // GetInput is a function that generate a random number
 func (e *RandomSmsManager) GetInput() (float64, error) {
-	rand.Seed(time.Now().UnixNano())
 	return rand.Float64(), nil
 }
