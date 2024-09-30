@@ -19,7 +19,7 @@ func NewRandomWhatsappManager(twilio d.SendingWhatsapp) *RandomWhatsappManager {
 }
 
 // ChooseProvider is a function for choosing a provider based on a number
-func (e *RandomWhatsappManager) ChooseProvider(number float64) (d.SendingWhatsapp, error) {
+func (e *RandomWhatsappManager) ChooseProvider(_ float64) (d.SendingWhatsapp, error) {
 	return e.twilio, nil
 }
 
