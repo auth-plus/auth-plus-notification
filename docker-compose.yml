@@ -21,7 +21,8 @@ services:
       SENDGRID_API_KEY: sendgrid-api-key
       TELEGRAM_API_KEY: your-telegram-api-key
       TWILIO_ACCOUNT_SID: TWILIOACCOUNTSID
-      TWILIO_AUTH_TOKEN: TWILIOAUTHTOKEN
+      TWILIO_USERNAME: TWILIOUSERNAME
+      TWILIO_PASSWORD: TWILIOPASSWORD
     volumes:
       - .:/app
     restart: always

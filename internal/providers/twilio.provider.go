@@ -23,6 +23,8 @@ func NewTwilio() *Twilio {
 	instance.logger = config.GetLogger()
 	instance.client = twilio.NewRestClientWithParams(twilio.ClientParams{
 		AccountSid: env.Providers.Twilio.AccountID,
+		Password:   env.Providers.Twilio.Password,
+		Username:   env.Providers.Twilio.Username,
 	})
 	return instance
 }

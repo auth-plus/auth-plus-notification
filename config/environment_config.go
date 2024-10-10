@@ -38,8 +38,9 @@ type TelegramEnv struct {
 
 // TwilioEnv is environment variable for mailgun work
 type TwilioEnv struct {
+	Username  string
+	Password  string
 	AccountID string
-	Token     string
 }
 
 // ProviderEnv contains all providers configurations
@@ -100,7 +101,8 @@ func GetEnv() Environment {
 	}
 	twilio := TwilioEnv{
 		AccountID: os.Getenv("TWILIO_ACCOUNT_SID"),
-		Token:     os.Getenv("TWILIO_AUTH_TOKEN"),
+		Username:  os.Getenv("TWILIO_USERNAME"),
+		Password:  os.Getenv("TWILIO_PASSWORD"),
 	}
 	providers := ProviderEnv{
 		Amazon:    amazon,
