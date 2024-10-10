@@ -33,6 +33,7 @@ func (e *Twilio) SendWhats(phone string, content string) error {
 
 	_, err := client.Api.CreateMessage(params)
 	if err != nil {
+		fmt.Println(err)
 		e.logger.Error(err.Error())
 		return errors.New("TwilioProvider: something went wrong")
 	}
