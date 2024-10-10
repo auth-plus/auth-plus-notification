@@ -35,7 +35,7 @@ func NewOneSignal() *OneSignal {
 
 type oneSignalEmailPayload struct {
 	AppID   string    `json:"app_id"`
-	Ids     [1]string `json:"include_player_ids"`
+	IDs     [1]string `json:"include_player_ids"`
 	Subject string    `json:"email_subject"`
 	Body    string    `json:"email_body"`
 }
@@ -62,7 +62,7 @@ type oneSignalPNPayloadContent struct {
 
 type oneSignalPNPayload struct {
 	AppID   string                    `json:"app_id"`
-	Ids     [1]string                 `json:"include_player_ids"`
+	IDs     [1]string                 `json:"include_player_ids"`
 	Data    map[string]interface{}    `json:"data"`
 	Content oneSignalPNPayloadContent `json:"contents"`
 }
@@ -72,8 +72,8 @@ func (e *OneSignal) SendPN(deviceID string, title string, content string) error 
 	idList := [1]string{deviceID}
 	pnPayload := oneSignalPNPayload{
 		AppID:   e.appID,
-		Ids:     idList,
-		Data:    map[string]interface{}{"foo": "bar"},
+		IDs:     idList,
+		Data:    map[string]interface{}{"title": title, "content": content},
 		Content: oneSignalPNPayloadContent{En: content},
 	}
 

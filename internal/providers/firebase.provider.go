@@ -4,14 +4,14 @@ package providers
 import (
 	"auth-plus-notification/config"
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 
 	"go.uber.org/zap"
-	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )
 
@@ -24,7 +24,7 @@ type Firebase struct {
 // NewFirebase for instanciate a firebase provider
 func NewFirebase() *Firebase {
 	instance := new(Firebase)
-	client, err := google.DefaultClient(oauth2.NoContext,
+	client, err := google.DefaultClient(context.Background(),
 		"https://www.googleapis.com/auth/firebase.messaging")
 	if err != nil {
 		log.Fatal(err)
@@ -91,7 +91,7 @@ func (e *Firebase) SendPN(deviceID string, title string, content string) error {
 }
 
 func (e *Firebase) getError(resp *http.Response) (string, error) {
-	respBody, errBody := ioutil.ReadAll(resp.Body)
+	respBody, errBody := io.ReadAll(resp.Body)
 	if errBody != nil {
 		return "", errBody
 	}

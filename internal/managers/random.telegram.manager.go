@@ -19,7 +19,7 @@ func NewRandomTelegramManager(telegram d.SendingTelegram) *RandomTelegramManager
 }
 
 // ChooseProvider is a function for choosing a provider based on a number
-func (e *RandomTelegramManager) ChooseProvider(number float64) (d.SendingTelegram, error) {
+func (e *RandomTelegramManager) ChooseProvider(_ float64) (d.SendingTelegram, error) {
 	return e.telegram, nil
 }
 

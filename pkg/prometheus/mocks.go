@@ -26,7 +26,7 @@ func (m *CounterMocked) Inc() {
 }
 
 // Add a mocked function for counter
-func (m *CounterMocked) Add(n float64) {
+func (m *CounterMocked) Add(_ float64) {
 	return
 }
 
@@ -38,12 +38,12 @@ type GaugeMocked struct {
 }
 
 // Set a mocked function for gauge
-func (m *GaugeMocked) Set(n float64) {
+func (m *GaugeMocked) Set(_ float64) {
 	return
 }
 
 // Add a mocked function for gauge
-func (m *GaugeMocked) Add(n float64) {
+func (m *GaugeMocked) Add(_ float64) {
 	return
 }
 
@@ -63,7 +63,7 @@ func (m *GaugeMocked) SetToCurrentTime() {
 }
 
 // Sub a mocked function for gauge
-func (m *GaugeMocked) Sub(n float64) {
+func (m *GaugeMocked) Sub(_ float64) {
 	return
 }
 
@@ -75,6 +75,6 @@ type HistogramMocked struct {
 }
 
 // Observe a mocked function for histogram
-func (m *HistogramMocked) Observe(n float64) {
+func (m *HistogramMocked) Observe(_ float64) {
 	return
 }
