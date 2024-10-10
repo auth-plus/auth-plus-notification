@@ -20,6 +20,8 @@ services:
       ONESIGNAL_API_KEY: onesignal-api-key
       SENDGRID_API_KEY: sendgrid-api-key
       TELEGRAM_API_KEY: your-telegram-api-key
+      TWILIO_ACCOUNT_SID: TWILIO_ACCOUNT_SID
+      TWILIO_AUTH_TOKEN: TWILIO_AUTH_TOKEN
     volumes:
       - .:/app
     restart: always
