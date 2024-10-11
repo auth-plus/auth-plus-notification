@@ -5,7 +5,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	"go.uber.org/zap"
@@ -76,7 +76,7 @@ func (e *Mailgun) SendEmail(email string, subject string, content string) error 
 }
 
 func (e *Mailgun) getError(resp *http.Response) (string, error) {
-	respBody, errBody := ioutil.ReadAll(resp.Body)
+	respBody, errBody := io.ReadAll(resp.Body)
 	if errBody != nil {
 		return "", errBody
 	}

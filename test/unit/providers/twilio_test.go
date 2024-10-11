@@ -27,6 +27,7 @@ func (suite *TwilioTestSuite) Test_succeed_when_sending() {
 	}
 	env := config.GetEnv()
 	defer gock.Off()
+	gock.Observe(gock.DumpRequest)
 	gock.New("https://api.twilio.com").
 		Post(fmt.Sprintf("/2010-04-01/Accounts/%s/Messages.json", env.Providers.Twilio.AccountID)).
 		Reply(200).
