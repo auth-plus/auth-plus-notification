@@ -10,15 +10,15 @@ require (
 	github.com/gin-contrib/cors v1.7.2
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
-	github.com/prometheus/client_golang v1.20.4
+	github.com/prometheus/client_golang v1.20.5
 	github.com/segmentio/kafka-go v0.4.47
-	github.com/stretchr/testify v1.9.0
-	github.com/twilio/twilio-go v1.23.2
-	go.opentelemetry.io/otel v1.30.0
-	go.opentelemetry.io/otel/exporters/zipkin v1.30.0
-	go.opentelemetry.io/otel/sdk v1.30.0
+	github.com/stretchr/testify v1.10.0
+	github.com/twilio/twilio-go v1.23.8
+	go.opentelemetry.io/otel v1.33.0
+	go.opentelemetry.io/otel/exporters/zipkin v1.33.0
+	go.opentelemetry.io/otel/sdk v1.33.0
 	go.uber.org/zap v1.27.0
-	golang.org/x/oauth2 v0.23.0
+	golang.org/x/oauth2 v0.24.0
 	gopkg.in/h2non/gock.v1 v1.1.2
 )
 
