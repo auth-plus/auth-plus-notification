@@ -17,7 +17,3 @@ services:
 networks:
   notification-net:
     driver: bridge
-
-volumes:
-  v-database:
-  v-metrics:
