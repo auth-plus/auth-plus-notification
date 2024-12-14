@@ -1,6 +1,6 @@
 .PHONY: infra/up
 infra/up:
-	docker compose up -d api database
+	docker compose up -d api
 
 .PHONY: infra/down
 infra/down:
