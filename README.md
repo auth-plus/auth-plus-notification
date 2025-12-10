@@ -2,8 +2,6 @@
 
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=auth-plus_auth-plus-notification&metric=coverage)](https://sonarcloud.io/summary/new_code?id=auth-plus_auth-plus-notification)
 
-[![Test Coverage](https://api.codeclimate.com/v1/badges/7747782d29adc97edda2/test_coverage)](https://codeclimate.com/github/auth-plus/auth-plus-notification/test_coverage)
-
 [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/870535e320a4452eac49e677bd5025de)](https://www.codacy.com/gh/auth-plus/auth-plus-notification/dashboard?utm_source=github.com&utm_medium=referral&utm_content=auth-plus/auth-plus-notification&utm_campaign=Badge_Coverage)
 
 This project it's a sample for notification system.

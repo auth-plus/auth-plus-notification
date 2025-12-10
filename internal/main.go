@@ -5,6 +5,7 @@ import (
 	m "auth-plus-notification/internal/managers"
 	p "auth-plus-notification/internal/providers"
 	u "auth-plus-notification/internal/usecases"
+	"fmt"
 )
 
 // Core contains all usecases
@@ -19,7 +20,10 @@ type Core struct {
 // NewCore is a function that make middle between presentation layer and the usecases
 func NewCore() Core {
 	//Providers
-	firebase := p.NewFirebase()
+	firebase, errFirebase := p.NewFirebase()
+	if errFirebase != nil {
+		fmt.Println(errFirebase)
+	}
 	mailgun := p.NewMailgun()
 	sendgrid := p.NewSendgrid()
 	sns := p.NewSNS()

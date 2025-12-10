@@ -40,7 +40,10 @@ func (suite *FirebaseTestSuite) Test_succeed_when_sending() {
 			"expires_in":   3599,
 			"token_type":   "Bearer",
 		})
-	provider := p.NewFirebase()
+	provider, errP := p.NewFirebase()
+	if errP != nil {
+		fmt.Println(errP)
+	}
 	err := provider.SendPN(DeviceID, mockData.Title, mockData.Content)
 	assert.Equal(suite.T(), err, nil)
 }
@@ -75,7 +78,10 @@ func (suite *FirebaseTestSuite) Test_fail_when_sending() {
 			"expires_in":   3599,
 			"token_type":   "Bearer",
 		})
-	provider := p.NewFirebase()
+	provider, errP := p.NewFirebase()
+	if errP != nil {
+		fmt.Println(errP)
+	}
 	err := provider.SendPN(DeviceID, mockData.Title, mockData.Content)
 	assert.Equal(suite.T(), err.Error(), "FirebaseProvider: something went wrong")
 }

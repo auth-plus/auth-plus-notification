@@ -1,4 +1,4 @@
-FROM golang:1.23-alpine AS builder
+FROM golang:1.25-alpine AS builder
 RUN apk --update add build-base
 WORKDIR /app
 COPY ./api ./api
@@ -13,7 +13,7 @@ RUN go mod download
 RUN go build -tags netgo -a -v -o ./build/http_server ./cmd/http/http_server.go
 RUN go build -tags netgo -a -v -o ./build/kafka_server ./cmd/kafka/kafka_server.go
 
-FROM alpine:3.16.2 AS deploy
+FROM alpine:3.23.0 AS deploy
 RUN apk --no-cache add ca-certificates
 RUN addgroup -S nonroot \
     && adduser -S nonroot -G nonroot
