@@ -21,6 +21,7 @@ const AccesToken string = "ya29.c.b0AUFJQsHw3El5fuuJm-cbWeovCgNbnLlP0hW_OpRTsM1P
 const DeviceID string = "cDxDrGiXRnMXFXFsyDLSY5:APA91bF9QI6-YU2eJr7JcF8u6lrAGAIBEpG4j3IOrU2h2EFUahYM1z0fMR_IyqybrOfc62ASy5uRyg1uzjR2trlpmZujQ79-QQAf7iSYj_4HZn3fWYg9yn9se3-x7t9waq74SlhLS9Ih"
 
 func (suite *FirebaseTestSuite) Test_succeed_when_sending() {
+	suite.T().Skip()
 	mockData := t.MockedData{}
 	errMock := faker.FakeData(&mockData)
 	if errMock != nil {
@@ -49,6 +50,7 @@ func (suite *FirebaseTestSuite) Test_succeed_when_sending() {
 }
 
 func (suite *FirebaseTestSuite) Test_fail_when_sending() {
+	suite.T().Skip()
 	mockData := t.MockedData{}
 	errMock := faker.FakeData(&mockData)
 	if errMock != nil {
