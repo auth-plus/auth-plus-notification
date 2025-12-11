@@ -42,7 +42,7 @@ func (suite *FirebaseTestSuite) Test_succeed_when_sending() {
 		})
 	provider, errP := p.NewFirebase()
 	if errP != nil {
-		fmt.Println(errP)
+		suite.T().Fatalf("Failed to initialize Firebase provider: %v", errP)
 	}
 	err := provider.SendPN(DeviceID, mockData.Title, mockData.Content)
 	assert.Equal(suite.T(), err, nil)
@@ -80,7 +80,7 @@ func (suite *FirebaseTestSuite) Test_fail_when_sending() {
 		})
 	provider, errP := p.NewFirebase()
 	if errP != nil {
-		fmt.Println(errP)
+		suite.T().Fatalf("Failed to initialize Firebase provider: %v", errP)
 	}
 	err := provider.SendPN(DeviceID, mockData.Title, mockData.Content)
 	assert.Equal(suite.T(), err.Error(), "FirebaseProvider: something went wrong")

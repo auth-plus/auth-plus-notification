@@ -5,7 +5,6 @@ import (
 	"auth-plus-notification/config"
 	"context"
 	"fmt"
-	"log"
 
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/messaging"
@@ -45,7 +44,7 @@ func (e *Firebase) SendPN(deviceID string, title string, content string) error {
 	ctx := context.Background()
 	client, err := e.app.Messaging(ctx)
 	if err != nil {
-		log.Fatalf("error getting Messaging client: %v\n", err)
+		return fmt.Errorf("error getting Messaging client: %v", err)
 	}
 	_, errReq := client.Send(ctx, message)
 	if errReq != nil {

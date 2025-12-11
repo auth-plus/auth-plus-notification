@@ -5,7 +5,7 @@ import (
 	m "auth-plus-notification/internal/managers"
 	p "auth-plus-notification/internal/providers"
 	u "auth-plus-notification/internal/usecases"
-	"fmt"
+	"log"
 )
 
 // Core contains all usecases
@@ -22,7 +22,7 @@ func NewCore() Core {
 	//Providers
 	firebase, errFirebase := p.NewFirebase()
 	if errFirebase != nil {
-		fmt.Println(errFirebase)
+		log.Fatalf("Failed to initialize Firebase provider: %v", errFirebase)
 	}
 	mailgun := p.NewMailgun()
 	sendgrid := p.NewSendgrid()
