@@ -32,7 +32,7 @@ jobs:
       - name: Use right version of golang
         uses: actions/setup-go@v6
         with:
-          go-version: "1.24.0"
+          go-version: "1.26.0"
       - name: Create service-account file [TODO:REMOVE]
         run: |
           touch $GOOGLE_APPLICATION_CREDENTIALS
@@ -70,6 +70,6 @@ jobs:
       - name: Use right version of golang
         uses: actions/setup-go@v6
         with:
-          go-version: "1.24.0"
+          go-version: "1.26.0"
       - name: Checking if build
         run: go build -o ./build/server ./cmd/http/http_server.go
