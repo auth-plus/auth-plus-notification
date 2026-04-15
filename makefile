@@ -4,7 +4,7 @@ infra/up:
 
 .PHONY: infra/down
 infra/down:
-	docker compose down
+	docker compose down -v
 
 .PHONY: dev
 dev:
