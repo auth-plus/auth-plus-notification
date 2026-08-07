@@ -1,6 +1,7 @@
 package test
 
 import (
+	"context"
 	"auth-plus-notification/config"
 	p "auth-plus-notification/internal/providers"
 	t "auth-plus-notification/test/mocks"
@@ -55,7 +56,7 @@ func (suite *TelegramTestSuite) Test_succeed_when_sending() {
 			}})
 
 	provider := p.NewTelegram()
-	err := provider.SendTele(mockData.ChatID, mockData.Content)
+	err := provider.SendTele(context.Background(), mockData.ChatID, mockData.Content)
 	assert.Equal(suite.T(), err, nil)
 }
 
@@ -91,7 +92,7 @@ func (suite *TelegramTestSuite) Test_fail_when_sending() {
 		})
 
 	provider := p.NewTelegram()
-	err := provider.SendTele(mockData.ChatID, mockData.Content)
+	err := provider.SendTele(context.Background(), mockData.ChatID, mockData.Content)
 	assert.Equal(suite.T(), err.Error(), "TelegramProvider: something went wrong")
 }
 

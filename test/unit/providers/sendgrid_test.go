@@ -1,6 +1,7 @@
 package test
 
 import (
+	"context"
 	"auth-plus-notification/config"
 	p "auth-plus-notification/internal/providers"
 	t "auth-plus-notification/test/mocks"
@@ -34,7 +35,7 @@ func (suite *SendgridTestSuite) Test_succeed_when_sending() {
 		Reply(200)
 
 	provider := p.NewSendgrid()
-	err := provider.SendEmail(mockData.Email, mockData.Subject, mockData.Content)
+	err := provider.SendEmail(context.Background(), mockData.Email, mockData.Subject, mockData.Content)
 	assert.Equal(suite.T(), err, nil)
 }
 
@@ -55,7 +56,7 @@ func (suite *SendgridTestSuite) Test_fail_when_sending() {
 		BodyString(mockData.Error)
 
 	provider := p.NewSendgrid()
-	err := provider.SendEmail(mockData.Email, mockData.Subject, mockData.Content)
+	err := provider.SendEmail(context.Background(), mockData.Email, mockData.Subject, mockData.Content)
 	assert.Equal(suite.T(), err.Error(), "SendgridProvider: something went wrong")
 }
 

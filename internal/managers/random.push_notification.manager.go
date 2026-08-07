@@ -2,6 +2,7 @@ package managers
 
 import (
 	d "auth-plus-notification/internal/usecases/driven"
+	"context"
 	"math/rand"
 )
 
@@ -20,7 +21,7 @@ func NewRandomPushNotificationManager(firebase d.SendingPushNotification, onesig
 }
 
 // ChooseProvider is a function for choosing a provider based on a number
-func (e *RandomPushNotificationManager) ChooseProvider(number float64) (d.SendingPushNotification, error) {
+func (e *RandomPushNotificationManager) ChooseProvider(ctx context.Context, number float64) (d.SendingPushNotification, error) {
 	if number < 0.5 {
 		return e.onesignal, nil
 	}
@@ -28,6 +29,6 @@ func (e *RandomPushNotificationManager) ChooseProvider(number float64) (d.Sendin
 }
 
 // GetInput is a function that generate a random number
-func (e *RandomPushNotificationManager) GetInput() (float64, error) {
+func (e *RandomPushNotificationManager) GetInput(ctx context.Context) (float64, error) {
 	return rand.Float64(), nil
 }

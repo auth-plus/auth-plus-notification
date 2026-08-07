@@ -17,7 +17,7 @@ In this application you cand send:
 
 - Docker v20.10.11
 - Docker Compose v1.28.4
-- Go v1.19
+- Go v1.26
 
 ## Enviroment Variables
 

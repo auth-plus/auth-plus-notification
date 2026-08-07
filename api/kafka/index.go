@@ -8,7 +8,36 @@ import (
 	"log"
 
 	"github.com/segmentio/kafka-go"
+	"go.opentelemetry.io/otel"
 )
+
+type KafkaHeaderCarrier struct {
+	msg *kafka.Message
+}
+
+func (c KafkaHeaderCarrier) Get(key string) string {
+	for _, h := range c.msg.Headers {
+		if h.Key == key {
+			return string(h.Value)
+		}
+	}
+	return ""
+}
+
+func (c KafkaHeaderCarrier) Set(key string, value string) {
+	c.msg.Headers = append(c.msg.Headers, kafka.Header{
+		Key:   key,
+		Value: []byte(value),
+	})
+}
+
+func (c KafkaHeaderCarrier) Keys() []string {
+	keys := make([]string, len(c.msg.Headers))
+	for i, h := range c.msg.Headers {
+		keys[i] = h.Key
+	}
+	return keys
+}
 
 // Server for initiate kafka consumer server
 func Server(url string) {
@@ -24,8 +53,13 @@ func Server(url string) {
 			break
 		}
 
+		ctx := otel.GetTextMapPropagator().Extract(context.Background(), KafkaHeaderCarrier{msg: &m})
+		_, span := otel.Tracer("kafka-consumer").Start(ctx, fmt.Sprintf("consume %s", m.Topic))
+
 		msg := fmt.Sprintf("message at topic/partition/offset %v/%v/%v: %s = %s\n", m.Topic, m.Partition, m.Offset, string(m.Key), string(m.Value))
 		logger.Info(msg)
+
+		span.End()
 	}
 
 	if err := r.Close(); err != nil {

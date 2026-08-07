@@ -1,21 +1,23 @@
 package providers
 
 import (
-	config "auth-plus-notification/config"
+	"auth-plus-notification/config"
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
 
-	"go.uber.org/zap"
+	"github.com/uptrace/opentelemetry-go-extra/otelzap"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )
 
 // Sendgrid struct must contains all private property to work
 type Sendgrid struct {
 	url    string
 	token  string
-	logger *zap.Logger
+	logger *otelzap.Logger
 }
 
 // NewSendgrid for instanciate a sendgrid provider
@@ -28,38 +30,51 @@ func NewSendgrid() *Sendgrid {
 	return instance
 }
 
-type sendgridEmailPayload struct {
+type sendgridBody struct {
 	Personalizations [1]map[string]interface{} `json:"personalizations"`
 	From             map[string]interface{}    `json:"from"`
-	Subject          string                    `json:"subject"`
 	Content          [1]map[string]interface{} `json:"content"`
 }
 
 // SendEmail implementation of SendingEmail
-func (e *Sendgrid) SendEmail(email string, subject string, content string) error {
-	client := &http.Client{}
+func (e *Sendgrid) SendEmail(ctx context.Context, email string, subject string, content string) error {
+	client := &http.Client{
+		Transport: otelhttp.NewTransport(http.DefaultTransport),
+	}
 	to := [1]map[string]interface{}{{
 		"email": email,
 	}}
-	emailPayload := sendgridEmailPayload{
-		Personalizations: [1]map[string]interface{}{{
-			"to": to,
-		}},
-		From: map[string]interface{}{
-			"email": "no-reply@auth-plus.app",
-			"name":  "No Reply",
-		},
-		Subject: subject,
-		Content: [1]map[string]interface{}{{
-			"type":  "text/html",
-			"value": content,
-		}},
+
+	personalizations := [1]map[string]interface{}{{
+		"to":      to,
+		"subject": subject,
+	}}
+	from := map[string]interface{}{
+		"email": "no-reply@auth-plus.app",
+		"name":  "No Reply",
 	}
-	json, errJSON := json.Marshal(emailPayload)
-	if errJSON != nil {
-		return errJSON
+
+	contentObj := [1]map[string]interface{}{{
+		"type":  "text/html",
+		"value": content,
+	}}
+
+	body := sendgridBody{
+		Personalizations: personalizations,
+		From:             from,
+		Content:          contentObj,
 	}
+
+	json, errJ := json.Marshal(body)
+	if errJ != nil {
+		return errJ
+	}
+
 	req, errReq := http.NewRequest("POST", e.url, bytes.NewBuffer(json))
+	if errReq != nil {
+		return errReq
+	}
+	req = req.WithContext(ctx)
 	if errReq != nil {
 		return errReq
 	}
@@ -74,9 +89,9 @@ func (e *Sendgrid) SendEmail(email string, subject string, content string) error
 	if resp.StatusCode != http.StatusOK {
 		errMsg, err := e.getError(resp)
 		if err != nil {
-			e.logger.Error(err.Error())
+			e.logger.Ctx(ctx).Error(err.Error())
 		}
-		e.logger.Error(errMsg)
+		e.logger.Ctx(ctx).Error(errMsg)
 		return errors.New("SendgridProvider: something went wrong")
 	}
 

@@ -3,6 +3,7 @@ package providers
 import (
 	config "auth-plus-notification/config"
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -11,7 +12,8 @@ import (
 	"net/http"
 	"time"
 
-	"go.uber.org/zap"
+	"github.com/uptrace/opentelemetry-go-extra/otelzap"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )
 
 // OneSignal struct must contains all private property to work
@@ -19,7 +21,7 @@ type OneSignal struct {
 	url    string
 	token  string
 	appID  string
-	logger *zap.Logger
+	logger *otelzap.Logger
 }
 
 // NewOneSignal for instanciate a onesignal provider
@@ -41,7 +43,7 @@ type oneSignalEmailPayload struct {
 }
 
 // SendEmail implementation of SendingEmail: https://documentation.onesignal.com/reference/email-channel-properties
-func (e *OneSignal) SendEmail(email string, subject string, content string) error {
+func (e *OneSignal) SendEmail(ctx context.Context, email string, subject string, content string) error {
 	idList := [1]string{email}
 	emailPayload := oneSignalEmailPayload{e.appID, idList, subject, content}
 
@@ -49,7 +51,7 @@ func (e *OneSignal) SendEmail(email string, subject string, content string) erro
 	if jsonErr != nil {
 		return jsonErr
 	}
-	reqErr := e.sendRequest(json)
+	reqErr := e.sendRequest(ctx, json)
 	if reqErr != nil {
 		return reqErr
 	}
@@ -68,7 +70,7 @@ type oneSignalPNPayload struct {
 }
 
 // SendPN implementation of SendingPushNotification: https://documentation.onesignal.com/reference/push-channel-properties
-func (e *OneSignal) SendPN(deviceID string, title string, content string) error {
+func (e *OneSignal) SendPN(ctx context.Context, deviceID string, title string, content string) error {
 	idList := [1]string{deviceID}
 	pnPayload := oneSignalPNPayload{
 		AppID:   e.appID,
@@ -81,7 +83,7 @@ func (e *OneSignal) SendPN(deviceID string, title string, content string) error 
 	if jsonErr != nil {
 		return jsonErr
 	}
-	reqErr := e.sendRequest(json)
+	reqErr := e.sendRequest(ctx, json)
 	if reqErr != nil {
 		return reqErr
 	}
@@ -96,7 +98,7 @@ type oneSignalSMSPayload struct {
 }
 
 // SendSms implementation of SendingSms: https://documentation.onesignal.com/reference/sms-channel-properties
-func (e *OneSignal) SendSms(phone string, content string) error {
+func (e *OneSignal) SendSms(ctx context.Context, phone string, content string) error {
 	rand.Seed(time.Now().UnixNano())
 	idList := [1]string{phone}
 	name := fmt.Sprintf("%f", rand.Float64())
@@ -111,24 +113,29 @@ func (e *OneSignal) SendSms(phone string, content string) error {
 	if jsonErr != nil {
 		return jsonErr
 	}
-	reqErr := e.sendRequest(json)
+	reqErr := e.sendRequest(ctx, json)
 	if reqErr != nil {
 		return reqErr
 	}
 	return nil
 }
 
-func (e *OneSignal) sendRequest(json []byte) error {
+func (e *OneSignal) sendRequest(ctx context.Context, json []byte) error {
+	client := &http.Client{
+		Transport: otelhttp.NewTransport(http.DefaultTransport),
+	}
+
 	req, errReq := http.NewRequest("POST", e.url, bytes.NewBuffer(json))
 	if errReq != nil {
 		return errReq
 	}
+	req = req.WithContext(ctx)
 
 	req.Header.Add("accept", "application/json")
 	req.Header.Add("Authorization", fmt.Sprintf("Basic %s", e.token))
 	req.Header.Add("content-type", "application/json; charset=utf-8")
 
-	resp, errHTTP := http.DefaultClient.Do(req)
+	resp, errHTTP := client.Do(req)
 	if errHTTP != nil {
 		return errHTTP
 	}
@@ -137,9 +144,9 @@ func (e *OneSignal) sendRequest(json []byte) error {
 	if resp.StatusCode != http.StatusOK {
 		errMsg, err := e.getError(resp)
 		if err != nil {
-			e.logger.Error(err.Error())
+			e.logger.Ctx(ctx).Error(err.Error())
 		}
-		e.logger.Error(errMsg)
+		e.logger.Ctx(ctx).Error(errMsg)
 		return errors.New("OneSignalProvider: something went wrong")
 	}
 	return nil

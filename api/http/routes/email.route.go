@@ -3,6 +3,7 @@ package routes
 
 import (
 	core "auth-plus-notification/internal"
+	"context"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -22,7 +23,9 @@ func EmailHandler(c *gin.Context) {
 	if err := c.BindJSON(&requestBody); err != nil {
 		c.String(http.StatusBadRequest, err.Error())
 	}
+	ctx := context.WithoutCancel(c.Request.Context())
 	go core.NewCore().EmailUsecase.Send(
+		ctx,
 		requestBody.Email,
 		requestBody.Subject,
 		requestBody.Content)

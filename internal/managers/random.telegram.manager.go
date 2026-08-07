@@ -2,6 +2,7 @@ package managers
 
 import (
 	d "auth-plus-notification/internal/usecases/driven"
+	"context"
 	"math/rand"
 	"time"
 )
@@ -19,12 +20,12 @@ func NewRandomTelegramManager(telegram d.SendingTelegram) *RandomTelegramManager
 }
 
 // ChooseProvider is a function for choosing a provider based on a number
-func (e *RandomTelegramManager) ChooseProvider(_ float64) (d.SendingTelegram, error) {
+func (e *RandomTelegramManager) ChooseProvider(ctx context.Context, _ float64) (d.SendingTelegram, error) {
 	return e.telegram, nil
 }
 
 // GetInput is a function that generate a random number
-func (e *RandomTelegramManager) GetInput() (float64, error) {
+func (e *RandomTelegramManager) GetInput(ctx context.Context) (float64, error) {
 	rand.Seed(time.Now().UnixNano())
 	return rand.Float64(), nil
 }

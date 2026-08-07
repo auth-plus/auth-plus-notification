@@ -2,6 +2,7 @@ package routes
 
 import (
 	core "auth-plus-notification/internal"
+	"context"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -20,7 +21,9 @@ func SmsHandler(c *gin.Context) {
 	if err := c.BindJSON(&reqBody); err != nil {
 		c.String(http.StatusBadRequest, err.Error())
 	}
+	ctx := context.WithoutCancel(c.Request.Context())
 	go core.NewCore().SmsUsecase.Send(
+		ctx,
 		reqBody.Phone,
 		reqBody.Content)
 	c.String(http.StatusOK, "Ok")

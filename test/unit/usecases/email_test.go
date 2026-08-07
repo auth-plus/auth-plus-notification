@@ -1,6 +1,8 @@
 package test
 
 import (
+	"github.com/stretchr/testify/mock"
+	"context"
 	m "auth-plus-notification/internal/managers"
 	u "auth-plus-notification/internal/usecases"
 	d "auth-plus-notification/internal/usecases/driven"
@@ -27,15 +29,15 @@ func (suite *EmailUsecaseTestSuite) Test_succeed_when_sending() {
 	}
 
 	sendgridMocked := new(t.SendgridMocked)
-	sendgridMocked.On("SendEmail", mockData.Email, mockData.Content).Return(nil)
+	sendgridMocked.On("SendEmail", mock.Anything, mockData.Email, mockData.Content).Return(nil)
 
 	input := m.IPWarmingInput{Sendgrid: 100, Mailgun: 50, Onesignal: 75}
 	randomEmailManager := new(t.ManagerMocked[d.SendingEmail, m.IPWarmingInput])
-	randomEmailManager.On("GetInput").Return(input, nil)
-	randomEmailManager.On("ChooseProvider", input).Return(sendgridMocked, nil)
+	randomEmailManager.On("GetInput", mock.Anything).Return(input, nil)
+	randomEmailManager.On("ChooseProvider", mock.Anything, input).Return(sendgridMocked, nil)
 
 	emailUsecase := u.NewEmailUsecase(randomEmailManager)
-	err := emailUsecase.Send(mockData.Email, mockData.Subject, mockData.Content)
+	err := emailUsecase.Send(context.Background(), mockData.Email, mockData.Subject, mockData.Content)
 	assert.Equal(suite.T(), err, nil)
 }
 
@@ -47,15 +49,15 @@ func (suite *EmailUsecaseTestSuite) Test_fail_when_sending() {
 	}
 
 	sendgridMocked := new(t.SendgridMocked)
-	sendgridMocked.On("SendEmail", mockData.Email, mockData.Content).Return(errors.New("failed"))
+	sendgridMocked.On("SendEmail", mock.Anything, mockData.Email, mockData.Content).Return(errors.New("failed"))
 
 	input := m.IPWarmingInput{Sendgrid: 100, Mailgun: 50, Onesignal: 75}
 	randomEmailManager := new(t.ManagerMocked[d.SendingEmail, m.IPWarmingInput])
-	randomEmailManager.On("GetInput").Return(input, nil)
-	randomEmailManager.On("ChooseProvider", input).Return(sendgridMocked, nil)
+	randomEmailManager.On("GetInput", mock.Anything).Return(input, nil)
+	randomEmailManager.On("ChooseProvider", mock.Anything, input).Return(sendgridMocked, nil)
 
 	emailUsecase := u.NewEmailUsecase(randomEmailManager)
-	err := emailUsecase.Send(mockData.Email, mockData.Subject, mockData.Content)
+	err := emailUsecase.Send(context.Background(), mockData.Email, mockData.Subject, mockData.Content)
 	assert.Equal(suite.T(), err.Error(), "failed")
 }
 

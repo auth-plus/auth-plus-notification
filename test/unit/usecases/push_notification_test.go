@@ -1,6 +1,8 @@
 package test
 
 import (
+	"github.com/stretchr/testify/mock"
+	"context"
 	u "auth-plus-notification/internal/usecases"
 	d "auth-plus-notification/internal/usecases/driven"
 	t "auth-plus-notification/test/mocks"
@@ -26,15 +28,15 @@ func (suite *PushNotificationUsecaseTestSuite) Test_succeed_when_sending() {
 	}
 
 	firebaseMocked := new(t.FirebaseMocked)
-	firebaseMocked.On("SendPN", mockData.DeviceID, mockData.Title, mockData.Content).Return(nil)
+	firebaseMocked.On("SendPN", mock.Anything, mockData.DeviceID, mockData.Title, mockData.Content).Return(nil)
 
 	const number = 0.7
 	randomManager := new(t.ManagerMocked[d.SendingPushNotification, float64])
-	randomManager.On("GetInput").Return(number, nil)
-	randomManager.On("ChooseProvider", number).Return(firebaseMocked, nil)
+	randomManager.On("GetInput", mock.Anything).Return(number, nil)
+	randomManager.On("ChooseProvider", mock.Anything, number).Return(firebaseMocked, nil)
 
 	pnUsecase := u.NewPushNotificationUsecase(randomManager)
-	err := pnUsecase.Send(mockData.DeviceID, mockData.Title, mockData.Content)
+	err := pnUsecase.Send(context.Background(), mockData.DeviceID, mockData.Title, mockData.Content)
 	assert.Equal(suite.T(), err, nil)
 }
 
@@ -46,15 +48,15 @@ func (suite *PushNotificationUsecaseTestSuite) Test_fail_when_sending() {
 	}
 
 	firebaseMocked := new(t.FirebaseMocked)
-	firebaseMocked.On("SendPN", mockData.DeviceID, mockData.Title, mockData.Content).Return(errors.New("failed"))
+	firebaseMocked.On("SendPN", mock.Anything, mockData.DeviceID, mockData.Title, mockData.Content).Return(errors.New("failed"))
 
 	const number = 0.7
 	randomManager := new(t.ManagerMocked[d.SendingPushNotification, float64])
-	randomManager.On("GetInput").Return(number, nil)
-	randomManager.On("ChooseProvider", number).Return(firebaseMocked, nil)
+	randomManager.On("GetInput", mock.Anything).Return(number, nil)
+	randomManager.On("ChooseProvider", mock.Anything, number).Return(firebaseMocked, nil)
 
 	pnUsecase := u.NewPushNotificationUsecase(randomManager)
-	err := pnUsecase.Send(mockData.DeviceID, mockData.Title, mockData.Content)
+	err := pnUsecase.Send(context.Background(), mockData.DeviceID, mockData.Title, mockData.Content)
 	assert.Equal(suite.T(), err.Error(), "failed")
 }
 

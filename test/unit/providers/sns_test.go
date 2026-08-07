@@ -1,6 +1,7 @@
 package test
 
 import (
+	"context"
 	p "auth-plus-notification/internal/providers"
 	t "auth-plus-notification/test/mocks"
 
@@ -30,7 +31,7 @@ func (suite *SNSTestSuite) Test_succeed_when_sending() {
 		Reply(200)
 
 	provider := p.NewSNS()
-	err := provider.SendSms(mockData.Phone, mockData.Content)
+	err := provider.SendSms(context.Background(), mockData.Phone, mockData.Content)
 	assert.Equal(suite.T(), err, nil)
 }
 
@@ -68,7 +69,7 @@ func (suite *SNSTestSuite) Test_fail_when_sending() {
 		}})
 
 	provider := p.NewSNS()
-	err := provider.SendSms(mockData.Phone, mockData.Content)
+	err := provider.SendSms(context.Background(), mockData.Phone, mockData.Content)
 	assert.Equal(suite.T(), err.Error(), "SNSProvider: something went wrong")
 }
 

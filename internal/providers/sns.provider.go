@@ -2,12 +2,13 @@ package providers
 
 import (
 	config "auth-plus-notification/config"
+	"context"
 	"errors"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/sns"
-	"go.uber.org/zap"
+	"github.com/uptrace/opentelemetry-go-extra/otelzap"
 )
 
 // SNS struct must contains all private property to work
@@ -15,7 +16,7 @@ type SNS struct {
 	accessKeyID     string
 	secretAccessKey string
 	sessionToken    string
-	logger          *zap.Logger
+	logger          *otelzap.Logger
 }
 
 // NewSNS for instanciate a sns provider
@@ -30,7 +31,7 @@ func NewSNS() *SNS {
 }
 
 // SendSms implementation of SendingSms
-func (e *SNS) SendSms(phone string, content string) error {
+func (e *SNS) SendSms(ctx context.Context, phone string, content string) error {
 	sess, errInit := session.NewSession(&aws.Config{
 		Region: aws.String("us-west-2")},
 	)
@@ -42,9 +43,9 @@ func (e *SNS) SendSms(phone string, content string) error {
 		Message:     aws.String(content),
 		PhoneNumber: aws.String(phone),
 	}
-	_, errPub := svc.Publish(params)
+	_, errPub := svc.PublishWithContext(ctx, params)
 	if errPub != nil {
-		e.logger.Error(errPub.Error())
+		e.logger.Ctx(ctx).Error(errPub.Error())
 		return errors.New("SNSProvider: something went wrong")
 	}
 	return nil

@@ -3,6 +3,7 @@ package managers
 
 import (
 	d "auth-plus-notification/internal/usecases/driven"
+	"context"
 )
 
 // IPWarmimgEmailManager must contains all provider that could be choosen
@@ -22,7 +23,7 @@ func NewIPWarmimgmailManager(sendgrid d.SendingEmail, mailgun d.SendingEmail, on
 }
 
 // ChooseProvider is a function for choosing a provider based on a number
-func (e *IPWarmimgEmailManager) ChooseProvider(input IPWarmingInput) (d.SendingEmail, error) {
+func (e *IPWarmimgEmailManager) ChooseProvider(ctx context.Context, input IPWarmingInput) (d.SendingEmail, error) {
 	if input.Sendgrid < 70 {
 		return e.sendgrid, nil
 	}
@@ -40,7 +41,7 @@ type IPWarmingInput struct {
 }
 
 // GetInput is a function that generate a random number
-func (e *IPWarmimgEmailManager) GetInput() (IPWarmingInput, error) {
+func (e *IPWarmimgEmailManager) GetInput(ctx context.Context) (IPWarmingInput, error) {
 	input := IPWarmingInput{
 		Sendgrid:  100,
 		Mailgun:   50,

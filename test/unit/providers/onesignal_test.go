@@ -1,6 +1,7 @@
 package test
 
 import (
+	"context"
 	"auth-plus-notification/config"
 	p "auth-plus-notification/internal/providers"
 	t "auth-plus-notification/test/mocks"
@@ -34,7 +35,7 @@ func (suite *OnesignalTestSuite) Test_succeed_when_sending_email() {
 		Reply(200)
 
 	provider := p.NewOneSignal()
-	err := provider.SendEmail(mockData.Email, mockData.Subject, mockData.Content)
+	err := provider.SendEmail(context.Background(), mockData.Email, mockData.Subject, mockData.Content)
 	assert.Equal(suite.T(), err, nil)
 }
 func (suite *OnesignalTestSuite) Test_succeed_when_sending_push_notification() {
@@ -53,7 +54,7 @@ func (suite *OnesignalTestSuite) Test_succeed_when_sending_push_notification() {
 		Reply(200)
 
 	provider := p.NewOneSignal()
-	err := provider.SendPN(mockData.DeviceID, mockData.Title, mockData.Content)
+	err := provider.SendPN(context.Background(), mockData.DeviceID, mockData.Title, mockData.Content)
 	assert.Equal(suite.T(), err, nil)
 }
 func (suite *OnesignalTestSuite) Test_succeed_when_sending_sms() {
@@ -72,7 +73,7 @@ func (suite *OnesignalTestSuite) Test_succeed_when_sending_sms() {
 		Reply(200)
 
 	provider := p.NewOneSignal()
-	err := provider.SendSms(mockData.Phone, mockData.Content)
+	err := provider.SendSms(context.Background(), mockData.Phone, mockData.Content)
 	assert.Equal(suite.T(), err, nil)
 }
 
@@ -93,7 +94,7 @@ func (suite *OnesignalTestSuite) Test_fail_when_sending_sms() {
 		BodyString(mockData.Error)
 
 	provider := p.NewOneSignal()
-	err := provider.SendSms(mockData.Phone, mockData.Content)
+	err := provider.SendSms(context.Background(), mockData.Phone, mockData.Content)
 	assert.Equal(suite.T(), err.Error(), "OneSignalProvider: something went wrong")
 }
 

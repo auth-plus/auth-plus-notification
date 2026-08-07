@@ -1,6 +1,7 @@
 package test
 
 import (
+	"context"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -20,7 +21,7 @@ func (suite *IPWarmimgEmailManagerTestSuite) Test_succeed_when_choosing_sendgrid
 	onesignalMocked := new(t.OnesignalMocked)
 	input := m.IPWarmingInput{Sendgrid: 50, Mailgun: 50, Onesignal: 75}
 	emailManager := m.NewIPWarmimgmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
-	provider, err := emailManager.ChooseProvider(input)
+	provider, err := emailManager.ChooseProvider(context.Background(), input)
 	assert.Equal(suite.T(), provider, sendgridMocked)
 	assert.Equal(suite.T(), err, nil)
 }
@@ -31,7 +32,7 @@ func (suite *IPWarmimgEmailManagerTestSuite) Test_succeed_when_choosing_onesigna
 	onesignalMocked := new(t.OnesignalMocked)
 	input := m.IPWarmingInput{Sendgrid: 100, Mailgun: 50, Onesignal: 20}
 	emailManager := m.NewIPWarmimgmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
-	provider, err := emailManager.ChooseProvider(input)
+	provider, err := emailManager.ChooseProvider(context.Background(), input)
 	assert.Equal(suite.T(), provider, onesignalMocked)
 	assert.Equal(suite.T(), err, nil)
 }
@@ -43,7 +44,7 @@ func (suite *IPWarmimgEmailManagerTestSuite) Test_succeed_when_choosing_mailgun(
 
 	input := m.IPWarmingInput{Sendgrid: 100, Mailgun: 50, Onesignal: 75}
 	emailManager := m.NewIPWarmimgmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
-	provider, err := emailManager.ChooseProvider(input)
+	provider, err := emailManager.ChooseProvider(context.Background(), input)
 	assert.Equal(suite.T(), provider, mailgunMocked)
 	assert.Equal(suite.T(), err, nil)
 }
@@ -53,7 +54,7 @@ func (suite *IPWarmimgEmailManagerTestSuite) Test_succeed_when_getting_input() {
 	mailgunMocked := new(t.MailgunMocked)
 	onesignalMocked := new(t.OnesignalMocked)
 	emailManager := m.NewIPWarmimgmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
-	input, err := emailManager.GetInput()
+	input, err := emailManager.GetInput(context.Background())
 	assert.Equal(suite.T(), input.Sendgrid, 100)
 	assert.Equal(suite.T(), input.Mailgun, 50)
 	assert.Equal(suite.T(), input.Onesignal, 75)
