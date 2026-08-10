@@ -12,8 +12,8 @@ type SingletonTestSuite struct {
 }
 
 func (suite *SingletonTestSuite) Test_succeed_when_instanciate_two_times() {
-	instance := GetPrometheusInstance()
-	instance2 := GetPrometheusInstance()
+	instance := GetMetricsInstance()
+	instance2 := GetMetricsInstance()
 	assert.Equal(suite.T(), instance, instance2)
 }
 

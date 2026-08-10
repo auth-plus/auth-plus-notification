@@ -1,6 +1,7 @@
 package test
 
 import (
+	"context"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -19,7 +20,7 @@ func (suite *RandomPushNotificationManagerTestSuite) Test_succeed_when_choosing_
 	onesignalMocked := new(t.OnesignalMocked)
 	const number = 0.7
 	emailManager := m.NewRandomPushNotificationManager(firebaseMocked, onesignalMocked)
-	provider, err := emailManager.ChooseProvider(number)
+	provider, err := emailManager.ChooseProvider(context.Background(), number)
 	assert.Equal(suite.T(), provider, firebaseMocked)
 	assert.Equal(suite.T(), err, nil)
 }
@@ -30,7 +31,7 @@ func (suite *RandomPushNotificationManagerTestSuite) Test_succeed_when_choosing_
 
 	emailManager := m.NewRandomPushNotificationManager(firebaseMocked, onesignalMocked)
 	const number = 0.1
-	provider, err := emailManager.ChooseProvider(number)
+	provider, err := emailManager.ChooseProvider(context.Background(), number)
 	assert.Equal(suite.T(), provider, onesignalMocked)
 	assert.Equal(suite.T(), err, nil)
 }

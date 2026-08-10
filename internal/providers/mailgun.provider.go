@@ -1,21 +1,23 @@
 package providers
 
 import (
-	config "auth-plus-notification/config"
+	"auth-plus-notification/config"
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
 
-	"go.uber.org/zap"
+	"github.com/uptrace/opentelemetry-go-extra/otelzap"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )
 
 // Mailgun struct must contains all private property to work
 type Mailgun struct {
 	url    string
 	token  string
-	logger *zap.Logger
+	logger *otelzap.Logger
 }
 
 // NewMailgun for instanciate a mailgun provider
@@ -28,29 +30,37 @@ func NewMailgun() *Mailgun {
 	return instance
 }
 
-type mailgunEmailPayload struct {
-	Personalizations string `json:"name"`
-	From             string `json:"from"`
-	Subject          string `json:"subject"`
-	Content          string `json:"content"`
+type mailgunBody struct {
+	To      string `json:"to"`
+	From    string `json:"from"`
+	Subject string `json:"subject"`
+	HTML    string `json:"html"`
 }
 
 // SendEmail implementation of SendingEmail: https://documentation.mailgun.com/en/latest/api-intro.html#introduction
-func (e *Mailgun) SendEmail(email string, subject string, content string) error {
-	client := &http.Client{}
-	emailPayload := mailgunEmailPayload{
-		Personalizations: email,
-		From:             "noreply@auth-plus.com",
-		Subject:          subject,
-		Content:          content,
+func (e *Mailgun) SendEmail(ctx context.Context, email string, subject string, content string) error {
+
+	client := &http.Client{
+		Transport: otelhttp.NewTransport(http.DefaultTransport),
 	}
 
-	json, errJSON := json.Marshal(emailPayload)
-	if errJSON != nil {
-		return errJSON
+	body := mailgunBody{
+		To:      email,
+		Subject: subject,
+		From:    "noreply@auth-plus.com",
+		HTML:    content,
+	}
+
+	json, errJ := json.Marshal(body)
+	if errJ != nil {
+		return errJ
 	}
 
 	req, errReq := http.NewRequest("POST", e.url, bytes.NewBuffer(json))
+	if errReq != nil {
+		return errReq
+	}
+	req = req.WithContext(ctx)
 	if errReq != nil {
 		return errReq
 	}
@@ -66,9 +76,9 @@ func (e *Mailgun) SendEmail(email string, subject string, content string) error 
 	if resp.StatusCode != http.StatusOK {
 		errMsg, err := e.getError(resp)
 		if err != nil {
-			e.logger.Error(err.Error())
+			e.logger.Ctx(ctx).Error(err.Error())
 		}
-		e.logger.Error(errMsg)
+		e.logger.Ctx(ctx).Error(errMsg)
 		return errors.New("MailgunProvider: something went wrong")
 	}
 

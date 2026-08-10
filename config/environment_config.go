@@ -53,6 +53,11 @@ type ProviderEnv struct {
 	Twilio    TwilioEnv
 }
 
+// TraceEnv contains tracing configurations
+type TraceEnv struct {
+	DSN string
+}
+
 // AppEnv contains all necessary property to application initiate
 type AppEnv struct {
 	Name string
@@ -71,6 +76,7 @@ type Environment struct {
 	App       AppEnv
 	Providers ProviderEnv
 	Kafka     KafkaEnv
+	Trace     TraceEnv
 }
 
 // GetEnv exports env config instead of multiplaces to maintain
@@ -121,11 +127,15 @@ func GetEnv() Environment {
 		URL:  os.Getenv("KAFKA_URL"),
 		Port: os.Getenv("KAFKA_PORT"),
 	}
+	trace := TraceEnv{
+		DSN: os.Getenv("UPTRACE_DSN"),
+	}
 	//Exporting
 	env := Environment{
 		App:       app,
 		Providers: providers,
 		Kafka:     kafka,
+		Trace:     trace,
 	}
 	return env
 }

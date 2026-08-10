@@ -3,15 +3,14 @@ package config
 import (
 	"os"
 
+	"github.com/uptrace/opentelemetry-go-extra/otelzap"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
 // GetLogger exports a logger
-func GetLogger() *zap.Logger {
-	core := getCore()
-	tree := zapcore.NewTee(core)
-	logger := zap.New(tree)
+func GetLogger() *otelzap.Logger {
+	logger := otelzap.New(zap.Must(zap.NewProduction()))
 	defer logger.Sync()
 	return logger
 }

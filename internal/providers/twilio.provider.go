@@ -2,17 +2,18 @@ package providers
 
 import (
 	"auth-plus-notification/config"
+	"context"
 	"errors"
 	"fmt"
 
 	twilio "github.com/twilio/twilio-go"
 	openapi "github.com/twilio/twilio-go/rest/api/v2010"
-	"go.uber.org/zap"
+	"github.com/uptrace/opentelemetry-go-extra/otelzap"
 )
 
 // Twilio struct must contains all private property to work
 type Twilio struct {
-	logger *zap.Logger
+	logger *otelzap.Logger
 	client *twilio.RestClient
 }
 
@@ -25,7 +26,7 @@ func NewTwilio() *Twilio {
 }
 
 // SendWhats implementation of SendingWhatsapp (https://www.twilio.com/blog/send-whatsapp-message-30-seconds-golang)
-func (e *Twilio) SendWhats(phone string, content string) error {
+func (e *Twilio) SendWhats(ctx context.Context, phone string, content string) error {
 
 	params := &openapi.CreateMessageParams{}
 	params.SetTo(fmt.Sprintf("whatsapp:%s", phone))
@@ -35,7 +36,7 @@ func (e *Twilio) SendWhats(phone string, content string) error {
 	_, err := e.client.Api.CreateMessage(params)
 	if err != nil {
 		fmt.Println(err)
-		e.logger.Error(err.Error())
+		e.logger.Ctx(ctx).Error(err.Error())
 		return errors.New("TwilioProvider: something went wrong")
 	}
 	return nil

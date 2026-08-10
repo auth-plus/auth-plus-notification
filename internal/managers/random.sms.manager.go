@@ -2,6 +2,7 @@ package managers
 
 import (
 	d "auth-plus-notification/internal/usecases/driven"
+	"context"
 	"math/rand"
 )
 
@@ -20,7 +21,7 @@ func NewRandomSmsManager(sns d.SendingSms, onesignal d.SendingSms) *RandomSmsMan
 }
 
 // ChooseProvider is a function for choosing a provider based on a number
-func (e *RandomSmsManager) ChooseProvider(number float64) (d.SendingSms, error) {
+func (e *RandomSmsManager) ChooseProvider(ctx context.Context, number float64) (d.SendingSms, error) {
 	if number < 0.5 {
 		return e.onesignal, nil
 	}
@@ -28,6 +29,6 @@ func (e *RandomSmsManager) ChooseProvider(number float64) (d.SendingSms, error) 
 }
 
 // GetInput is a function that generate a random number
-func (e *RandomSmsManager) GetInput() (float64, error) {
+func (e *RandomSmsManager) GetInput(ctx context.Context) (float64, error) {
 	return rand.Float64(), nil
 }

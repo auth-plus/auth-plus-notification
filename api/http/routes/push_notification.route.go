@@ -2,6 +2,7 @@ package routes
 
 import (
 	core "auth-plus-notification/internal"
+	"context"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -23,7 +24,9 @@ func PushNotificationHandler(c *gin.Context) {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
+	ctx := context.WithoutCancel(c.Request.Context())
 	go core.NewCore().PushNotificationUsecase.Send(
+		ctx,
 		reqBody.DeviceID,
 		reqBody.Title,
 		reqBody.Content)

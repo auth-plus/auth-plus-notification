@@ -1,6 +1,7 @@
 package test
 
 import (
+	"context"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -20,7 +21,7 @@ func (suite *RandomEmailManagerTestSuite) Test_succeed_when_choosing_sendgrid() 
 	onesignalMocked := new(t.OnesignalMocked)
 	const number = 0.1
 	emailManager := m.NewRandomEmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
-	provider, err := emailManager.ChooseProvider(number)
+	provider, err := emailManager.ChooseProvider(context.Background(), number)
 	assert.Equal(suite.T(), provider, sendgridMocked)
 	assert.Equal(suite.T(), err, nil)
 }
@@ -32,7 +33,7 @@ func (suite *RandomEmailManagerTestSuite) Test_succeed_when_choosing_onesignal()
 
 	emailManager := m.NewRandomEmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
 	const number = 0.4
-	provider, err := emailManager.ChooseProvider(number)
+	provider, err := emailManager.ChooseProvider(context.Background(), number)
 	assert.Equal(suite.T(), provider, onesignalMocked)
 	assert.Equal(suite.T(), err, nil)
 }
@@ -44,7 +45,7 @@ func (suite *RandomEmailManagerTestSuite) Test_succeed_when_choosing_mailgun() {
 
 	emailManager := m.NewRandomEmailManager(sendgridMocked, mailgunMocked, onesignalMocked)
 	const number = 0.7
-	provider, err := emailManager.ChooseProvider(number)
+	provider, err := emailManager.ChooseProvider(context.Background(), number)
 	assert.Equal(suite.T(), provider, mailgunMocked)
 	assert.Equal(suite.T(), err, nil)
 }

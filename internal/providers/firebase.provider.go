@@ -8,14 +8,14 @@ import (
 
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/messaging"
-	"go.uber.org/zap"
+	"github.com/uptrace/opentelemetry-go-extra/otelzap"
 	"google.golang.org/api/option"
 )
 
 // Firebase struct must contains all private property to work
 type Firebase struct {
 	app    *firebase.App
-	logger *zap.Logger
+	logger *otelzap.Logger
 }
 
 // NewFirebase for instanciate a firebase provider
@@ -32,7 +32,7 @@ func NewFirebase() (*Firebase, error) {
 }
 
 // SendPN implementation of SendingPushNotification
-func (e *Firebase) SendPN(deviceID string, title string, content string) error {
+func (e *Firebase) SendPN(ctx context.Context, deviceID string, title string, content string) error {
 	// See documentation on defining a message payload.
 	message := &messaging.Message{
 		Data: map[string]string{
@@ -41,7 +41,6 @@ func (e *Firebase) SendPN(deviceID string, title string, content string) error {
 		},
 		Token: deviceID,
 	}
-	ctx := context.Background()
 	client, err := e.app.Messaging(ctx)
 	if err != nil {
 		return fmt.Errorf("error getting Messaging client: %v", err)

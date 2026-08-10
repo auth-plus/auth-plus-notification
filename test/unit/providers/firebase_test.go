@@ -1,6 +1,7 @@
 package test
 
 import (
+	"context"
 	p "auth-plus-notification/internal/providers"
 	t "auth-plus-notification/test/mocks"
 
@@ -45,7 +46,7 @@ func (suite *FirebaseTestSuite) Test_succeed_when_sending() {
 	if errP != nil {
 		suite.T().Fatalf("Failed to initialize Firebase provider: %v", errP)
 	}
-	err := provider.SendPN(DeviceID, mockData.Title, mockData.Content)
+	err := provider.SendPN(context.Background(), DeviceID, mockData.Title, mockData.Content)
 	assert.Equal(suite.T(), err, nil)
 }
 
@@ -84,7 +85,7 @@ func (suite *FirebaseTestSuite) Test_fail_when_sending() {
 	if errP != nil {
 		suite.T().Fatalf("Failed to initialize Firebase provider: %v", errP)
 	}
-	err := provider.SendPN(DeviceID, mockData.Title, mockData.Content)
+	err := provider.SendPN(context.Background(), DeviceID, mockData.Title, mockData.Content)
 	assert.Equal(suite.T(), err.Error(), "FirebaseProvider: something went wrong")
 }
 

@@ -1,6 +1,7 @@
 package test
 
 import (
+	"context"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -18,7 +19,7 @@ func (suite *RandomWhatsappManagerTestSuite) Test_succeed_when_choosing_twilio()
 	twilioMocked := new(t.TwilioMocked)
 	const number = 0.7
 	smsManager := m.NewRandomWhatsappManager(twilioMocked)
-	provider, err := smsManager.ChooseProvider(number)
+	provider, err := smsManager.ChooseProvider(context.Background(), number)
 	assert.Equal(suite.T(), provider, twilioMocked)
 	assert.Equal(suite.T(), err, nil)
 }

@@ -2,7 +2,7 @@
 package middlewares
 
 import (
-	pkg "auth-plus-notification/pkg/prometheus"
+	pkg "auth-plus-notification/pkg/metrics"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -11,26 +11,26 @@ import (
 // Metric is a middleware that gather metrics of system
 func Metric() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		prom := pkg.GetPrometheusInstance()
+		metrics := pkg.GetMetricsInstance()
 		t := time.Now()
 		c.Next()
 
 		latency := float64(time.Since(t))
 		status := c.Writer.Status()
 
-		prom.GaugeSet("request_latency", latency)
+		metrics.GaugeSet("request_latency", latency)
 		if status >= 500 {
-			prom.CounterIncrement("error_counter")
+			metrics.CounterIncrement("error_counter")
 		} else {
-			prom.CounterIncrement("succeed_counter")
+			metrics.CounterIncrement("succeed_counter")
 		}
 	}
 }
 
 // MetricSetup is a function to register all metrics and instanciate the singleton
 func MetricSetup() {
-	prom := pkg.GetPrometheusInstance()
-	prom.CreateGauge("request_latency", "Gauge request latency")
-	prom.CreateCounter("error_counter", "Counter request 50X/40X")
-	prom.CreateCounter("succeed_counter", "Counter request 20X")
+	metrics := pkg.GetMetricsInstance()
+	metrics.CreateGauge("request_latency", "Gauge request latency")
+	metrics.CreateCounter("error_counter", "Counter request 50X/40X")
+	metrics.CreateCounter("succeed_counter", "Counter request 20X")
 }

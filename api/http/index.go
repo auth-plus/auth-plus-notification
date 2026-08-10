@@ -8,7 +8,6 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 // Server for initiate http server
@@ -26,9 +25,6 @@ func Server() *gin.Engine {
 	// Default
 	router.GET("/health", func(c *gin.Context) {
 		c.String(http.StatusOK, "Ok")
-	})
-	router.GET("/metrics", func(c *gin.Context) {
-		promhttp.Handler().ServeHTTP(c.Writer, c.Request)
 	})
 
 	// Application

@@ -1,6 +1,7 @@
 package test
 
 import (
+	"context"
 	"auth-plus-notification/config"
 	p "auth-plus-notification/internal/providers"
 	t "auth-plus-notification/test/mocks"
@@ -55,7 +56,7 @@ func (suite *TwilioTestSuite) Test_succeed_when_sending() {
 		})
 
 	provider := p.NewTwilio()
-	err := provider.SendWhats(mockData.Phone, mockData.Content)
+	err := provider.SendWhats(context.Background(), mockData.Phone, mockData.Content)
 	assert.Equal(suite.T(), err, nil)
 }
 
@@ -78,7 +79,7 @@ func (suite *TwilioTestSuite) Test_fail_when_sending() {
 		})
 
 	provider := p.NewTwilio()
-	err := provider.SendWhats(mockData.Phone, mockData.Content)
+	err := provider.SendWhats(context.Background(), mockData.Phone, mockData.Content)
 	assert.Equal(suite.T(), err.Error(), "TwilioProvider: something went wrong")
 }
 

@@ -1,6 +1,7 @@
 package test
 
 import (
+	"context"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -19,7 +20,7 @@ func (suite *RandomSmsManagerTestSuite) Test_succeed_when_choosing_sns() {
 	onesignalMocked := new(t.OnesignalMocked)
 	const number = 0.7
 	smsManager := m.NewRandomSmsManager(snsMocked, onesignalMocked)
-	provider, err := smsManager.ChooseProvider(number)
+	provider, err := smsManager.ChooseProvider(context.Background(), number)
 	assert.Equal(suite.T(), provider, snsMocked)
 	assert.Equal(suite.T(), err, nil)
 }
@@ -30,7 +31,7 @@ func (suite *RandomSmsManagerTestSuite) Test_succeed_when_choosing_onesignal() {
 
 	smsManager := m.NewRandomSmsManager(snsMocked, onesignalMocked)
 	const number = 0.1
-	provider, err := smsManager.ChooseProvider(number)
+	provider, err := smsManager.ChooseProvider(context.Background(), number)
 	assert.Equal(suite.T(), provider, onesignalMocked)
 	assert.Equal(suite.T(), err, nil)
 }

@@ -1,6 +1,8 @@
 package test
 
 import (
+	"github.com/stretchr/testify/mock"
+	"context"
 	u "auth-plus-notification/internal/usecases"
 	d "auth-plus-notification/internal/usecases/driven"
 	t "auth-plus-notification/test/mocks"
@@ -26,15 +28,15 @@ func (suite *TelegramUsecaseTestSuite) Test_succeed_when_sending() {
 	}
 
 	telegramMocked := new(t.TelegramMocked)
-	telegramMocked.On("SendTele", mockData.ChatID, mockData.Content).Return(nil)
+	telegramMocked.On("SendTele", mock.Anything, mockData.ChatID, mockData.Content).Return(nil)
 
 	const number = 0.7
 	randomManager := new(t.ManagerMocked[d.SendingTelegram, float64])
-	randomManager.On("GetInput").Return(number, nil)
-	randomManager.On("ChooseProvider", number).Return(telegramMocked, nil)
+	randomManager.On("GetInput", mock.Anything).Return(number, nil)
+	randomManager.On("ChooseProvider", mock.Anything, number).Return(telegramMocked, nil)
 
 	telegramUsecase := u.NewTelegramUsecase(randomManager)
-	err := telegramUsecase.Send(mockData.ChatID, mockData.Content)
+	err := telegramUsecase.Send(context.Background(), mockData.ChatID, mockData.Content)
 	assert.Equal(suite.T(), err, nil)
 }
 
@@ -46,15 +48,15 @@ func (suite *TelegramUsecaseTestSuite) Test_fail_when_sending() {
 	}
 
 	telegramMocked := new(t.TelegramMocked)
-	telegramMocked.On("SendTele", mockData.ChatID, mockData.Content).Return(errors.New("failed"))
+	telegramMocked.On("SendTele", mock.Anything, mockData.ChatID, mockData.Content).Return(errors.New("failed"))
 
 	const number = 0.7
 	randomManager := new(t.ManagerMocked[d.SendingTelegram, float64])
-	randomManager.On("GetInput").Return(number, nil)
-	randomManager.On("ChooseProvider", number).Return(telegramMocked, nil)
+	randomManager.On("GetInput", mock.Anything).Return(number, nil)
+	randomManager.On("ChooseProvider", mock.Anything, number).Return(telegramMocked, nil)
 
 	telegramUsecase := u.NewTelegramUsecase(randomManager)
-	err := telegramUsecase.Send(mockData.ChatID, mockData.Content)
+	err := telegramUsecase.Send(context.Background(), mockData.ChatID, mockData.Content)
 	assert.Equal(suite.T(), err.Error(), "failed")
 }
 

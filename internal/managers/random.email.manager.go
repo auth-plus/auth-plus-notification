@@ -3,6 +3,7 @@ package managers
 
 import (
 	d "auth-plus-notification/internal/usecases/driven"
+	"context"
 	"math/rand"
 )
 
@@ -23,7 +24,7 @@ func NewRandomEmailManager(sendgrid d.SendingEmail, mailgun d.SendingEmail, ones
 }
 
 // ChooseProvider is a function for choosing a provider based on a number
-func (e *RandomEmailManager) ChooseProvider(number float64) (d.SendingEmail, error) {
+func (e *RandomEmailManager) ChooseProvider(ctx context.Context, number float64) (d.SendingEmail, error) {
 	if number < 0.333 {
 		return e.sendgrid, nil
 	}
@@ -34,6 +35,6 @@ func (e *RandomEmailManager) ChooseProvider(number float64) (d.SendingEmail, err
 }
 
 // GetInput is a function that generate a random number
-func (e *RandomEmailManager) GetInput() (float64, error) {
+func (e *RandomEmailManager) GetInput(ctx context.Context) (float64, error) {
 	return rand.Float64(), nil
 }

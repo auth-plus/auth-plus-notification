@@ -2,6 +2,7 @@ package managers
 
 import (
 	d "auth-plus-notification/internal/usecases/driven"
+	"context"
 	"math/rand"
 	"time"
 )
@@ -19,12 +20,12 @@ func NewRandomWhatsappManager(twilio d.SendingWhatsapp) *RandomWhatsappManager {
 }
 
 // ChooseProvider is a function for choosing a provider based on a number
-func (e *RandomWhatsappManager) ChooseProvider(_ float64) (d.SendingWhatsapp, error) {
+func (e *RandomWhatsappManager) ChooseProvider(ctx context.Context, _ float64) (d.SendingWhatsapp, error) {
 	return e.twilio, nil
 }
 
 // GetInput is a function that generate a random number
-func (e *RandomWhatsappManager) GetInput() (float64, error) {
+func (e *RandomWhatsappManager) GetInput(ctx context.Context) (float64, error) {
 	rand.Seed(time.Now().UnixNano())
 	return rand.Float64(), nil
 }
