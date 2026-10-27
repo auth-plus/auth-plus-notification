@@ -21,7 +21,9 @@
 go.work
 
 #custom
-.env
 service-account-file.json
 /vendor
 /build
+
+# dotenv environment variables file
+.env.keys
